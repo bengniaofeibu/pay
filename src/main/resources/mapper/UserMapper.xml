@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 指定工作空间，要与接口名相同，源代码没有去看，猜测应该是通过"这里的namespace.下边方法的id"来定位方法的 -->
+<mapper namespace="com.example.demo.dao.IUser">
+
+    <!-- 若不需要自动返回主键，将useGeneratedKeys="true" keyProperty="id"去掉即可(当然如果不需要自动返回主键，直接用注解即可) -->
+    <insert id="addUser" parameterType="com.example.demo.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user
+        (
+        userName,
+        password
+        )
+        VALUES
+        (
+        #{userName, jdbcType=VARCHAR},
+        #{password, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <resultMap id="UserResult" type="com.example.demo.entity.User">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickName"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+    </resultMap>
+
+    <select id="list" resultMap="UserResult">
+        SELECT
+        id,
+        username,
+        password,
+        email,
+        nickname,
+        avatar
+        FROM user
+        ORDER BY id
+    </select>
+
+    <select id="findById" parameterType="Integer" resultMap="UserResult">
+        SELECT
+        id,
+        username,
+        password,
+        email,
+        nickname,
+        avatar
+        FROM user
+        WHERE id = #{id, jdbcType=INTEGER}
+        ORDER BY id
+        LIMIT 1
+    </select>
+    <select id="findByName" resultMap="UserResult" parameterType="String">
+        SELECT
+        username,
+        password,
+        email,
+        nickname,
+        avatar
+        FROM user
+        WHERE username = "#{userName, jdbcType=VARCHAR}"
+        ORDER BY id
+        LIMIT 1
+    </select>
+
+    <select id="count">
+        SELECT count(id)
+        FROM user
+    </select>
+
+    <select id="isExisted" parameterType="com.example.demo.entity.User" resultMap="UserResult">
+        SELECT id,
+        username,
+        password,
+        email,
+        nickname,
+        avatar
+        FROM user
+        <where>
+            <if test="userName != null and !&quot;&quot;.equals(userName.trim())">
+                AND username = #{userName, jdbcType=VARCHAR}
+            </if>
+            <if test="nickName != null and !&quot;&quot;.equals(nickName.trim())">
+                AND nickname IS NOT NULL AND nickname = #{nickName, jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY id
+        LIMIT 1
+    </select>
+
+</mapper>
