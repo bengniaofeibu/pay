@@ -27,7 +27,8 @@ configurations {
 }
 
 dependencies {
-	compile('io.swagger:swagger-annotations:1.5.15')
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
 	compile('com.github.pagehelper:pagehelper-spring-boot-starter:1.1.1')
 	compile('com.alibaba:fastjson:1.2.33')
 //	compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')

@@ -1,7 +1,5 @@
 package com.example.demo.entity;
 
-import javax.jws.soap.SOAPBinding;
-
 public class User {
     private Integer id;         //id
     private String userName;    //用户名
