@@ -1,15 +1,24 @@
 package com.example.demo.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "用户")
 public class User {
-    private Integer id;         //id
-    private String userName;    //用户名
-    private String password;    //密码
-    private String email;       //邮件地址
-    private String nickName;    //昵称
-    private String avatar;      //头像
+    @ApiModelProperty(required = true, name = "id", value = "用户ID")
+    private Integer id;
+    @ApiModelProperty(required = true, name = "userName", value = "用户名")
+    private String userName;
+    @ApiModelProperty(required = true, name = "password", value = "密码")
+    private String password;
+    @ApiModelProperty(name = "email", value = "邮件地址")
+    private String email;
+    @ApiModelProperty(name = "nickName", value = "昵称")
+    private String nickName;
+    @ApiModelProperty(name = "avatar", value = "头像")
+    private String avatar;
 
     public User() {
-
     }
 
     public User(Integer id, String userName, String password, String email, String nickName, String avatar) {
