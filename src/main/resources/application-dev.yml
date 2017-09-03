@@ -4,6 +4,12 @@ spring:
     userName: root
     password:
     driver-class-name: com.mysql.jdbc.Driver
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: localhost:9300
+      repositories:
+        enabled: true
 
 # LOGGING
 logging:
