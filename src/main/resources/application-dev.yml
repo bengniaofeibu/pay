@@ -7,9 +7,12 @@ spring:
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: localhost:9300
+#      cluster-nodes: localhost:9300
       repositories:
         enabled: true
+      properties:
+        logs: ./elasticsearch/log #elasticsearch日志存储目录
+        data: ./elasticsearch/data #elasticsearch数据存储目录
 
 # LOGGING
 logging:

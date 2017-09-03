@@ -15,6 +15,11 @@ public class EsServiceImpl implements EsService {
 
     @Override
     public UserEs findUser(String id) {
+        UserEs user = new UserEs();
+        user.setId(1);
+        user.setNickName("test User");
+        user.setUserName("User Name");
+        userEsRepository.save(user);
         UserEs userEs = userEsRepository.findOne(id);
         logger.info("Get user by id {} is {}", id, userEs);
         return userEs;

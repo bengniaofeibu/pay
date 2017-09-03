@@ -32,6 +32,7 @@ dependencies {
     compile('com.github.pagehelper:pagehelper-spring-boot-starter:1.1.1')
     compile('com.alibaba:fastjson:1.2.33')
 	compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
+    compile('com.sun.jna:jna:3.0.9')
     compile('org.springframework.boot:spring-boot-starter-data-redis')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
     compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.1')
