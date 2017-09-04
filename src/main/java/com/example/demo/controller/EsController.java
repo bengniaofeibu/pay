@@ -1,17 +1,22 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.EsService;
+import com.example.demo.service.JestService;
+import io.searchbox.client.JestClient;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Api("ElasticSearch演示")
 @RestController
 public class EsController {
     @Autowired
-    private EsService esService;
+    private JestService jestService;
+
+    private String indexName = "hwd";
+    private String typeName = "user";
 
     @ApiOperation(value = "查找一个用户")
     @ApiImplicitParam(paramType = "path", name = "id", dataType = "String", required = true, value = "用户ID")
@@ -21,6 +26,7 @@ public class EsController {
     })
     @GetMapping(value = "/find/{id}")
     public Object find(@PathVariable String id) {
-        return esService.findUser(id);
+        return null;
+//        return jestService.get(jestService.getJestClient(), );
     }
 }
