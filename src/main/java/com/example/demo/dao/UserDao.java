@@ -1,5 +1,6 @@
 package com.example.demo.dao;
 
+import com.example.demo.mapper.IUser;
 import com.github.pagehelper.PageHelper;
 import com.example.demo.entity.User;
 import com.example.demo.enums.ResultEnum;
