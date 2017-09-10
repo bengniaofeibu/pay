@@ -10,9 +10,12 @@ import java.util.List;
 
 @Service
 public class UserService {
+    private UserDao userDao;
 
     @Autowired
-    private UserDao userDao;
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public User addUser(User user) throws SiteException {
         return userDao.addUser(user);
@@ -26,7 +29,7 @@ public class UserService {
         return userDao.list(pageNum, pageSzie);
     }
 
-    public boolean isExsited(User user){
+    public boolean isExsited(User user) {
         return userDao.isExisted(user);
     }
 

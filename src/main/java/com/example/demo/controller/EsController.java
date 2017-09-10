@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.service.JestService;
 import io.searchbox.client.JestClient;
+import io.searchbox.client.JestResult;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Api("ElasticSearch演示")
 @RestController
 public class EsController {
-    @Autowired
     private JestService jestService;
+
+    @Autowired
+    public EsController(JestService jestService) {
+        this.jestService = jestService;
+    }
 
     private String indexName = "hwd";
     private String typeName = "user";
@@ -25,8 +30,10 @@ public class EsController {
             @ApiResponse(code = 404, message = "请求路径没有或页面跳转路径不对")
     })
     @GetMapping(value = "/find/{id}")
-    public Object find(@PathVariable String id) {
-        return null;
-//        return jestService.get(jestService.getJestClient(), );
+    public Object find(@PathVariable String id) throws Exception {
+        JestClient client = jestService.getJestClient();
+        JestResult res = jestService.get(client, "order", "list", id);
+        
+        return res.getJsonString();
     }
 }

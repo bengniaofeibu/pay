@@ -15,10 +15,13 @@ import java.util.List;
 @RequestMapping("/user")
 @Api("userController相关api")
 public class UserController {
-
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @ApiOperation("添加用户")
     @ApiImplicitParams({
