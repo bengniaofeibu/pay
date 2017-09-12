@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -39,18 +40,17 @@ public class UserControllerTest {
 
     @Test
     public void findById() throws Exception {
-//        mvc.perform(MockMvcRequestBuilders.get("user/{id}", 1))
-//                .andExpect(MockMvcResultMatchers.status().isOk());
-//                .andExpect(MockMvcResultMatchers.content().json().string("abc"));
+        mvc.perform(MockMvcRequestBuilders.get("/user/{id}", 1))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
     public void list() throws Exception {
-//        Map<String, String> map = new HashMap<>() ;
-//        map.put("pageNum", "1");
-//        map.put("pageSize", "2");
-//        mvc.perform(MockMvcRequestBuilders.get("user/").params(map))
-//                .andExpect(MockMvcResultMatchers.status().isOk());
+        mvc.perform(MockMvcRequestBuilders.get("/user/")
+                .param("pageNum", "1")
+                .param("pageSize", "10"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
 }
