@@ -7,10 +7,12 @@ import java.util.List;
 
 @Mapper
 public interface IUser {
-    Integer addUser(User user);
+    Integer add(User user);
+    User update(Integer id,User user);
+    User delete(Integer id);
     List<User> list();
     User findById(Integer id);
     User findByName(String userName);
     User isExisted(User user);
-    int count();
+    Integer count();
 }

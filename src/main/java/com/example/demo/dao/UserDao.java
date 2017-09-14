@@ -3,12 +3,10 @@ package com.example.demo.dao;
 import com.example.demo.mapper.IUser;
 import com.github.pagehelper.PageHelper;
 import com.example.demo.entity.User;
-import com.example.demo.enums.ResultEnum;
-import com.example.demo.exception.SiteException;
+import com.example.demo.exception.BaseException;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,17 +26,13 @@ public class UserDao {
         return iUser.findById(id);
     }
 
-    public User addUser(User user) throws SiteException {
+    public User addUser(User user) throws BaseException {
         try {
-            if (isExisted(user)) {
-                throw new SiteException(ResultEnum.DUPLICATE_USER_NAME);
-            }
-            iUser.addUser(user);
-        } catch (SiteException e) {
+            iUser.add(user);
+        } catch (BaseException e) {
             throw e;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new SiteException(ResultEnum.UNKONW_ERROR);
+            throw new BaseException(500, e.getMessage());
         }
 
         return user;
@@ -50,13 +44,10 @@ public class UserDao {
     }
 
     public Integer count() {
-        Integer iCount = iUser.count();
-        return iCount;
+        return iUser.count();
     }
 
     public Boolean isExisted(User user) {
-        logger.debug(user.toString());
-        User userRes = iUser.isExisted(user);
-        return userRes != null;
+        return iUser.isExisted(user) != null;
     }
 }

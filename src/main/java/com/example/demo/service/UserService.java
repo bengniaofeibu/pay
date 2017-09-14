@@ -2,7 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
-import com.example.demo.exception.SiteException;
+import com.example.demo.enums.UserEnum;
+import com.example.demo.exception.BaseException;
+import com.example.demo.exception.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,10 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public User addUser(User user) throws SiteException {
+    public User addUser(User user) throws UserException {
+        if (userDao.isExisted(user)) {
+            throw new UserException(UserEnum.DUPLICATE_USER_NAME);
+        }
         return userDao.addUser(user);
     }
 
@@ -33,4 +38,7 @@ public class UserService {
         return userDao.isExisted(user);
     }
 
+    public Integer count() {
+        return userDao.count();
+    }
 }

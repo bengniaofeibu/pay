@@ -8,14 +8,17 @@
     <insert id="addUser" parameterType="com.example.demo.entity.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user
         (
-        userName,
-        password
+            userName,
+            password
         )
         VALUES
-        (
-        #{userName, jdbcType=VARCHAR},
-        #{password, jdbcType=VARCHAR}
-        )
+            (
+                #{userName, jdbcType=VARCHAR},
+                #{password, jdbcType=VARCHAR},
+                #{avatar, jdbcType=VARCHAR},
+                #{email, jdbcType=VARCHAR},
+                #{nickName, jdbcType=VARCHAR}
+            )
     </insert>
 
     <resultMap id="UserResult" type="com.example.demo.entity.User">
@@ -29,24 +32,24 @@
 
     <select id="list" resultMap="UserResult">
         SELECT
-        id,
-        username,
-        password,
-        email,
-        nickname,
-        avatar
+            id,
+            username,
+            password,
+            email,
+            nickname,
+            avatar
         FROM user
         ORDER BY id
     </select>
 
     <select id="findById" parameterType="Integer" resultMap="UserResult">
         SELECT
-        id,
-        username,
-        password,
-        email,
-        nickname,
-        avatar
+            id,
+            username,
+            password,
+            email,
+            nickname,
+            avatar
         FROM user
         WHERE id = #{id, jdbcType=INTEGER}
         ORDER BY id
@@ -54,20 +57,31 @@
     </select>
     <select id="findByName" resultMap="UserResult" parameterType="String">
         SELECT
-        username,
-        password,
-        email,
-        nickname,
-        avatar
+            username,
+            password,
+            email,
+            nickname,
+            avatar
         FROM user
         WHERE username = "#{userName, jdbcType=VARCHAR}"
         ORDER BY id
         LIMIT 1
     </select>
 
-    <select id="count">
-        SELECT count(id)
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(1)
         FROM user
+    </select>
+
+    <select id="delete" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        DELETE FROM USER
+        WHERE id = #{id}
+    </select>
+
+    <select id="update" resultType="java.lang.Integer" parameterType="User">
+        UPDATE user
+        SET userName = #{userName}, password = #{password}, avatar = #{avatar}, email = #{email}, nickName = #{nickName}
+        WHERE id = #{id}
     </select>
 
     <select id="isExisted" parameterType="com.example.demo.entity.User" resultMap="UserResult">
