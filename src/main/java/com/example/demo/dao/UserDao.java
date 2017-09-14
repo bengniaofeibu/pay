@@ -50,4 +50,16 @@ public class UserDao {
     public Boolean isExisted(User user) {
         return iUser.isExisted(user) != null;
     }
+
+    public Integer update(Integer id, User user) {
+        return iUser.update(id, user);
+    }
+
+    public Integer delete(Integer id) {
+        return iUser.delete(id);
+    }
+
+    public User findByName(String name) {
+        return iUser.findByName(name);
+    }
 }

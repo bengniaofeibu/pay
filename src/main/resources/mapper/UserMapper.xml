@@ -78,7 +78,7 @@
         WHERE id = #{id}
     </select>
 
-    <select id="update" resultType="java.lang.Integer" parameterType="User">
+    <select id="update" resultType="java.lang.Integer" parameterType="com.example.demo.entity.User">
         UPDATE user
         SET userName = #{userName}, password = #{password}, avatar = #{avatar}, email = #{email}, nickName = #{nickName}
         WHERE id = #{id}

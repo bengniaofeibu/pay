@@ -20,9 +20,14 @@ public class UserService {
     }
 
     public User addUser(User user) throws UserException {
+        if (user.getUserName().length() < 2) {
+            throw new UserException(UserEnum.TOO_SHORT);
+        }
+
         if (userDao.isExisted(user)) {
             throw new UserException(UserEnum.DUPLICATE_USER_NAME);
         }
+        
         return userDao.addUser(user);
     }
 
@@ -40,5 +45,17 @@ public class UserService {
 
     public Integer count() {
         return userDao.count();
+    }
+
+    public Integer delete(Integer id) {
+        return userDao.delete(id);
+    }
+
+    public Integer update(Integer id, User user) {
+        return userDao.update(id, user);
+    }
+
+    public User findByName(String userName) {
+        return userDao.findByName(userName);
     }
 }

@@ -8,11 +8,11 @@ import java.util.List;
 @Mapper
 public interface IUser {
     Integer add(User user);
-    User update(Integer id,User user);
-    User delete(Integer id);
     List<User> list();
     User findById(Integer id);
-    User findByName(String userName);
     User isExisted(User user);
     Integer count();
+    User findByName(String userName);
+    Integer update(Integer id,User user);
+    Integer delete(Integer id);
 }
