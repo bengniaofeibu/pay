@@ -27,7 +27,7 @@ public class UserService {
         if (userDao.isExisted(user)) {
             throw new UserException(UserEnum.DUPLICATE_USER_NAME);
         }
-        
+
         return userDao.addUser(user);
     }
 
@@ -51,11 +51,16 @@ public class UserService {
         return userDao.delete(id);
     }
 
-    public Integer update(Integer id, User user) {
-        return userDao.update(id, user);
+    public Integer update(User user) throws UserException {
+        User oldUser = userDao.findByName(user.getUserName());
+        if (oldUser == null) {
+            return userDao.update(user);
+        } else {
+            throw new UserException(UserEnum.DUPLICATE_USER_NAME);
+        }
     }
 
-    public User findByName(String userName) {
+    public User findByName(String userName) throws UserException {
         return userDao.findByName(userName);
     }
 }

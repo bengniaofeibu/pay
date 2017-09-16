@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -77,10 +78,8 @@ public class UserController {
 
     @ApiOperation(value = "获取用户总个数")
     @GetMapping("/count")
-    public ResponseEntity<Map<String, Object>> count() throws Exception {
-        Map<String, Object> map = new HashMap<>();
-        map.put("userCount", userService.count());
-        return new ResponseEntity<>(map, HttpStatus.OK);
+    public Result count() throws Exception {
+        return ResultUtil.success(userService.count());
     }
 
     @ApiOperation("修改用户信息")
@@ -89,23 +88,20 @@ public class UserController {
             @ApiImplicitParam(paramType = "body", name = "user", required = true, value = "用户信息", dataType = "User")
     })
     @PutMapping(value = "/{id}")
-    public Result update(@RequestParam("id") Integer id, @RequestBody User user) throws Exception {
-        User oldUser = userService.findByName(user.getUserName());
-        if (oldUser == null) {
-            if (userService.update(id, user) > 0) {
-                return ResultUtil.success();
-            } else {
-                throw new UserException(UserEnum.UNKONW_ERROR);
-            }
+    public Result update(@PathVariable("id") Integer id, @RequestBody User user) throws Exception {
+        user.setId(id);
+        Integer res = userService.update(user);
+        if(res > 0){
+            return ResultUtil.success(user);
         } else {
-            throw new UserException(UserEnum.DUPLICATE_USER_NAME);
+            throw new UserException(UserEnum.UNKONW_ERROR);
         }
     }
 
     @ApiOperation("删除用户")
     @ApiImplicitParam(paramType = "path", name = "id", dataType = "Long", required = true, value = "用户ID")
     @DeleteMapping(value = "/{id}")
-    public Result delete(@RequestParam("id") Integer id, @RequestBody User user) throws Exception {
+    public Result delete(@PathVariable("id") Integer id) throws Exception {
         if (userService.delete(id) > 0) {
             return ResultUtil.success();
         } else {
