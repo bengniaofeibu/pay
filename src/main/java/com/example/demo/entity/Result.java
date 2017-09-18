@@ -1,8 +1,16 @@
 package com.example.demo.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
+
+@ApiModel
 public class Result<T> {
-    private int code = 0;
+    @ApiModelProperty(required = true, name = "code", value = "响应码")
+    private int code = 200;
+    @ApiModelProperty(required = true, name = "msg", value = "响应消息")
     private String msg = "成功";
+    @ApiModelProperty(required = true, name = "data", value = "数据体")
     private T data = null;
 
     public int getCode() {

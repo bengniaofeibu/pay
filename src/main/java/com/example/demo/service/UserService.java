@@ -2,7 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.dao.UserDao;
 import com.example.demo.entity.User;
-import com.example.demo.exception.SiteException;
+import com.example.demo.enums.UserEnum;
+import com.example.demo.exception.BaseException;
+import com.example.demo.exception.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,11 +12,22 @@ import java.util.List;
 
 @Service
 public class UserService {
-
-    @Autowired
     private UserDao userDao;
 
-    public User addUser(User user) throws SiteException {
+    @Autowired
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public User addUser(User user) throws UserException {
+        if (user.getUserName().length() < 2) {
+            throw new UserException(UserEnum.TOO_SHORT);
+        }
+
+        if (userDao.isExisted(user)) {
+            throw new UserException(UserEnum.DUPLICATE_USER_NAME);
+        }
+
         return userDao.addUser(user);
     }
 
@@ -26,8 +39,28 @@ public class UserService {
         return userDao.list(pageNum, pageSzie);
     }
 
-    public boolean isExsited(User user){
+    public boolean isExsited(User user) {
         return userDao.isExisted(user);
     }
 
+    public Integer count() {
+        return userDao.count();
+    }
+
+    public Integer delete(Integer id) {
+        return userDao.delete(id);
+    }
+
+    public Integer update(User user) throws UserException {
+        User oldUser = userDao.findByName(user.getUserName());
+        if (oldUser == null) {
+            return userDao.update(user);
+        } else {
+            throw new UserException(UserEnum.DUPLICATE_USER_NAME);
+        }
+    }
+
+    public User findByName(String userName) throws UserException {
+        return userDao.findByName(userName);
+    }
 }

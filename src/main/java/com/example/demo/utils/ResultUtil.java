@@ -5,7 +5,7 @@ import com.example.demo.entity.Result;
 public class ResultUtil {
     public static Result success(Object object){
         Result<Object> result = new Result<>();
-        result.setCode(0);
+        result.setCode(200);
         result.setMsg("成功");
         result.setData(object);
         return result;
@@ -13,7 +13,7 @@ public class ResultUtil {
 
     public static Result success(){
         Result result = new Result();
-        result.setCode(0);
+        result.setCode(200);
         result.setMsg("成功");
         return result;
     }

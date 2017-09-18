@@ -2,20 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- 指定工作空间，要与接口名相同，源代码没有去看，猜测应该是通过"这里的namespace.下边方法的id"来定位方法的 -->
-<mapper namespace="com.example.demo.dao.IUser">
+<mapper namespace="com.example.demo.mapper.IUser">
 
     <!-- 若不需要自动返回主键，将useGeneratedKeys="true" keyProperty="id"去掉即可(当然如果不需要自动返回主键，直接用注解即可) -->
-    <insert id="addUser" parameterType="com.example.demo.entity.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="add" parameterType="com.example.demo.entity.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user
         (
-        userName,
-        password
+            userName,
+            password,
+            avatar,
+            email,
+            nickname
         )
         VALUES
-        (
-        #{userName, jdbcType=VARCHAR},
-        #{password, jdbcType=VARCHAR}
-        )
+            (
+                #{userName},
+                #{password},
+                #{avatar},
+                #{email},
+                #{nickName}
+            )
     </insert>
 
     <resultMap id="UserResult" type="com.example.demo.entity.User">
@@ -29,48 +35,66 @@
 
     <select id="list" resultMap="UserResult">
         SELECT
-        id,
-        username,
-        password,
-        email,
-        nickname,
-        avatar
+            id,
+            username,
+            password,
+            email,
+            nickname,
+            avatar
         FROM user
         ORDER BY id
     </select>
 
-    <select id="findById" parameterType="Integer" resultMap="UserResult">
+    <select id="findById" parameterType="Integer" resultType="com.example.demo.entity.User">
         SELECT
-        id,
-        username,
-        password,
-        email,
-        nickname,
-        avatar
+            id,
+            username,
+            password,
+            email,
+            nickname,
+            avatar
         FROM user
         WHERE id = #{id, jdbcType=INTEGER}
         ORDER BY id
         LIMIT 1
     </select>
-    <select id="findByName" resultMap="UserResult" parameterType="String">
+    <select id="findByName" parameterType="java.lang.String" resultType="com.example.demo.entity.User">
         SELECT
-        username,
-        password,
-        email,
-        nickname,
-        avatar
+            id,
+            username,
+            password,
+            email,
+            nickname,
+            avatar
         FROM user
-        WHERE username = "#{userName, jdbcType=VARCHAR}"
+        WHERE username = #{userName, jdbcType=VARCHAR}
         ORDER BY id
         LIMIT 1
     </select>
 
-    <select id="count">
-        SELECT count(id)
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(1)
         FROM user
     </select>
 
-    <select id="isExisted" parameterType="com.example.demo.entity.User" resultMap="UserResult">
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM USER
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.example.demo.entity.User">
+        UPDATE user
+        <set>
+            <if test="userName != null">userName = #{userName, jdbcType=VARCHAR},</if>
+            <if test="password != null">password = #{password, jdbcType=VARCHAR},</if>
+            <if test="avatar != null">avatar = #{avatar, jdbcType=VARCHAR},</if>
+            <if test="email != null">email = #{password, jdbcType=VARCHAR},</if>
+            <if test="nickName != null">nickName = #{password, jdbcType=VARCHAR},</if>
+        </set>
+        WHERE id = #{id, jdbcType=INTEGER}
+    </update>
+
+    <select id="isExisted" parameterType="com.example.demo.entity.User" resultType="com.example.demo.entity.User">
         SELECT id,
         username,
         password,

@@ -4,3 +4,9 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/demo
     userName: root
     password:
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: localhost:9300
+      repositories:
+        enabled: true

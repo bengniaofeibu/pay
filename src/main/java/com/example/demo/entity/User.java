@@ -1,11 +1,13 @@
 package com.example.demo.entity;
 
+import io.searchbox.annotations.JestId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value = "用户")
 public class User {
     @ApiModelProperty(required = true, name = "id", value = "用户ID")
+    @JestId
     private Integer id;
     @ApiModelProperty(required = true, name = "userName", value = "用户名")
     private String userName;
