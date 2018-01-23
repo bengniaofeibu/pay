@@ -1,12 +1,14 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/demo
-    userName: root
-    password:
-  data:
-    elasticsearch:
-      cluster-name: elasticsearch
-      cluster-nodes: localhost:9300
-      repositories:
-        enabled: true
+      url: jdbc:mysql://139.196.194.172:3306/electric_bicycle_pro_dev?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=true
+      userName: jjtest
+      password: 99b39189a35c
+      driver-class-name: com.mysql.jdbc.Driver
+#  data:
+#    elasticsearch:
+#      cluster-name: elasticsearch
+#      cluster-nodes: localhost:9300
+#      repositories:
+#        enabled: true
+
+wcx.serviceUrl: https://test.wcx.qq.com/fcgi-bin/

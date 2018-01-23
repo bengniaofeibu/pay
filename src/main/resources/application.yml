@@ -10,4 +10,9 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.example.demo.dao
+  type-aliases-package: com.weichuxing.mapper
+
+
+logging:
+    level:
+    config: classpath:logback/logback-dev.xml
