@@ -1,7 +1,6 @@
 package com.weichuxing.utils;
 
 import com.weichuxing.entity.WcxRequest.BaseWcxRequest;
-import com.weichuxing.entity.WcxResponse.WcxResult;
 import com.weichuxing.enums.WcxEnum;
 import com.weichuxing.enums.WcxResultEnum;
 import com.weichuxing.exception.UserException.SignFailException;

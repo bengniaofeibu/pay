@@ -1,4 +1,4 @@
-package com.weichuxing.entity.WcxResponse;
+package com.weichuxing.utils;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;

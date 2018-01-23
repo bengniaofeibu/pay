@@ -4,9 +4,8 @@ import com.weichuxing.annotation.SystemControllerLog;
 import com.weichuxing.controller.BaseController;
 import com.weichuxing.entity.WcxRequest.UserInfoRequest;
 import com.weichuxing.entity.WcxResponse.UserInfoResponse;
-import com.weichuxing.entity.WcxResponse.WcxResult;
+import com.weichuxing.utils.WcxResult;
 import com.weichuxing.utils.ResultUtil;
-import com.weichuxing.utils.WcxServiceUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

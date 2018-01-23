@@ -1,7 +1,5 @@
 package com.weichuxing.utils;
 
-import com.weichuxing.entity.WcxResponse.WcxResult;
-import com.weichuxing.utils.common.JSON;
 import org.springframework.stereotype.Component;
 
 @Component

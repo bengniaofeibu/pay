@@ -1,6 +1,6 @@
 package com.weichuxing.handle;
 
-import com.weichuxing.entity.WcxResponse.WcxResult;
+import com.weichuxing.utils.WcxResult;
 import com.weichuxing.exception.BaseException;
 import com.weichuxing.utils.ResultUtil;
 import org.slf4j.Logger;
