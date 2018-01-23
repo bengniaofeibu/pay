@@ -2,7 +2,7 @@ package com.weichuxing.entity.WcxResponse;
 
 
 
-public class UserInfoResponse extends  BaseWcxReponse{
+public class UserInfoResponse extends BaseWcxResponse {
 
 
     /**

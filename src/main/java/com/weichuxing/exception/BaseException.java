@@ -8,7 +8,7 @@ public class BaseException extends RuntimeException {
         return code;
     }
 
-    void setCode(Integer code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 

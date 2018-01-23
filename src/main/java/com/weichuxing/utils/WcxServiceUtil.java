@@ -4,7 +4,7 @@ import com.weichuxing.entity.WcxRequest.BaseWcxRequest;
 import com.weichuxing.entity.WcxResponse.WcxResult;
 import com.weichuxing.enums.WcxEnum;
 import com.weichuxing.enums.WcxResultEnum;
-import com.weichuxing.exception.SignFailException;
+import com.weichuxing.exception.UserException.SignFailException;
 import com.weichuxing.utils.HttpClient.HttpSendUtils;
 import com.weichuxing.utils.common.*;
 import org.slf4j.Logger;

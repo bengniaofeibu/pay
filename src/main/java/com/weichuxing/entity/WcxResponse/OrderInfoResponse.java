@@ -1,6 +1,6 @@
 package com.weichuxing.entity.WcxResponse;
 
-public class OrderInfoResponse extends BaseWcxReponse{
+public class OrderInfoResponse extends BaseWcxResponse {
 
     /** 微出行平台用户ID **/
     private String openid;
