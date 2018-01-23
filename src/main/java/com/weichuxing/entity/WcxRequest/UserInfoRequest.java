@@ -3,12 +3,16 @@ package com.weichuxing.entity.WcxRequest;
 
 public class UserInfoRequest extends BaseWcxRequest {
 
+    /** 用户身份证号 SHA-256**/
     private String userid_hash;
 
+    /** 用户手机号 AES_128_ECB加密  **/
     private String user_mobile;
 
+    /**  车费卡是否有效标识 ，1：有效 2 ：失效 **/
     private String farecard_valid;
 
+    /** 车费卡卡号  **/
     private String farecard_no;
 
 
