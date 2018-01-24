@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserInfoServiceImpl implements UserInfoService {
+public class UserInfoServiceImpl extends BaseServer implements UserInfoService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
@@ -61,17 +61,5 @@ public class UserInfoServiceImpl implements UserInfoService {
             e.printStackTrace();
         }
         return userInfoResponse;
-    }
-
-    /**
-     * 生成解密的key
-     * key=取中间16位MD5(用财付通商户号+nonce_str)
-     *
-     * @param userInfoRequest
-     * @return
-     */
-    private String getDecryptKey(UserInfoRequest userInfoRequest) {
-        StringBuffer stringBuffer = new StringBuffer(userInfoRequest.getSp_id() + userInfoRequest.getNonce_str());
-        return Md5Util.MD5(stringBuffer.toString()).substring(9, 25);
     }
 }

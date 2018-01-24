@@ -13,6 +13,13 @@ public class ResultUtil {
         return result;
     }
 
+    public static WcxResult success(){
+        WcxResult result = new WcxResult();
+        result.setRet(0);
+        result.setMsg("success");
+        return result;
+    }
+
 
     public static WcxResult error(Integer code, String msg){
         WcxResult result = new WcxResult();

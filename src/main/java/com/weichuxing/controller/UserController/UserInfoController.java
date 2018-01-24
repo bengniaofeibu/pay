@@ -1,7 +1,6 @@
 package com.weichuxing.controller.UserController;
 
 import com.weichuxing.annotation.SystemControllerLog;
-import com.weichuxing.annotation.SystemServerLog;
 import com.weichuxing.controller.BaseController;
 import com.weichuxing.entity.WcxRequest.UserInfoRequest;
 import com.weichuxing.entity.WcxResponse.UserInfoResponse;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController()
+@RestController
 public class UserInfoController extends BaseController {
 
 
@@ -38,6 +37,6 @@ public class UserInfoController extends BaseController {
 
         //操作微出行注册用户信息
         wcxUserRegisterInfoService.notifyWcxUserRegisterInfo(wcxUserRegisterInfoRequest);
-        return ResultUtil.success(wcxUserRegisterInfo);
+        return ResultUtil.success();
     }
 }
