@@ -27,8 +27,9 @@ public class WcxUserRegisterInfoServiceImpl extends BaseServer implements WcxUse
     @SystemServerLog(funcionExplain = "操作微出行用户注册信息")
     public void notifyWcxUserRegisterInfo(WcxUserRegisterInfoRequest wcxUserRegisterInfo) {
         try {
-        Long count = wcxUserRegisterInfoMapper.selectWcxUserCount(Long.valueOf(wcxUserRegisterInfo.getOpenId()));
+//        Long count = wcxUserRegisterInfoMapper.selectWcxUserCount(Long.valueOf(wcxUserRegisterInfo.getOpenId()));
 
+            Long count=0L;
         String decryptKey = getDecryptKey(wcxUserRegisterInfo);
         wcxUserRegisterInfo.setUserName(EncrypUtil.decrypt(wcxUserRegisterInfo.getUserName(),decryptKey));
         wcxUserRegisterInfo.setUserMobile(EncrypUtil.decrypt(wcxUserRegisterInfo.getUserMobile(),decryptKey));
