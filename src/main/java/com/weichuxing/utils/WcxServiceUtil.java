@@ -91,7 +91,9 @@ public final class WcxServiceUtil {
             }
 
             Class<?> superclass = tClass.getSuperclass();
-            not_sign_value.addAll(list);
+            if (list!=null){
+                not_sign_value.addAll(list);
+            }
             for (Field field : superclass.getDeclaredFields()) {
                 if (!not_sign_value.contains(field.getName())){
                     field.setAccessible(true);

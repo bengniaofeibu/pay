@@ -5,9 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseWcxRequest {
 
-    /**  微出行平台ID  **/
-    protected  String openId;
-
     /** 版本号 **/
     protected String version;
 
@@ -23,13 +20,6 @@ public class BaseWcxRequest {
     /**  签名参数  **/
     protected String sign;
 
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
 
     public String getVersion() {
         return version;

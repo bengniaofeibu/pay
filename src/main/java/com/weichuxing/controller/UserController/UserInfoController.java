@@ -24,7 +24,7 @@ public class UserInfoController extends BaseController {
 
         UserInfoRequest userInfoRequest = decodeParam(userInfo, UserInfoRequest.class);
         //验证签名
-       verificationSign(userInfoRequest, Arrays.asList("openId"));
+       verificationSign(userInfoRequest,null);
         //查询用户信息
         UserInfoResponse  userInfoResponse = userInfoService.queryUserRegisterInfo(userInfoRequest);
         return ResultUtil.success(userInfoResponse);
