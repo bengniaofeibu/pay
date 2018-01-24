@@ -12,5 +12,7 @@ public interface WcxUserRegisterInfoMapper {
 
     WcxUserRegisterInfoRequest selectWcxUserRegisterInfo(Long id);
 
+    Long selectWcxUserCount(Long id);
+
     int updateByWcxUserId(WcxUserRegisterInfoRequest record);
 }

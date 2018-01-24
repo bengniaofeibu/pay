@@ -38,8 +38,8 @@ public abstract class BaseController {
      */
      private <T> T decodeParam(BaseWcxRequest baseWcxRequest,Class<T> tClass){
           Map<String,Object> map = JSON.parseObject(JSON.toJSONString(baseWcxRequest), Map.class);
-          Map<String, Object> dncoder = WcxServiceUtil.getParamMapToEncoder(map, false);
-          return JSON.parseObject(JSON.toJSONString(dncoder),tClass);
+          Map<String, Object> decode = WcxServiceUtil.getParamMapToEncoder(map, false);
+          return JSON.parseObject(JSON.toJSONString(decode),tClass);
       }
 
     /**
