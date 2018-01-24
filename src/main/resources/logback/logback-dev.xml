@@ -6,7 +6,7 @@
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-    <root level="WARN">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
     </root>
     <logger name="com.youqf" level="DEBUG" additivity="false">
