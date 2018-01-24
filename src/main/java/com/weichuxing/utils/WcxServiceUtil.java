@@ -42,6 +42,8 @@ public final class WcxServiceUtil {
 
     private static final Map<String, Object> BASE_PARAM = new HashMap<>();
 
+    private static final List<String> NOT_SIGN_VALUE=Arrays.asList("sign","key");
+
 
     @Autowired
     private HttpSendUtils httpSendUtils;
@@ -81,9 +83,6 @@ public final class WcxServiceUtil {
     private static Map<String, Object> generateSignMap(BaseWcxRequest baseWcxRequest,List<String> list) {
         Map<String, Object> map = new HashMap<>();
         Class<? extends BaseWcxRequest> tClass = baseWcxRequest.getClass();
-        List<String> not_sign_value=new ArrayList<>();
-        not_sign_value.add("sign");
-        not_sign_value.add("key");
         try {
             for (Field field : tClass.getDeclaredFields()) {
                 field.setAccessible(true);
@@ -94,11 +93,8 @@ public final class WcxServiceUtil {
             }
 
             Class<?> superclass = tClass.getSuperclass();
-            if (list!=null){
-                not_sign_value.addAll(list);
-            }
             for (Field field : superclass.getDeclaredFields()) {
-                if (!not_sign_value.contains(field.getName())){
+                if (!NOT_SIGN_VALUE.contains(field.getName())){
                     field.setAccessible(true);
                    Object o = field.get(baseWcxRequest);
                    if (o!=null){

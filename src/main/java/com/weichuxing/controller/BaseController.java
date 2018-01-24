@@ -51,7 +51,8 @@ public abstract class BaseController {
      * @return
      */
       protected <T> T verificationSignAndDecode(BaseWcxRequest baseWcxRequest,Class<T> tClass, List<String> list){
-          wcxServiceUtil.verificationSign(baseWcxRequest,list);
+          //验证签名
+          verificationSign(baseWcxRequest,list);
          return decodeParam(baseWcxRequest,tClass);
       }
 }
