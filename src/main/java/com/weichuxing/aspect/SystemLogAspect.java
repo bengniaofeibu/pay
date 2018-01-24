@@ -40,10 +40,6 @@ public class SystemLogAspect {
     @Pointcut("@annotation(com.weichuxing.annotation.SystemControllerLog)")
     private void controllerAspect(){}
 
-   public SystemLogAspect(){
-       System.out.println("Aspect");
-    }
-
     @Before("controllerAspect()")
     public void before(JoinPoint joinPoint){
         Date date=new Date();

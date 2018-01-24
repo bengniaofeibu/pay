@@ -28,8 +28,8 @@ CREATE TABLE `t_wcx_user_info` (
   `regist_flag` int(4) NOT NULL DEFAULT '1' COMMENT '注册标识：1：未注册 ，2 ：已在微出行平台注册 3 ：已在车商侧注册 ',
   `deposit_flag` int(4) NOT NULL DEFAULT '0' COMMENT '押金标识 1：表示该用户未交押金  2 ：表示该用户在微出行平台已交押金  3 ：表示该用户在车商已交押金   4 ：表示该用户免押金状态中(微出行限时免押)  5 ：表示该用户在车商已退押金  6 ：表示该用户使用按次免押券',
   `deposit_fee` bigint(8) NOT NULL DEFAULT '0' COMMENT '押金费用 （单位分）',
-  `add_time` datetime DEFAULT NULL,
-  `update_time` datetime DEFAULT NULL,
+  `add_time` datetime DEFAULT NULL COMMENT '数据添加时间',
+  `update_time` datetime DEFAULT NULL COMMIT '数据更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_open_id` (`open_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
