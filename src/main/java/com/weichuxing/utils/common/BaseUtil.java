@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class BaseUtil {
 
 
     /**
-     * 进行URLENCODE编码
+     * 进行URL参数编码
      * @param str
      * @param str
      * @return
@@ -48,6 +49,20 @@ public class BaseUtil {
            return URLEncoder.encode(str,ENCODE);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("编码失败  ERROR {}",e.getMessage());
+        }
+        return "";
+    }
+
+    /**
+     * 进行URL参数解码
+     * @param str
+     * @return
+     */
+    public static String getURLDecode(String str){
+        try {
+            return URLDecoder.decode(str,ENCODE);
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error("解码失败  ERROR {}",e.getMessage());
         }
         return "";
     }
