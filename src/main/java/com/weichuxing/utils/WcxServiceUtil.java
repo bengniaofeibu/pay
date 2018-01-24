@@ -87,7 +87,10 @@ public final class WcxServiceUtil {
         try {
             for (Field field : tClass.getDeclaredFields()) {
                 field.setAccessible(true);
-                map.put(field.getName(), field.get(baseWcxRequest));
+                Object o =field.get(baseWcxRequest);
+                if (o!=null){
+                    map.put(field.getName(), o);
+                }
             }
 
             Class<?> superclass = tClass.getSuperclass();
@@ -97,8 +100,10 @@ public final class WcxServiceUtil {
             for (Field field : superclass.getDeclaredFields()) {
                 if (!not_sign_value.contains(field.getName())){
                     field.setAccessible(true);
-                    map.put(field.getName(), field.get(baseWcxRequest));
-
+                   Object o = field.get(baseWcxRequest);
+                   if (o!=null){
+                       map.put(field.getName(), o);
+                   }
                 }
             }
         } catch (IllegalAccessException e) {
