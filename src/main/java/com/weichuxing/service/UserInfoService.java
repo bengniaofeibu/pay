@@ -1,6 +1,7 @@
 package com.weichuxing.service;
 
 import com.weichuxing.entity.WcxRequest.UserInfoRequest;
+import com.weichuxing.entity.WcxRequest.WcxUserRegisterInfoRequest;
 import com.weichuxing.entity.WcxResponse.UserInfoResponse;
 
 public interface UserInfoService {
@@ -11,5 +12,11 @@ public interface UserInfoService {
        * @return
        */
       UserInfoResponse queryUserRegisterInfo(UserInfoRequest userInfoRequest);
+
+      /**
+       * 操作微出行用户注册信息
+       * @param wcxUserRegisterInfo
+       */
+      void notifyWcxUserRegisterInfo(WcxUserRegisterInfoRequest wcxUserRegisterInfo);
 
 }

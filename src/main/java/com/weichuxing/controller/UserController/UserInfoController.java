@@ -33,10 +33,10 @@ public class UserInfoController extends BaseController {
     public WcxResult notifyUserRegist(WcxUserRegisterInfoRequest wcxUserRegisterInfo) {
 
         //解码和验证签名
-        WcxUserRegisterInfoRequest wcxUserRegisterInfoRequest = verificationSignAndDecode(wcxUserRegisterInfo, WcxUserRegisterInfoRequest.class, null);
+//        WcxUserRegisterInfoRequest wcxUserRegisterInfoRequest = verificationSignAndDecode(wcxUserRegisterInfo, WcxUserRegisterInfoRequest.class, null);
 
         //操作微出行注册用户信息
-        wcxUserRegisterInfoService.notifyWcxUserRegisterInfo(wcxUserRegisterInfoRequest);
+        userInfoService.notifyWcxUserRegisterInfo(wcxUserRegisterInfo);
         return ResultUtil.success();
     }
 }

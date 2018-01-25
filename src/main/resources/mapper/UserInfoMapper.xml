@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.weichuxing.mapper.UserInfoMapper">
-     <!-- 添加二级缓存 默认缓存策略LRU 默认为读写缓存  -->
-     <!--<cache  flushInterval="60000" size="512"/>-->
 
   <resultMap id="BaseResultMap" type="com.weichuxing.model.UserInfo">
     <id column="id" jdbcType="VARCHAR" property="id" />
@@ -52,6 +50,8 @@
     <result column="imei" jdbcType="VARCHAR" property="imei" />
     <result column="mac" jdbcType="VARCHAR" property="mac" />
     <result column="idfa" jdbcType="VARCHAR" property="idfa" />
+    <result column="open_id" jdbcType="VARCHAR" property="openid" />
+    <result column="deposit_flag" jdbcType="INTEGER" property="depositFlag" />
   </resultMap>
 
   <select id="selectByUserPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -61,148 +61,303 @@
     WHERE phone=#{phone,jdbcType=VARCHAR}
   </select>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.weichuxing.model.UserInfo">
-    update t_user_info
-    <set>
+  <select id="selectWcxUserCount" parameterType="java.lang.Long" resultType="java.lang.Long">
+    SELECT
+    COUNT(1)
+    from t_user_info
+    where open_id = #{openId,jdbcType=BIGINT}
+  </select>
+
+  <insert id="insertUserInfo" parameterType="com.weichuxing.model.UserInfo">
+    insert into t_user_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="accountStatus != null">
-        account_status = #{accountStatus,jdbcType=INTEGER},
+        account_status,
       </if>
-      <if test="addTime != null">
-        add_time = #{addTime,jdbcType=TIMESTAMP},
-      </if>
+        add_time,
       <if test="appVersion != null">
-        app_version = #{appVersion,jdbcType=VARCHAR},
+        app_version,
       </if>
       <if test="certificateNegative != null">
-        certificate_negative = #{certificateNegative,jdbcType=VARCHAR},
+        certificate_negative,
       </if>
       <if test="certificatePositive != null">
-        certificate_positive = #{certificatePositive,jdbcType=VARCHAR},
+        certificate_positive,
       </if>
       <if test="changeBatteryStatus != null">
-        change_battery_status = #{changeBatteryStatus,jdbcType=INTEGER},
+        change_battery_status,
       </if>
       <if test="cityNo != null">
-        city_no = #{cityNo,jdbcType=VARCHAR},
+        city_no,
       </if>
       <if test="creditScore != null">
-        credit_score = #{creditScore,jdbcType=INTEGER},
+        credit_score,
       </if>
       <if test="deposit != null">
-        deposit = #{deposit,jdbcType=DECIMAL},
+        deposit,
       </if>
       <if test="guesterState != null">
-        guester_state = #{guesterState,jdbcType=INTEGER},
+        guester_state,
       </if>
       <if test="idCardnum != null">
-        id_cardnum = #{idCardnum,jdbcType=VARCHAR},
+        id_cardnum,
       </if>
       <if test="integral != null">
-        integral = #{integral,jdbcType=INTEGER},
+        integral,
       </if>
       <if test="loginState != null">
-        login_state = #{loginState,jdbcType=INTEGER},
+        login_state,
       </if>
-      <if test="loginTime != null">
-        login_time = #{loginTime,jdbcType=TIMESTAMP},
-      </if>
+        login_time,
       <if test="mBorrowBicycle != null">
-        m_borrow_bicycle = #{mBorrowBicycle,jdbcType=INTEGER},
+        m_borrow_bicycle,
       </if>
       <if test="mBorrowBicycleDate != null">
-        m_borrow_bicycle_date = #{mBorrowBicycleDate,jdbcType=TIMESTAMP},
+        m_borrow_bicycle_date,
       </if>
       <if test="mPhoneSystemVersion != null">
-        m_phone_system_version = #{mPhoneSystemVersion,jdbcType=VARCHAR},
+        m_phone_system_version,
       </if>
       <if test="nationality != null">
-        nationality = #{nationality,jdbcType=VARCHAR},
+        nationality,
       </if>
       <if test="nickname != null">
-        nickname = #{nickname,jdbcType=VARCHAR},
+        nickname,
       </if>
       <if test="openDate != null">
-        open_date = #{openDate,jdbcType=TIMESTAMP},
+        open_date,
       </if>
       <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
+        phone,
       </if>
       <if test="picurl != null">
-        picurl = #{picurl,jdbcType=VARCHAR},
+        picurl,
       </if>
       <if test="realName != null">
-        real_name = #{realName,jdbcType=VARCHAR},
+        real_name,
       </if>
       <if test="statusChangeTime != null">
-        status_change_time = #{statusChangeTime,jdbcType=TIMESTAMP},
+        status_change_time,
       </if>
       <if test="userLevel != null">
-        user_level = #{userLevel,jdbcType=INTEGER},
+        user_level,
       </if>
       <if test="validateDate != null">
-        validate_date = #{validateDate,jdbcType=TIMESTAMP},
+        validate_date,
       </if>
       <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
+        create_by,
       </if>
-      <if test="createDate != null">
-        create_date = #{createDate,jdbcType=TIMESTAMP},
-      </if>
+        create_date,
       <if test="updateBy != null">
-        update_by = #{updateBy,jdbcType=VARCHAR},
+        update_by,
       </if>
-      <if test="updateDate != null">
-        update_date = #{updateDate,jdbcType=TIMESTAMP},
-      </if>
+        update_date,
       <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
+        remarks,
       </if>
       <if test="delFlag != null">
-        del_flag = #{delFlag,jdbcType=VARCHAR},
+        del_flag,
       </if>
       <if test="balance != null">
-        balance = #{balance,jdbcType=DECIMAL},
+        balance,
       </if>
       <if test="balanceFree != null">
-        balance_free = #{balanceFree,jdbcType=DECIMAL},
+        balance_free,
       </if>
       <if test="monthCardTime != null">
-        month_card_time = #{monthCardTime,jdbcType=TIMESTAMP},
+        month_card_time,
       </if>
       <if test="gender != null">
-        gender = #{gender,jdbcType=INTEGER},
+        gender,
       </if>
       <if test="luckyMoney != null">
-        lucky_money = #{luckyMoney,jdbcType=DECIMAL},
+        lucky_money,
       </if>
       <if test="age != null">
-        age = #{age,jdbcType=INTEGER},
+        age,
       </if>
       <if test="alipayAccount != null">
-        alipay_account = #{alipayAccount,jdbcType=VARCHAR},
+        alipay_account,
       </if>
       <if test="phoneProvince != null">
-        phone_province = #{phoneProvince,jdbcType=VARCHAR},
+        phone_province,
       </if>
       <if test="phoneCity != null">
-        phone_city = #{phoneCity,jdbcType=VARCHAR},
+        phone_city,
       </if>
       <if test="channel != null">
-        channel = #{channel,jdbcType=VARCHAR},
+        channel,
       </if>
       <if test="registerCity != null">
-        register_city = #{registerCity,jdbcType=VARCHAR},
+        register_city,
       </if>
       <if test="imei != null">
-        imei = #{imei,jdbcType=VARCHAR},
+        imei,
       </if>
       <if test="mac != null">
-        mac = #{mac,jdbcType=VARCHAR},
+        mac,
       </if>
       <if test="idfa != null">
-        idfa = #{idfa,jdbcType=VARCHAR},
+        idfa,
       </if>
-    </set>
-    where id = #{id,jdbcType=VARCHAR}
+      <if test="openid != null">
+        open_id,
+      </if>
+      <if test="depositFlag != null">
+        deposit_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="accountStatus != null">
+        #{accountStatus,jdbcType=INTEGER},
+      </if>
+         NOW(),
+      <if test="appVersion != null">
+        #{appVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="certificateNegative != null">
+        #{certificateNegative,jdbcType=VARCHAR},
+      </if>
+      <if test="certificatePositive != null">
+        #{certificatePositive,jdbcType=VARCHAR},
+      </if>
+      <if test="changeBatteryStatus != null">
+        #{changeBatteryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="cityNo != null">
+        #{cityNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creditScore != null">
+        #{creditScore,jdbcType=INTEGER},
+      </if>
+      <if test="deposit != null">
+        #{deposit,jdbcType=DECIMAL},
+      </if>
+      <if test="guesterState != null">
+        #{guesterState,jdbcType=INTEGER},
+      </if>
+      <if test="idCardnum != null">
+        #{idCardnum,jdbcType=VARCHAR},
+      </if>
+      <if test="integral != null">
+        #{integral,jdbcType=INTEGER},
+      </if>
+      <if test="loginState != null">
+        #{loginState,jdbcType=INTEGER},
+      </if>
+         NOW(),
+      <if test="mBorrowBicycle != null">
+        #{mBorrowBicycle,jdbcType=INTEGER},
+      </if>
+      <if test="mBorrowBicycleDate != null">
+        #{mBorrowBicycleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mPhoneSystemVersion != null">
+        #{mPhoneSystemVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null">
+        #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="openDate != null">
+        #{openDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="picurl != null">
+        #{picurl,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="statusChangeTime != null">
+        #{statusChangeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userLevel != null">
+        #{userLevel,jdbcType=INTEGER},
+      </if>
+      <if test="validateDate != null">
+        #{validateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+           NOW(),
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+            NOW(),
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        #{balance,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceFree != null">
+        #{balanceFree,jdbcType=DECIMAL},
+      </if>
+      <if test="monthCardTime != null">
+        #{monthCardTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="luckyMoney != null">
+        #{luckyMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="alipayAccount != null">
+        #{alipayAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneProvince != null">
+        #{phoneProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneCity != null">
+        #{phoneCity,jdbcType=VARCHAR},
+      </if>
+      <if test="channel != null">
+        #{channel,jdbcType=VARCHAR},
+      </if>
+      <if test="registerCity != null">
+        #{registerCity,jdbcType=VARCHAR},
+      </if>
+      <if test="imei != null">
+        #{imei,jdbcType=VARCHAR},
+      </if>
+      <if test="mac != null">
+        #{mac,jdbcType=VARCHAR},
+      </if>
+      <if test="idfa != null">
+        #{idfa,jdbcType=VARCHAR},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="depositFlag != null">
+        #{depositFlag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateUserInfoById" parameterType="com.weichuxing.model.UserInfo">
+     UPDATE t_user_info
+      SET
+       deposit_flag = #{depositFlag}
+       WHERE open_id = #{openid}
   </update>
 </mapper>

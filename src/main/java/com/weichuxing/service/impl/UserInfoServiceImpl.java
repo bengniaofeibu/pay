@@ -2,14 +2,18 @@ package com.weichuxing.service.impl;
 
 import com.weichuxing.annotation.SystemServerLog;
 import com.weichuxing.entity.WcxRequest.UserInfoRequest;
+import com.weichuxing.entity.WcxRequest.WcxUserRegisterInfoRequest;
 import com.weichuxing.entity.WcxResponse.UserInfoResponse;
 import com.weichuxing.mapper.UserInfoMapper;
 import com.weichuxing.model.UserInfo;
 import com.weichuxing.service.UserInfoService;
 import com.weichuxing.utils.common.EncrypUtil;
-import com.weichuxing.utils.common.Md5Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 
 @Service
@@ -17,6 +21,8 @@ public class UserInfoServiceImpl extends BaseServer implements UserInfoService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoServiceImpl.class);
 
     /**
      * x
@@ -61,5 +67,46 @@ public class UserInfoServiceImpl extends BaseServer implements UserInfoService {
             e.printStackTrace();
         }
         return userInfoResponse;
+    }
+
+    /**
+     * 操作微出行用户注册信息
+     *
+     * @param wcxUserRegisterInfo
+     */
+    @Override
+    @SystemServerLog(funcionExplain = "操作微出行用户注册信息")
+    public void notifyWcxUserRegisterInfo(WcxUserRegisterInfoRequest wcxUserRegisterInfo) {
+
+        try {
+
+            Long count = userInfoMapper.selectWcxUserCount(Long.valueOf(wcxUserRegisterInfo.getOpenid()));
+
+            String decryptKey = getDecryptKey(wcxUserRegisterInfo);
+//            String userName = EncrypUtil.decrypt(wcxUserRegisterInfo.getUserName(), decryptKey);
+//            String userMobile = EncrypUtil.decrypt(wcxUserRegisterInfo.getUserMobile(), decryptKey);
+
+            String userMobile = wcxUserRegisterInfo.getUserMobile();
+            String userName=wcxUserRegisterInfo.getUserName();
+
+            UserInfo userInfo = new UserInfo();
+            userInfo.setAccountStatus(wcxUserRegisterInfo.getRegistFlag());
+            userInfo.setDepositFlag(wcxUserRegisterInfo.getDepositFlag());
+            userInfo.setOpenid(wcxUserRegisterInfo.getOpenid());
+            userInfo.setRealName(userName);
+            userInfo.setPhone(userMobile);
+            userInfo.setIdCardnum(wcxUserRegisterInfo.getUseridHash());
+            userInfo.setDeposit(new BigDecimal(wcxUserRegisterInfo.getDepositFee()));
+
+            if (count.longValue()==0) {
+                LOGGER.info("记录微出行注册用户信息");
+                userInfoMapper.insertUserInfo(userInfo);
+            } else {
+                LOGGER.info("更新微出行注册用户信息");
+                userInfoMapper.updateUserInfoById(userInfo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

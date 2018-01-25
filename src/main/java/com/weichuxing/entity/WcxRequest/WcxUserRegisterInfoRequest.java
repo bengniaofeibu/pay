@@ -5,7 +5,7 @@ import java.util.Date;
 public class WcxUserRegisterInfoRequest extends BaseWcxRequest{
     private Long id;
 
-    private String openId;
+    private String openid;
 
     private String userName;
 
@@ -31,12 +31,13 @@ public class WcxUserRegisterInfoRequest extends BaseWcxRequest{
         this.id = id;
     }
 
-    public String getOpenId() {
-        return openId;
+
+    public String getOpenid() {
+        return openid;
     }
 
-    public void setOpenId(String openId) {
-        this.openId = openId == null ? null : openId.trim();
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 
     public String getUserName() {

@@ -1,5 +1,7 @@
 package com.weichuxing.model;
 
+import com.weichuxing.utils.common.BaseUtil;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -97,6 +99,15 @@ public class UserInfo {
     private String mac;
 
     private String idfa;
+
+    private String openid;
+
+    private Integer depositFlag;
+
+
+    public UserInfo() {
+        this.id= BaseUtil.getRandomUUID();
+    }
 
     public String getId() {
         return id;
@@ -472,5 +483,21 @@ public class UserInfo {
 
     public void setIdfa(String idfa) {
         this.idfa = idfa == null ? null : idfa.trim();
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public Integer getDepositFlag() {
+        return depositFlag;
+    }
+
+    public void setDepositFlag(Integer depositFlag) {
+        this.depositFlag = depositFlag;
     }
 }
