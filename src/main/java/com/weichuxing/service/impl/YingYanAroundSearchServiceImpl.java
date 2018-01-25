@@ -22,7 +22,7 @@ import java.util.*;
 @Service
 public class YingYanAroundSearchServiceImpl extends BaseServer implements YingYanAroundSearchService {
 
-    private static final SimpleDateFormat dateFomat=new SimpleDateFormat("yyyyMMddHHmmss");
+    private static final SimpleDateFormat DATEFOMAT=new SimpleDateFormat("yyyyMMddHHmmss");
 
 
     /**
@@ -70,7 +70,7 @@ public class YingYanAroundSearchServiceImpl extends BaseServer implements YingYa
                             tagEntityResponse.setTag_gps_lng(latest_location.getLongitude());
                             Date date=new Date();
                             date.setTime(Long.valueOf(latest_location.getLoc_time()));
-                            tagEntityResponse.setTag_uptime(dateFomat.format(date));
+                            tagEntityResponse.setTag_uptime(DATEFOMAT.format(date));
                             tag_list.add(tagEntityResponse);
                         }
                         aroundSignInfoResponse.setTag_list(tag_list);
