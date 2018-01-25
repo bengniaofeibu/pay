@@ -19,8 +19,6 @@ import java.math.BigDecimal;
 @Service
 public class UserInfoServiceImpl extends BaseServer implements UserInfoService {
 
-    @Autowired
-    private UserInfoMapper userInfoMapper;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoServiceImpl.class);
 
