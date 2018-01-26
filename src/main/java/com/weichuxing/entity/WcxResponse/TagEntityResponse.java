@@ -1,8 +1,7 @@
 package com.weichuxing.entity.WcxResponse;
 
-import com.weichuxing.entity.WcxRequest.BaseWcxRequest;
 
-public class TagEntityResponse extends BaseWcxRequest{
+public class TagEntityResponse extends BaseWcxResponse{
 
     /** 标记目录 **/
     private String tag_id;
