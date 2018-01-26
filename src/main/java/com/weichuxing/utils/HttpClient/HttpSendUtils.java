@@ -1,7 +1,8 @@
 package com.weichuxing.utils.HttpClient;
 
 
-import com.weichuxing.entity.YingYanAroundEntity.AroundTagInfoEntity;
+import com.weichuxing.entity.YingYanAroundEntity.AddressDetail;
+import com.weichuxing.entity.YingYanAroundEntity.CityInfo;
 import com.weichuxing.enums.EnumsService;
 import com.weichuxing.enums.WcxEnum;
 import com.weichuxing.utils.common.JSON;
@@ -19,6 +20,8 @@ public class HttpSendUtils {
 	private String url;
 
 	private static final String YING_YAN_AROUND_SEARCH_URL="http://yingyan.baidu.com/api/v3/entity/aroundsearch";
+
+	private static final String LOCATION_INFO_URL="https://api.map.baidu.com/location/ip";
 
 	private static final String AK="IK5AlGXoZ23tDAGjldRalicbhdpsrKwE";
 
@@ -47,6 +50,11 @@ public class HttpSendUtils {
 		return result;
 	}
 
+	/**
+	 * 查询鹰眼周边车辆信息
+	 * @param params
+	 * @return
+	 */
 	public static String sendYingYanAroundsearch(Map<String,Object> params){
 		params.put("ak",AK);
 		params.put("service_id",SERVICE_ID);
@@ -54,13 +62,19 @@ public class HttpSendUtils {
         return result;
 	}
 
-	public static void main(String[] args) {
-		Map<String,Object> map=new HashMap<>();
-		map.put("center","31.185034,121.37082");
-		map.put("radius",500);
-		String s = sendYingYanAroundsearch(map);
-		AroundTagInfoEntity aroundTagInfoEntity = JSON.parseObject(s, AroundTagInfoEntity.class);
-		System.out.println(aroundTagInfoEntity.getEntities());
+	/**
+	 * 查询所在坐标的城市信息
+	 * @return
+	 */
+	public static String SendMapCityInfo(){
+		Map<String,Object> params= new HashMap<>();
+		params.put("ak",AK);
+		return HttpRequestProxy.doGet(LOCATION_INFO_URL,params,getRecEncoding());
+	}
 
+	public static void main(String[] args) {
+		String s = SendMapCityInfo();
+		CityInfo cityInfo = JSON.parseObject(s , CityInfo.class);
+		System.out.println(JSON.toJSONString(cityInfo));
 	}
 }
