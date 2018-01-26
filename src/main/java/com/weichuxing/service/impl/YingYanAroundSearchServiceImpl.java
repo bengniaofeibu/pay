@@ -1,6 +1,5 @@
 package com.weichuxing.service.impl;
 
-import com.weichuxing.entity.WcxRequest.BaseWcxRequest;
 import com.weichuxing.entity.WcxRequest.UserAroundSignInfoRequest;
 import com.weichuxing.entity.WcxResponse.TagEntityResponse;
 import com.weichuxing.entity.WcxResponse.UserAroundSignInfoResponse;
@@ -12,12 +11,10 @@ import com.weichuxing.enums.WcxResultEnum;
 import com.weichuxing.exception.UserException.InvalidUserException;
 import com.weichuxing.exception.UserException.PointOrScopeNotLegalException;
 import com.weichuxing.exception.UserException.YingYanServerException;
-import com.weichuxing.mapper.WcxFenceInfoMapper;
 import com.weichuxing.model.WcxFenceInfo;
 import com.weichuxing.service.YingYanAroundSearchService;
 import com.weichuxing.utils.HttpClient.HttpSendUtils;
 import com.weichuxing.utils.common.JSON;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
