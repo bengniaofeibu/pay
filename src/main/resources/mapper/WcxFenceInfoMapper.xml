@@ -19,13 +19,12 @@
     <result column="area_name" jdbcType="VARCHAR" property="areaName" />
   </resultMap>
   <sql id="Base_Column_List">
-    longitude, latititude_longitude
+    longitude, latitude,update_date
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectPointByCityName" parameterType="java.lang.String" resultType="com.weichuxing.model.WcxFenceInfo">
     select 
     <include refid="Base_Column_List" />
     from t_electric_fance_info
-    WHERE area_name LIKE '上海市%'
-    where id = #{id,jdbcType=VARCHAR}
+    WHERE area_name LIKE CONCAT(#{areaName},'%')
   </select>
 </mapper>

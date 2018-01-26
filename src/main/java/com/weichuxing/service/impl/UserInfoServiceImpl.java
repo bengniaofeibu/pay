@@ -98,7 +98,7 @@ public class UserInfoServiceImpl extends BaseServer implements UserInfoService {
                     userInfo.setPhone(userMobile);
                     userInfo.setIdCardnum(wcxUserRegisterInfo.getUseridHash());
                     userInfo.setDeposit(new BigDecimal(wcxUserRegisterInfo.getDepositFee()));
-                    userInfo.setUserSource(1);
+                    userInfo.setUserSource(2);
                     userInfoMapper.insertUserInfo(userInfo);
                     wcxUserRegisterInfo.setUserId(userInfo.getId());
                     wcxUserRegisterInfoMapper.insertWcxUserInfo(wcxUserRegisterInfo);

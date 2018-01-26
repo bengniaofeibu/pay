@@ -3,6 +3,7 @@ package com.weichuxing.service.impl;
 import com.weichuxing.entity.WcxRequest.BaseWcxRequest;
 import com.weichuxing.entity.WcxRequest.UserInfoRequest;
 import com.weichuxing.mapper.UserInfoMapper;
+import com.weichuxing.mapper.WcxFenceInfoMapper;
 import com.weichuxing.mapper.WcxUserRegisterInfoMapper;
 import com.weichuxing.utils.common.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class BaseServer {
 
     @Autowired
     protected WcxUserRegisterInfoMapper wcxUserRegisterInfoMapper;
+
+    @Autowired
+    protected WcxFenceInfoMapper wcxFenceInfoMapper;
 
     /**
      * 生成解密的key

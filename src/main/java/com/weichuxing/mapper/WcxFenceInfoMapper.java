@@ -1,17 +1,15 @@
 package com.weichuxing.mapper;
 
 import com.weichuxing.model.WcxFenceInfo;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Component
+@Mapper
 public interface WcxFenceInfoMapper {
-    int deleteByPrimaryKey(String id);
 
-    int insert(WcxFenceInfo record);
+    List<WcxFenceInfo> selectPointByCityName(String areaName);
 
-    int insertSelective(WcxFenceInfo record);
-
-    WcxFenceInfo selectByPrimaryKey(String id);
-
-    int updateByPrimaryKeySelective(WcxFenceInfo record);
-
-    int updateByPrimaryKey(WcxFenceInfo record);
 }
