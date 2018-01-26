@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.weichuxing.mapper.WcxUserRegisterInfoMapper">
-  <resultMap id="BaseResultMap" type="com.weichuxing.entity.WcxRequest.WcxUserRegisterInfoRequest">
+  <resultMap id="BaseResultMap" type="com.weichuxing.model.WcxUserRegisterInfoRequest">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="open_id" jdbcType="VARCHAR" property="openid" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
@@ -25,7 +25,7 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
 
-  <insert id="insertWcxUserInfo" parameterType="com.weichuxing.entity.WcxRequest.WcxUserRegisterInfoRequest" keyProperty="id" useGeneratedKeys="true">
+  <insert id="insertWcxUserInfo" parameterType="com.weichuxing.model.WcxUserRegisterInfoRequest" keyProperty="id" useGeneratedKeys="true">
     insert into t_wcx_user_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="openid != null">
@@ -94,7 +94,7 @@
     where open_id = #{openid,jdbcType=BIGINT}
   </select>
 
-  <update id="updateUserInfoById" parameterType="com.weichuxing.entity.WcxRequest.WcxUserRegisterInfoRequest">
+  <update id="updateUserInfoById" parameterType="com.weichuxing.model.WcxUserRegisterInfoRequest">
     UPDATE t_wcx_user_info
     SET
     deposit_flag = #{depositFlag},
