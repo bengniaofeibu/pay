@@ -1,8 +1,10 @@
-package com.weichuxing.entity.WcxRequest;
+package com.weichuxing.model;
+
+import com.weichuxing.entity.WcxRequest.BaseWcxRequest;
 
 import java.util.Date;
 
-public class WcxUserRegisterInfoRequest extends BaseWcxRequest{
+public class WcxUserRegisterInfoRequest extends BaseWcxRequest {
     private Long id;
 
     private String openid;

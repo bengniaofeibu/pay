@@ -1,7 +1,7 @@
 package com.weichuxing.service;
 
 import com.weichuxing.entity.WcxRequest.UserInfoRequest;
-import com.weichuxing.entity.WcxRequest.WcxUserRegisterInfoRequest;
+import com.weichuxing.model.WcxUserRegisterInfoRequest;
 import com.weichuxing.entity.WcxResponse.UserInfoResponse;
 
 public interface UserInfoService {

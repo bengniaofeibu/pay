@@ -8,6 +8,7 @@ public enum WcxResultEnum {
     YINYAN_SEARCH_ERROR(1016,"鹰眼查询异常");
 
 
+
     private Integer code;
     private String msg;
 

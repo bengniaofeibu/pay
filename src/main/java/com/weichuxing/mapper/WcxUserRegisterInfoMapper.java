@@ -1,18 +1,18 @@
 package com.weichuxing.mapper;
 
+
 import com.weichuxing.entity.WcxRequest.WcxUserRegisterInfoRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
 
-@Mapper
 @Component
+@Mapper
 public interface WcxUserRegisterInfoMapper {
 
-    int insertWcxUserRegisterInfo(WcxUserRegisterInfoRequest record);
 
-    WcxUserRegisterInfoRequest selectWcxUserRegisterInfo(Long id);
+    int insertWcxUserInfo(WcxUserRegisterInfoRequest record);
 
-    Long selectWcxUserCount(Long id);
+    Long selectWcxUserCount(Long openid);
 
-    int updateByWcxUserId(WcxUserRegisterInfoRequest record);
+    int updateUserInfoById(WcxUserRegisterInfoRequest record);
 }

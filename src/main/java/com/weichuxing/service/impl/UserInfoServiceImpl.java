@@ -2,15 +2,13 @@ package com.weichuxing.service.impl;
 
 import com.weichuxing.annotation.SystemServerLog;
 import com.weichuxing.entity.WcxRequest.UserInfoRequest;
-import com.weichuxing.entity.WcxRequest.WcxUserRegisterInfoRequest;
+import com.weichuxing.model.WcxUserRegisterInfoRequest;
 import com.weichuxing.entity.WcxResponse.UserInfoResponse;
-import com.weichuxing.mapper.UserInfoMapper;
 import com.weichuxing.model.UserInfo;
 import com.weichuxing.service.UserInfoService;
 import com.weichuxing.utils.common.EncrypUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

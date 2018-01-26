@@ -6,7 +6,7 @@ import com.weichuxing.entity.WcxRequest.UserAroundSignInfoRequest;
 import com.weichuxing.entity.WcxRequest.UserInfoRequest;
 import com.weichuxing.entity.WcxResponse.UserAroundSignInfoResponse;
 import com.weichuxing.entity.WcxResponse.UserInfoResponse;
-import com.weichuxing.entity.WcxRequest.WcxUserRegisterInfoRequest;
+import com.weichuxing.model.WcxUserRegisterInfoRequest;
 import com.weichuxing.utils.WcxResult;
 import com.weichuxing.utils.ResultUtil;
 import org.slf4j.Logger;

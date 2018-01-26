@@ -22,4 +22,7 @@ public interface UserInfoMapper {
      */
     void insertUserInfo(UserInfo userInfo);
 
+
+    UserInfo selectById(String id);
+
 }

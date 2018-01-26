@@ -60,6 +60,13 @@
     WHERE phone=#{phone,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    account_status,m_borrow_bicycle
+    FROM t_user_info
+    WHERE id=#{id,jdbcType=VARCHAR}
+  </select>
+
 
   <insert id="insertUserInfo" parameterType="com.weichuxing.model.UserInfo">
     insert into t_user_info
