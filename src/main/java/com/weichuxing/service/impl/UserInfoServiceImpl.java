@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -74,11 +75,12 @@ public class UserInfoServiceImpl extends BaseServer implements UserInfoService {
      */
     @Override
     @SystemServerLog(funcionExplain = "操作微出行用户注册信息")
+    @Transactional(rollbackFor = Exception.class)
     public void notifyWcxUserRegisterInfo(WcxUserRegisterInfoRequest wcxUserRegisterInfo) {
 
         try {
 
-            Long count = userInfoMapper.selectWcxUserCount(Long.valueOf(wcxUserRegisterInfo.getOpenid()));
+            Long count = wcxUserRegisterInfoMapper.selectWcxUserCount(Long.valueOf(wcxUserRegisterInfo.getOpenid()));
 
             String decryptKey = getDecryptKey(wcxUserRegisterInfo);
 //            String userName = EncrypUtil.decrypt(wcxUserRegisterInfo.getUserName(), decryptKey);
@@ -87,21 +89,29 @@ public class UserInfoServiceImpl extends BaseServer implements UserInfoService {
             String userMobile = wcxUserRegisterInfo.getUserMobile();
             String userName=wcxUserRegisterInfo.getUserName();
 
-            UserInfo userInfo = new UserInfo();
-            userInfo.setAccountStatus(wcxUserRegisterInfo.getRegistFlag());
-            userInfo.setDepositFlag(wcxUserRegisterInfo.getDepositFlag());
-            userInfo.setOpenid(wcxUserRegisterInfo.getOpenid());
-            userInfo.setRealName(userName);
-            userInfo.setPhone(userMobile);
-            userInfo.setIdCardnum(wcxUserRegisterInfo.getUseridHash());
-            userInfo.setDeposit(new BigDecimal(wcxUserRegisterInfo.getDepositFee()));
-
             if (count.longValue()==0) {
                 LOGGER.info("记录微出行注册用户信息");
-                userInfoMapper.insertUserInfo(userInfo);
+                UserInfo info= userInfoMapper.selectByUserPhone(wcxUserRegisterInfo.getUserMobile());
+                if (info==null){
+                    //如果还没在车商平台注册过 现在在车商平台记录一条用户信息，在把刚刚插入的userId关联到微出行用户注册表中
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setAccountStatus(wcxUserRegisterInfo.getRegistFlag());
+                    userInfo.setRealName(userName);
+                    userInfo.setPhone(userMobile);
+                    userInfo.setIdCardnum(wcxUserRegisterInfo.getUseridHash());
+                    userInfo.setDeposit(new BigDecimal(wcxUserRegisterInfo.getDepositFee()));
+                    userInfo.setUserSource(1);
+                    userInfoMapper.insertUserInfo(userInfo);
+                    wcxUserRegisterInfo.setUserId(userInfo.getId());
+                    wcxUserRegisterInfoMapper.insertWcxUserInfo(wcxUserRegisterInfo);
+                }else {
+                    //已在车商注册过，只要在微出行关联表中记录车商userId
+                    wcxUserRegisterInfo.setUserId(info.getId());
+                    wcxUserRegisterInfoMapper.insertWcxUserInfo(wcxUserRegisterInfo);
+                }
             } else {
                 LOGGER.info("更新微出行注册用户信息");
-                userInfoMapper.updateUserInfoById(userInfo);
+                wcxUserRegisterInfoMapper.updateUserInfoById(wcxUserRegisterInfo);
             }
         } catch (Exception e) {
             e.printStackTrace();

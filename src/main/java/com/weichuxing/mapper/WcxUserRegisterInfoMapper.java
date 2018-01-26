@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public interface WcxUserRegisterInfoMapper {
 
-    int insertWcxUserInfo(WcxUserRegisterInfoRequest record);
+    int insertWcxUserRegisterInfo(WcxUserRegisterInfoRequest record);
 
-    Long selectWcxUserCount(Long openid);
+    WcxUserRegisterInfoRequest selectWcxUserRegisterInfo(Long id);
 
-    int updateUserInfoById(WcxUserRegisterInfoRequest record);
+    Long selectWcxUserCount(Long id);
+
+    int updateByWcxUserId(WcxUserRegisterInfoRequest record);
 }

@@ -80,7 +80,7 @@ public final class WcxServiceUtil {
      * @throws SignFailException
      * @throws IllegalAccessException
      */
-    private static Map<String, Object> generateSignMap(BaseWcxRequest baseWcxRequest,List<String> list) {
+    private static Map<String, Object> generateSignMap(BaseWcxRequest baseWcxRequest) {
         Map<String, Object> map = new HashMap<>();
         Class<? extends BaseWcxRequest> tClass = baseWcxRequest.getClass();
         try {
@@ -113,8 +113,8 @@ public final class WcxServiceUtil {
      *
      * @param baseWcxRequest
      */
-    public void verificationSign(BaseWcxRequest baseWcxRequest,List<String> list) {
-        String sign = generateSign(generateSignMap(baseWcxRequest,list));
+    public void verificationSign(BaseWcxRequest baseWcxRequest) {
+        String sign = generateSign(generateSignMap(baseWcxRequest));
         if (!sign.equals(baseWcxRequest.getSign())) {
             throw new SignFailException(WcxResultEnum.SIGN_FAIL);
         }
@@ -153,15 +153,14 @@ public final class WcxServiceUtil {
      * @return
      */
     public <T> T SendRequestToWcx(Map<String, Object> map, WcxEnum wcxEnum, Class<T> tClass) {
-        BASE_PARAM.putAll(map);
-        BASE_PARAM.put("sign", generateSign(map));
-        Map<String, Object> paramMap = getParamMapToEncoder(BASE_PARAM, true);
+        map.putAll(BASE_PARAM);
+        map.put("sign", generateSign(map));
+        Map<String, Object> paramMap = getParamMapToEncoder(map, true);
         String res = httpSendUtils.sendRequest(paramMap, wcxEnum);
         WcxResult wcxResult = JSON.parseObject(res, WcxResult.class);
         LOGGER.debug("返回结果 {}", res);
         return WcxResult.parseToObject(wcxResult.getData(), tClass);
     }
-
     public static void main(String[] args) {
     }
 }

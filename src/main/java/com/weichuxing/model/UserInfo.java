@@ -100,9 +100,7 @@ public class UserInfo {
 
     private String idfa;
 
-    private String openid;
-
-    private Integer depositFlag;
+    private Integer userSource;
 
 
     public UserInfo() {
@@ -485,19 +483,11 @@ public class UserInfo {
         this.idfa = idfa == null ? null : idfa.trim();
     }
 
-    public String getOpenid() {
-        return openid;
+    public Integer getUserSource() {
+        return userSource;
     }
 
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
-    public Integer getDepositFlag() {
-        return depositFlag;
-    }
-
-    public void setDepositFlag(Integer depositFlag) {
-        this.depositFlag = depositFlag;
+    public void setUserSource(Integer userSource) {
+        this.userSource = userSource;
     }
 }

@@ -34,7 +34,7 @@ public class YingYanAroundSearchServiceImpl extends BaseServer implements YingYa
     @Override
     public UserAroundSignInfoResponse queryAroundSignInfo(UserAroundSignInfoRequest userAroundSignInfoRequest) {
 
-        Long count = userInfoMapper.selectWcxUserCount(Long.valueOf(userAroundSignInfoRequest.getOpenid()));
+        Long count = wcxUserRegisterInfoMapper.selectWcxUserCount(Long.valueOf(userAroundSignInfoRequest.getOpenid()));
         if (count.longValue() == 0) {
             throw new InvalidUserException(WcxResultEnum.INVALID_USER);
         }
@@ -59,7 +59,8 @@ public class YingYanAroundSearchServiceImpl extends BaseServer implements YingYa
             //单车类型
             case 1:
                 if (aroundTagInfo.getStatus().equals(0)) {
-                    if (aroundTagInfo.getSize() > 0) {
+                    long len=aroundTagInfo.getSize();
+                    if (len > 0) {
                         List<AroundEntities> entities = aroundTagInfo.getEntities();
                         LatestLocation latest_location;
                         for (AroundEntities aroundEntities : entities) {
@@ -73,9 +74,10 @@ public class YingYanAroundSearchServiceImpl extends BaseServer implements YingYa
                             tagEntityResponse.setTag_uptime(DATEFOMAT.format(date));
                             tag_list.add(tagEntityResponse);
                         }
+                        aroundSignInfoResponse.setTags_num(len);
                         aroundSignInfoResponse.setTag_list(tag_list);
                     }else {
-                        aroundSignInfoResponse.setTags_num(0);
+                        aroundSignInfoResponse.setTags_num(0L);
                     }
                 }else {
                     throw  new YingYanServerException(WcxResultEnum.YINYAN_SEARCH_ERROR);
