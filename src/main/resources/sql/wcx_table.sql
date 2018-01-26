@@ -34,3 +34,9 @@ CREATE TABLE `t_wcx_user_info` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `i_open_id` (`open_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+
+
+
+ALTER TABLE `t_electric_fance_info`
+DROP INDEX `i_area_name`,
+ADD INDEX `i_area_name` (`area_name`) USING BTREE ;
