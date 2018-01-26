@@ -153,7 +153,7 @@ public final class WcxServiceUtil {
      * @return
      */
     public <T> T SendRequestToWcx(Map<String, Object> map, WcxEnum wcxEnum, Class<T> tClass) {
-        BASE_PARAM.putAll(map);
+        map.putAll(BASE_PARAM);
         BASE_PARAM.put("sign", generateSign(map));
         Map<String, Object> paramMap = getParamMapToEncoder(BASE_PARAM, true);
         String res = httpSendUtils.sendRequest(paramMap, wcxEnum);
