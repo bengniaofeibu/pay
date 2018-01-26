@@ -50,11 +50,12 @@
     <result column="imei" jdbcType="VARCHAR" property="imei" />
     <result column="mac" jdbcType="VARCHAR" property="mac" />
     <result column="idfa" jdbcType="VARCHAR" property="idfa" />
+    <result column="user_source" jdbcType="VARCHAR" property="userSource" />
   </resultMap>
 
   <select id="selectByUserPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT
-    account_status,deposit
+    id,account_status,deposit
     FROM t_user_info
     WHERE phone=#{phone,jdbcType=VARCHAR}
   </select>
@@ -196,6 +197,9 @@
       <if test="idfa != null">
         idfa,
       </if>
+      <if test="userSource != null">
+        user_source,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -330,6 +334,9 @@
       </if>
       <if test="idfa != null">
         #{idfa,jdbcType=VARCHAR},
+      </if>
+      <if test="userSource != null">
+        #{userSource,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

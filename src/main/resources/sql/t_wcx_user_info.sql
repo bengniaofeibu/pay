@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `t_wcx_user_info`;
 CREATE TABLE `t_wcx_user_info` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '唯一号',
   `open_id` varchar(64) NOT NULL DEFAULT '' COMMENT '微出行平台用户ID',
+  `user_id` varchar(64) NOT NULL DEFAULT '' COMMENT '车商平台用户ID',
   `user_name` varchar(64) NOT NULL DEFAULT '' COMMENT '用户姓名',
   `user_mobile` varchar(64) NOT NULL DEFAULT '' COMMENT '用户手机号',
   `userid_hash` varchar(64) NOT NULL DEFAULT '' COMMENT '用户身份证号',

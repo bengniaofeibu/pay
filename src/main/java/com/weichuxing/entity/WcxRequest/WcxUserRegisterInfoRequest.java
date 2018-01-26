@@ -7,6 +7,8 @@ public class WcxUserRegisterInfoRequest extends BaseWcxRequest{
 
     private String openid;
 
+    private String userId;
+
     private String userName;
 
     private String userMobile;
@@ -38,6 +40,14 @@ public class WcxUserRegisterInfoRequest extends BaseWcxRequest{
 
     public void setOpenid(String openid) {
         this.openid = openid;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {

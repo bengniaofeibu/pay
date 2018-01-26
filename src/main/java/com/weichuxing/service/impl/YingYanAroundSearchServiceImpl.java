@@ -34,7 +34,7 @@ public class YingYanAroundSearchServiceImpl extends BaseServer implements YingYa
     @Override
     public UserAroundSignInfoResponse queryAroundSignInfo(UserAroundSignInfoRequest userAroundSignInfoRequest) {
 
-        Long count = userInfoMapper.selectWcxUserCount(Long.valueOf(userAroundSignInfoRequest.getOpenid()));
+        Long count = wcxUserRegisterInfoMapper.selectWcxUserCount(Long.valueOf(userAroundSignInfoRequest.getOpenid()));
         if (count.longValue() == 0) {
             throw new InvalidUserException(WcxResultEnum.INVALID_USER);
         }

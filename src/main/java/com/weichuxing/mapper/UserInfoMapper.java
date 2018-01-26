@@ -17,22 +17,9 @@ public interface UserInfoMapper {
     UserInfo selectByUserPhone(String phone);
 
     /**
-     * 查询用户是否存在
-     * @param id
-     * @return
-     */
-    Long selectWcxUserCount(Long id);
-
-    /**
      * 记录微出行注册用户
      * @param userInfo
      */
     void insertUserInfo(UserInfo userInfo);
 
-
-    /**
-     * 更新用户状态
-     * @param userInfo
-     */
-    void updateUserInfoById(UserInfo userInfo);
 }

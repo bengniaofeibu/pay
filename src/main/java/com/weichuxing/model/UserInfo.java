@@ -100,6 +100,8 @@ public class UserInfo {
 
     private String idfa;
 
+    private Integer userSource;
+
 
     public UserInfo() {
         this.id= BaseUtil.getRandomUUID();
@@ -481,4 +483,11 @@ public class UserInfo {
         this.idfa = idfa == null ? null : idfa.trim();
     }
 
+    public Integer getUserSource() {
+        return userSource;
+    }
+
+    public void setUserSource(Integer userSource) {
+        this.userSource = userSource;
+    }
 }

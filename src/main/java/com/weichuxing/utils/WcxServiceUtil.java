@@ -80,7 +80,7 @@ public final class WcxServiceUtil {
      * @throws SignFailException
      * @throws IllegalAccessException
      */
-    private static Map<String, Object> generateSignMap(BaseWcxRequest baseWcxRequest,List<String> list) {
+    private static Map<String, Object> generateSignMap(BaseWcxRequest baseWcxRequest) {
         Map<String, Object> map = new HashMap<>();
         Class<? extends BaseWcxRequest> tClass = baseWcxRequest.getClass();
         try {
@@ -113,8 +113,8 @@ public final class WcxServiceUtil {
      *
      * @param baseWcxRequest
      */
-    public void verificationSign(BaseWcxRequest baseWcxRequest,List<String> list) {
-        String sign = generateSign(generateSignMap(baseWcxRequest,list));
+    public void verificationSign(BaseWcxRequest baseWcxRequest) {
+        String sign = generateSign(generateSignMap(baseWcxRequest));
         if (!sign.equals(baseWcxRequest.getSign())) {
             throw new SignFailException(WcxResultEnum.SIGN_FAIL);
         }
@@ -161,7 +161,6 @@ public final class WcxServiceUtil {
         LOGGER.debug("返回结果 {}", res);
         return WcxResult.parseToObject(wcxResult.getData(), tClass);
     }
-
     public static void main(String[] args) {
     }
 }

@@ -22,8 +22,8 @@ public abstract class BaseController {
      * 验证签名
      * @param baseWcxRequest
      */
-      private   void verificationSign(BaseWcxRequest baseWcxRequest, List<String> list){
-          wcxServiceUtil.verificationSign(baseWcxRequest,list);
+      private   void verificationSign(BaseWcxRequest baseWcxRequest){
+          wcxServiceUtil.verificationSign(baseWcxRequest);
       }
 
     /**
@@ -41,13 +41,12 @@ public abstract class BaseController {
      * 验证签名和参数进行解码
      * @param baseWcxRequest
      * @param tClass
-     * @param list
      * @param <T>
      * @return
      */
-      protected <T> T verificationSignAndDecode(BaseWcxRequest baseWcxRequest,Class<T> tClass, List<String> list){
+      protected <T> T verificationSignAndDecode(BaseWcxRequest baseWcxRequest,Class<T> tClass){
           //验证签名
-          verificationSign(baseWcxRequest,list);
+          verificationSign(baseWcxRequest);
          return decodeParam(baseWcxRequest,tClass);
       }
 }
