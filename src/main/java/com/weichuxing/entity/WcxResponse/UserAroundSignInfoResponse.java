@@ -7,16 +7,16 @@ import java.util.List;
 public class UserAroundSignInfoResponse extends BaseWcxRequest {
 
     /** 标记结构 **/
-    private Integer tags_num;
+    private Long tags_num;
 
     /** 标记列表 **/
     private List<TagEntityResponse> tag_list;
 
-    public Integer getTags_num() {
+    public Long getTags_num() {
         return tags_num;
     }
 
-    public void setTags_num(Integer tags_num) {
+    public void setTags_num(Long tags_num) {
         this.tags_num = tags_num;
     }
 

@@ -2,6 +2,7 @@ package com.weichuxing.controller;
 
 import com.weichuxing.entity.WcxRequest.BaseWcxRequest;
 import com.weichuxing.service.UserInfoService;
+import com.weichuxing.service.YingYanAroundSearchService;
 import com.weichuxing.utils.WcxServiceUtil;
 import com.weichuxing.utils.common.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ public abstract class BaseController {
 
       @Autowired
       protected UserInfoService userInfoService;
+
+
+      @Autowired
+      protected YingYanAroundSearchService yingYanAroundSearchService;
 
      /**
      * 验证签名
