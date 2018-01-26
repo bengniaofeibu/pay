@@ -50,8 +50,6 @@
     <result column="imei" jdbcType="VARCHAR" property="imei" />
     <result column="mac" jdbcType="VARCHAR" property="mac" />
     <result column="idfa" jdbcType="VARCHAR" property="idfa" />
-    <result column="open_id" jdbcType="VARCHAR" property="openid" />
-    <result column="deposit_flag" jdbcType="INTEGER" property="depositFlag" />
   </resultMap>
 
   <select id="selectByUserPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -61,12 +59,6 @@
     WHERE phone=#{phone,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectWcxUserCount" parameterType="java.lang.Long" resultType="java.lang.Long">
-    SELECT
-    COUNT(1)
-    from t_user_info
-    where open_id = #{openId,jdbcType=BIGINT}
-  </select>
 
   <insert id="insertUserInfo" parameterType="com.weichuxing.model.UserInfo">
     insert into t_user_info
@@ -204,12 +196,6 @@
       <if test="idfa != null">
         idfa,
       </if>
-      <if test="openid != null">
-        open_id,
-      </if>
-      <if test="depositFlag != null">
-        deposit_flag,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -345,19 +331,6 @@
       <if test="idfa != null">
         #{idfa,jdbcType=VARCHAR},
       </if>
-      <if test="openid != null">
-        #{openid,jdbcType=VARCHAR},
-      </if>
-      <if test="depositFlag != null">
-        #{depositFlag,jdbcType=INTEGER},
-      </if>
     </trim>
   </insert>
-
-  <update id="updateUserInfoById" parameterType="com.weichuxing.model.UserInfo">
-     UPDATE t_user_info
-      SET
-       deposit_flag = #{depositFlag}
-       WHERE open_id = #{openid}
-  </update>
 </mapper>
