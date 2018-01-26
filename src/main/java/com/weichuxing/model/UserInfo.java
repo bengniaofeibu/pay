@@ -100,10 +100,6 @@ public class UserInfo {
 
     private String idfa;
 
-    private String openid;
-
-    private Integer depositFlag;
-
 
     public UserInfo() {
         this.id= BaseUtil.getRandomUUID();
@@ -485,19 +481,4 @@ public class UserInfo {
         this.idfa = idfa == null ? null : idfa.trim();
     }
 
-    public String getOpenid() {
-        return openid;
-    }
-
-    public void setOpenid(String openid) {
-        this.openid = openid;
-    }
-
-    public Integer getDepositFlag() {
-        return depositFlag;
-    }
-
-    public void setDepositFlag(Integer depositFlag) {
-        this.depositFlag = depositFlag;
-    }
 }
