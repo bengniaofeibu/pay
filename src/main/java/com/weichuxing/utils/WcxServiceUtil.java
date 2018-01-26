@@ -23,7 +23,7 @@ public final class WcxServiceUtil {
 
 
     // 运营平台 1：微信  2 ：QQ
-    private static int OPERATEPLATFORM=1;
+    private static int OPERATEPLATFORM = 1;
 
     /**
      * 版本号
@@ -49,13 +49,15 @@ public final class WcxServiceUtil {
     /**
      * 腾讯财付通商户号(可能为手Q支付商户号)
      **/
-    private static final String QQ_SP_ID="";
+    private static final String QQ_SP_ID = "";
 
-    private static final String QQ_KEY="";
+    private static final String QQ_KEY = "";
+
+    private static String SP_ID = "";
 
     private static final Map<String, Object> BASE_PARAM = new HashMap<>();
 
-    private static final List<String> NOT_SIGN_VALUE=Arrays.asList("sign","key");
+    private static final List<String> NOT_SIGN_VALUE = Arrays.asList("sign", "key");
 
 
     @Autowired
@@ -64,11 +66,12 @@ public final class WcxServiceUtil {
     static {
         BASE_PARAM.put("version", VERSION);
         BASE_PARAM.put("nonce_str", NONCE_STR);
-        if(isPlatform()){
-            BASE_PARAM.put("sp_id", WX_SP_ID);
-        }else {
-            BASE_PARAM.put("sp_id", QQ_SP_ID);
+        if (OPERATEPLATFORM == 1) {
+            SP_ID = WX_SP_ID;
+        } else {
+            SP_ID = QQ_SP_ID;
         }
+        BASE_PARAM.put("sp_id", SP_ID);
     }
 
 
@@ -82,12 +85,22 @@ public final class WcxServiceUtil {
         if (!valueMap.containsKey(WX_SP_ID)) {
             valueMap.putAll(BASE_PARAM);
         }
+
+        final boolean isPlatform = isPlatform(valueMap);
+
+        if (isPlatform) {
+            valueMap.put("sp_id", WX_SP_ID);
+        } else {
+            valueMap.put("sp_id", QQ_SP_ID);
+        }
+
         //格式话签名参数
         String params = RequestValueUtils.formatParameters(valueMap, false);
         StringBuffer buffer = new StringBuffer(params);
-        if (isPlatform()){
+
+        if (isPlatform) {
             buffer.append("&").append("key").append("=").append(WX_KEY);
-        }else {
+        } else {
             buffer.append("&").append("key").append("=").append(QQ_KEY);
         }
         return Md5Util.MD5(buffer.toString());
@@ -107,20 +120,20 @@ public final class WcxServiceUtil {
         try {
             for (Field field : tClass.getDeclaredFields()) {
                 field.setAccessible(true);
-                Object o =field.get(baseWcxRequest);
-                if (o!=null){
+                Object o = field.get(baseWcxRequest);
+                if (o != null) {
                     map.put(field.getName(), o);
                 }
             }
 
             Class<?> superclass = tClass.getSuperclass();
             for (Field field : superclass.getDeclaredFields()) {
-                if (!NOT_SIGN_VALUE.contains(field.getName())){
+                if (!NOT_SIGN_VALUE.contains(field.getName())) {
                     field.setAccessible(true);
-                   Object o = field.get(baseWcxRequest);
-                   if (o!=null){
-                       map.put(field.getName(), o);
-                   }
+                    Object o = field.get(baseWcxRequest);
+                    if (o != null) {
+                        map.put(field.getName(), o);
+                    }
                 }
             }
         } catch (IllegalAccessException e) {
@@ -183,8 +196,9 @@ public final class WcxServiceUtil {
         return WcxResult.parseToObject(wcxResult.getData(), tClass);
     }
 
-    private static boolean isPlatform(){
-        return OPERATEPLATFORM==1;
+    //判断是否哪个平台 微信：true  QQ ：false
+    private static boolean isPlatform(Map<String, Object> map) {
+        return WX_SP_ID.equals(map.get("sp_id"));
     }
 
     public static void main(String[] args) {
