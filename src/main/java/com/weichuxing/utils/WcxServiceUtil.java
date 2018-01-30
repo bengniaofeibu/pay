@@ -193,12 +193,25 @@ public final class WcxServiceUtil {
         map.put("sign", generateSign(map));
         Map<String, Object> paramMap = getParamMapToEncoder(map, true);
         String res = httpSendUtils.sendRequest(paramMap, wcxEnum);
-        WcxResult wcxResult = JSON.parseObject(res, WcxResult.class);
         LOGGER.debug("返回结果 {}", res);
+        return (res==null || res.equals(""))?null:getResponseToObject(res,tClass);
+    }
+
+    /**
+     * 把放回值转成对应的实体bean
+     * @param result
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    private <T> T getResponseToObject(String result,Class<T> tClass){
+        WcxResult wcxResult = JSON.parseObject(result, WcxResult.class);
         return WcxResult.parseToObject(wcxResult.getData(), tClass);
     }
 
+
     //判断是否哪个平台 微信：true  QQ ：false
+
     private static boolean isPlatform(Map<String, Object> map) {
         return WX_SP_ID.equals(map.get("sp_id"));
     }
