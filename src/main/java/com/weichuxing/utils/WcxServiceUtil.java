@@ -85,7 +85,7 @@ public final class WcxServiceUtil {
      */
     private static String generateSign(Map<String, Object> valueMap) {
 
-        if (!valueMap.containsKey(WX_SP_ID)) {
+        if (!valueMap.containsKey(SP_ID)) {
             valueMap.putAll(BASE_PARAM);
         }
 
