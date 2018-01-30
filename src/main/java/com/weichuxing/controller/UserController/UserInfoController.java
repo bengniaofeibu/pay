@@ -35,7 +35,7 @@ public class UserInfoController extends BaseController {
     @SystemControllerLog(funcionExplain = "进入查询用户周边标记控制层")
     @GetMapping(value = "/vcx_fetch_tags_around.fcgi")
     public WcxResult fetchAroundTags(UserAroundSignInfoRequest userAroundSignInfoRequest){
-//            UserAroundSignInfoRequest userAroundSignInfo = verificationSignAndDecode(userAroundSignInfoRequest, UserAroundSignInfoRequest.class);
+//            WcxFeedBackRequest userAroundSignInfo = verificationSignAndDecode(userAroundSignInfoRequest, WcxFeedBackRequest.class);
         UserAroundSignInfoResponse userAroundSignInfoResponse =  yingYanAroundSearchService.queryAroundSignInfo(userAroundSignInfoRequest);
         return ResultUtil.success(userAroundSignInfoResponse);
 

@@ -182,7 +182,6 @@ public final class WcxServiceUtil {
 
     /**
      * 请求微出行接口公共请求方式
-     *
      * @param map
      * @param wcxEnum
      * @param tClass
