@@ -14,12 +14,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
 public final class WcxServiceUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WcxServiceUtil.class);
+
+    private static final SimpleDateFormat DATA_FOMAT=new SimpleDateFormat("yyyy-MM-dd");
 
 
     // 运营平台 1：微信  2 ：QQ
@@ -82,7 +85,7 @@ public final class WcxServiceUtil {
      */
     private static String generateSign(Map<String, Object> valueMap) {
 
-        if (!valueMap.containsKey(WX_SP_ID)) {
+        if (!valueMap.containsKey(SP_ID)) {
             valueMap.putAll(BASE_PARAM);
         }
 
