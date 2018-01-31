@@ -347,4 +347,9 @@
       </if>
     </trim>
   </insert>
+  <update id="updateBorrowBicycleById" parameterType="com.weichuxing.model.UserInfo">
+    update t_user_info
+    set m_borrow_bicycle = #{mBorrowBicycle,jdbcType=INTEGER},
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>

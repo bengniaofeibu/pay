@@ -1,13 +1,13 @@
 package com.weichuxing.controller;
 
+import com.weichuxing.entity.LockRequest.BaseLockRequest;
+import com.weichuxing.entity.LockRequest.OpenLockCallbackRequest;
 import com.weichuxing.entity.WcxRequest.BaseWcxRequest;
-import com.weichuxing.service.UserInfoService;
-import com.weichuxing.service.YingYanAroundSearchService;
+import com.weichuxing.service.*;
 import com.weichuxing.utils.WcxServiceUtil;
 import com.weichuxing.utils.common.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -19,9 +19,20 @@ public abstract class BaseController {
       @Autowired
       protected UserInfoService userInfoService;
 
-
       @Autowired
       protected YingYanAroundSearchService yingYanAroundSearchService;
+
+      @Autowired
+      protected ScaveningUnlockService scaveningUnlockService;
+
+      @Autowired
+      protected ConfirmUsingOrderService confirmUsingOrderService;
+
+      @Autowired
+      protected ReportBikeFinishService reportBikeFinishService;
+
+      @Autowired
+      protected LockCallbackService lockCallbackService;
 
      /**
      * 验证签名
@@ -53,5 +64,11 @@ public abstract class BaseController {
           //验证签名
           verificationSign(baseWcxRequest);
          return decodeParam(baseWcxRequest,tClass);
+      }
+
+      protected <T> T decodeLock(BaseLockRequest baseLockRequest, Class<T> tClass){
+          Map<String,Object> map = JSON.parseObject(JSON.toJSONString(baseLockRequest), Map.class);
+          Map<String, Object> decode = WcxServiceUtil.getParamMapToEncoder(map, false);
+          return JSON.parseObject(JSON.toJSONString(decode),tClass);
       }
 }

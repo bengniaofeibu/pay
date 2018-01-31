@@ -25,4 +25,6 @@ public interface UserInfoMapper {
 
     UserInfo selectById(String id);
 
+    int updateBorrowBicycleById(UserInfo userInfo);
+
 }
