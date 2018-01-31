@@ -22,7 +22,7 @@ public class BaseUtil {
      */
     public static String getRandomUUID(){
         StringBuffer stringBuffer=new StringBuffer(UUID.randomUUID().toString());
-       return replaceString(stringBuffer.toString(),"-","");
+       return replaceString(stringBuffer.toString(),"-","").substring(0,16);
     }
 
     /**

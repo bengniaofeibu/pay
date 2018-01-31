@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class AmountInfoController extends BaseController{
 
-      @Autowired
+      @Resource(name = "amountInfoService")
       private AmountInfoService amountInfoService;
 
       @Autowired

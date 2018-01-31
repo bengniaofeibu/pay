@@ -16,8 +16,7 @@ import java.util.Map;
 public class HttpSendUtils {
 	private static String recEncoding = "UTF-8";
 
-	@Value("${wcx.serviceUrl}")
-	private String url;
+	private static String url="https://test.wcx.qq.com/fcgi-bin/";
 
 	private static final String YING_YAN_AROUND_SEARCH_URL="http://yingyan.baidu.com/api/v3/entity/aroundsearch";
 
@@ -33,7 +32,7 @@ public class HttpSendUtils {
 
 
 	//调用微出行公共请求方法
-	public String  sendRequest(Map<String,Object> params, WcxEnum wcxEnum){
+	public static String  sendRequest(Map<String,Object> params, WcxEnum wcxEnum){
 		String result;
 		StringBuffer sb=new StringBuffer(url);
 		String url=sb.append(wcxEnum.getReqUrl()).toString();

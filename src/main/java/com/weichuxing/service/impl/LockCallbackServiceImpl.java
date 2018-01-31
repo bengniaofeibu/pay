@@ -6,12 +6,14 @@ import com.weichuxing.entity.LockRequest.OpenLockCallbackRequest;
 import com.weichuxing.enums.WcxEnum;
 import com.weichuxing.service.LockCallbackService;
 import com.weichuxing.utils.WcxResult;
+import com.weichuxing.utils.WcxServiceUtil;
 import com.weichuxing.utils.common.CommonUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import java.util.Map;
 public class LockCallbackServiceImpl extends BaseServer implements LockCallbackService{
 
     private static final Logger LOGGER= LoggerFactory.getLogger(LockCallbackServiceImpl.class);
+
 
     @Override
     @SystemServerLog(funcionExplain = "开锁回调")
@@ -34,7 +37,7 @@ public class LockCallbackServiceImpl extends BaseServer implements LockCallbackS
         lockMap.put("bike_status",lockCallbackRequest.getBike_status());
         lockMap.put("timestamp", CommonUtils.getCurrentTimeFormat("yyyyMMddHHmmss"));
 
-        WcxResult wcxResult = wcxServiceUtil.SendRequestToWcx(lockMap, WcxEnum.OPEN_LOCK_CALLBACK, WcxResult.class);
+        WcxResult wcxResult = WcxServiceUtil.SendRequestToWcx(lockMap, WcxEnum.OPEN_LOCK_CALLBACK, WcxResult.class);
         JSONObject jsonObject = new JSONObject(wcxResult.getData());
         String orderStatus;
         switch (jsonObject.get("order_status").toString()){
@@ -80,7 +83,7 @@ public class LockCallbackServiceImpl extends BaseServer implements LockCallbackS
         lockMap.put("indeed_fee",0);
         lockMap.put("charging_fee",0);
 
-        WcxResult wcxResult = wcxServiceUtil.SendRequestToWcx(lockMap, WcxEnum.CLOSE_LOCK_CALLBACK, WcxResult.class);
+        WcxResult wcxResult = WcxServiceUtil.SendRequestToWcx(lockMap, WcxEnum.CLOSE_LOCK_CALLBACK, WcxResult.class);
         JSONObject jsonObject = new JSONObject(wcxResult.getData());
         String orderStatus;
         switch (jsonObject.get("order_status").toString()){

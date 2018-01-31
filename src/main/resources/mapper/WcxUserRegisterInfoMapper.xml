@@ -11,7 +11,7 @@
     <result column="regist_flag" jdbcType="INTEGER" property="registFlag" />
     <result column="deposit_flag" jdbcType="INTEGER" property="depositFlag" />
     <result column="deposit_fee" jdbcType="BIGINT" property="depositFee" />
-    <result column="transaction_id" jdbcType="varchar" property="transactionId" />
+    <result column="transaction_id" jdbcType="VARCHAR" property="transactionId" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -19,7 +19,7 @@
    user_id, user_mobile, userid_hash, regist_flag, deposit_flag,
     deposit_fee,transaction_id
   </sql>
-  <select id="selectByOpenId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_wcx_user_info
@@ -93,13 +93,6 @@
       </if>
     </trim>
   </insert>
-
-  <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
-    SELECT
-    user_id
-    FROM t_wcx_user_info
-    WHERE open_id=#{openid,jdbcType=VARCHAR}
-  </select>
 
   <select id="selectWcxUserCount" parameterType="java.lang.Long" resultType="java.lang.Long">
     SELECT

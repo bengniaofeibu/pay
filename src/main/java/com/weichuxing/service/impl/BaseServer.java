@@ -9,12 +9,16 @@ import com.weichuxing.utils.WcxServiceUtil;
 import com.weichuxing.utils.common.Md5Util;
 import com.weichuxing.utils.common.RSAUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Random;
 
+@Component
 public class BaseServer {
 
     @Autowired
@@ -36,7 +40,8 @@ public class BaseServer {
     protected TransRecordInfoMapper transRecordInfoMapper;
 
     @Autowired
-    protected WcxServiceUtil wcxServiceUtil;
+    protected TransRecordAmountMapper aMapper;
+
     /**
      * 生成解密的key
      * key=取中间16位MD5(用财付通商户号+nonce_str)
@@ -74,7 +79,7 @@ public class BaseServer {
      * @throws InvalidKeySpecException
      * @throws NoSuchAlgorithmException
      */
-    public  String rsaEncrypt(String data,String key) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static String rsaEncrypt(String data,String key) throws InvalidKeySpecException, NoSuchAlgorithmException {
         RSAPrivateKey privateKey=  RSAUtils.getPrivateKey(key);
       return   RSAUtils.privateEncrypt(data,privateKey);
     }

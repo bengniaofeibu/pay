@@ -4,17 +4,19 @@ import com.weichuxing.enums.WcxEnum;
 import com.weichuxing.model.WcxUserRegisterInfoRequest;
 import com.weichuxing.service.DepositApplyService;
 import com.weichuxing.utils.WcxResult;
+import com.weichuxing.utils.WcxServiceUtil;
 import com.weichuxing.utils.common.EncrypUtil;
 import com.weichuxing.utils.common.Md5Util;
 import com.weichuxing.utils.common.RequestValueUtils;
 import org.springframework.stereotype.Service;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
 public class DepositApplyServiceImpl extends BaseServer implements DepositApplyService {
+
+
     /**
      *申请押金退回
      * @param openid
@@ -34,10 +36,10 @@ public class DepositApplyServiceImpl extends BaseServer implements DepositApplyS
         String reqParam = RequestValueUtils.formatParameters(reqMap, false);
 
         Map<String,Object> reqInfoMap=new HashMap<>();
-
+        String reqInfo =EncrypUtil.encrypt(reqParam,WcxServiceUtil.NONCE_STR);
         reqInfoMap.put("transaction_id",wcxUserRegisterInfo.getTransactionId());
-        reqInfoMap.put("req_info", EncrypUtil.encrypt(reqParam,wcxUserRegisterInfo.getNonce_str()));
+        reqInfoMap.put("req_info", reqInfo);
 
-        return  wcxServiceUtil.SendRequestToWcx(reqInfoMap, WcxEnum.RET_DEPOSIT_APPLY,WcxResult.class);
+        return  WcxServiceUtil.SendRequestToWcx(reqInfoMap, WcxEnum.RET_DEPOSIT_APPLY,WcxResult.class);
     }
 }

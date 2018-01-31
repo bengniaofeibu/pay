@@ -7,14 +7,13 @@ import com.weichuxing.service.*;
 import com.weichuxing.utils.WcxServiceUtil;
 import com.weichuxing.utils.common.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Map;
 
 
 public abstract class BaseController {
 
-      @Autowired
-      private  WcxServiceUtil wcxServiceUtil;
 
       @Autowired
       protected UserInfoService userInfoService;
@@ -39,7 +38,7 @@ public abstract class BaseController {
      * @param baseWcxRequest
      */
       private   void verificationSign(BaseWcxRequest baseWcxRequest){
-          wcxServiceUtil.verificationSign(baseWcxRequest);
+          WcxServiceUtil.verificationSign(baseWcxRequest);
       }
 
     /**

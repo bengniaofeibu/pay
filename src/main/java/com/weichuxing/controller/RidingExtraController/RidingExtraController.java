@@ -27,9 +27,6 @@ public class RidingExtraController extends BaseController {
     private static final Logger LOGGER= LoggerFactory.getLogger(RidingExtraController.class);
 
     @Resource
-    private WcxServiceUtil wcxServiceUtil;
-
-    @Resource
     private RidingExtraService ridingExtraService;
 
     @SystemControllerLog(funcionExplain = "查询指定骑行订单")
@@ -37,7 +34,7 @@ public class RidingExtraController extends BaseController {
     public WcxResult queryTransRecordById(@PathVariable String order_id) throws InvalidKeySpecException, NoSuchAlgorithmException {
             Map<String,Object> param = new HashMap<>();
             param.put("order_id",order_id);
-            WcxTransRecordInfo wcxTransRecordInfo = wcxServiceUtil.SendRequestToWcx(param, WcxEnum.VERIFY_USER_INFO,WcxTransRecordInfo.class);
+            WcxTransRecordInfo wcxTransRecordInfo = WcxServiceUtil.SendRequestToWcx(param, WcxEnum.VERIFY_USER_INFO,WcxTransRecordInfo.class);
         return ResultUtil.success(wcxTransRecordInfo);
     }
 

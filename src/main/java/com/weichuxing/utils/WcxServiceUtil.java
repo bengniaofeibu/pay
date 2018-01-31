@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -39,7 +40,7 @@ public final class WcxServiceUtil {
     /**
      * 随机串
      **/
-    private static final String NONCE_STR = BaseUtil.getRandomUUID();
+    public static final String NONCE_STR = BaseUtil.getRandomUUID();
 
     /**
      * 腾讯财付通商户号(微信支付商户号)
@@ -65,12 +66,6 @@ public final class WcxServiceUtil {
 
     private static final List<String> NOT_SIGN_VALUE = Arrays.asList("sign", "key");
 
-
-    @Autowired
-    private HttpSendUtils httpSendUtils;
-
-    @Autowired
-    private BaseServer baseServer;
 
     static {
         BASE_PARAM.put("version", VERSION);
@@ -156,7 +151,7 @@ public final class WcxServiceUtil {
      *
      * @param baseWcxRequest
      */
-    public void verificationSign(BaseWcxRequest baseWcxRequest) {
+    public static void verificationSign(BaseWcxRequest baseWcxRequest) {
         String sign = generateSign(generateSignMap(baseWcxRequest));
         if (!sign.equals(baseWcxRequest.getSign())) {
             throw new SignFailException(WcxResultEnum.SIGN_FAIL);
@@ -198,15 +193,15 @@ public final class WcxServiceUtil {
      * @param <T>
      * @return
      */
-    public <T> T SendRequestToWcx(Map<String, Object> map, WcxEnum wcxEnum, Class<T> tClass) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static  <T> T SendRequestToWcx(Map<String, Object> map, WcxEnum wcxEnum, Class<T> tClass) throws InvalidKeySpecException, NoSuchAlgorithmException {
         map.putAll(BASE_PARAM);
         //如果参数包含退押金的订单号，使用加密的nonce_str参数进行传输
-        if (map.containsKey("out_refund_no")){
-           map.put("nonce_str",baseServer.rsaEncrypt(map.get("nonce_str").toString(), RSAUtils.PRIVATE_KEY));
+        if (map.containsKey("req_info")){
+           map.put("nonce_str",BaseServer.rsaEncrypt(map.get("nonce_str").toString(), RSAUtils.PRIVATE_KEY));
         }
         map.put("sign", generateSign(map));
         Map<String, Object> paramMap = getParamMapToEncoder(map, true);
-        String res = httpSendUtils.sendRequest(paramMap, wcxEnum);
+        String res = HttpSendUtils.sendRequest(paramMap, wcxEnum);
         LOGGER.debug("返回结果 {}", res);
         return (res == null || res.equals("")) ? null : getResponseToObject(res, tClass);
     }
@@ -219,7 +214,7 @@ public final class WcxServiceUtil {
      * @param <T>
      * @return
      */
-    private <T> T getResponseToObject(String result, Class<T> tClass) {
+    private static  <T> T getResponseToObject(String result, Class<T> tClass) {
         WcxResult wcxResult = JSON.parseObject(result, WcxResult.class);
         return WcxResult.parseToObject(wcxResult.getData(), tClass);
     }
