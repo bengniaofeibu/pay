@@ -46,6 +46,9 @@ public class RequestValueUtils {
         return stringBuffer.toString();
     }
 
+
+
+
     public static void main(String[] args) {
         Map<String,Object> map=new HashMap<>();
         map.put("aello","你好");

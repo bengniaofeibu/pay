@@ -23,6 +23,8 @@ public class WcxUserRegisterInfoRequest extends BaseWcxRequest {
 
     private Long depositFee;
 
+    private String transactionId;
+
     private Date addTime;
 
     private Date updateTime;
@@ -98,6 +100,14 @@ public class WcxUserRegisterInfoRequest extends BaseWcxRequest {
 
     public void setDepositFee(Long depositFee) {
         this.depositFee = depositFee;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 
     public Date getAddTime() {

@@ -11,18 +11,19 @@
     <result column="regist_flag" jdbcType="INTEGER" property="registFlag" />
     <result column="deposit_flag" jdbcType="INTEGER" property="depositFlag" />
     <result column="deposit_fee" jdbcType="BIGINT" property="depositFee" />
+    <result column="transaction_id" jdbcType="varchar" property="transactionId" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, open_id, user_id, user_name, user_mobile, userid_hash, regist_flag, deposit_flag, 
-    deposit_fee, add_time, update_time
+   user_id, user_mobile, userid_hash, regist_flag, deposit_flag,
+    deposit_fee,transaction_id
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByOpenId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_wcx_user_info
-    where id = #{id,jdbcType=BIGINT}
+    where  open_id= #{openid,jdbcType=VARCHAR}
   </select>
 
   <insert id="insertWcxUserInfo" parameterType="com.weichuxing.model.WcxUserRegisterInfoRequest" keyProperty="id" useGeneratedKeys="true">
@@ -52,6 +53,9 @@
       <if test="depositFee != null">
         deposit_fee,
       </if>
+      <if test=" transaction_id != null">
+        transactionId,
+      </if>
         add_time,
         update_time,
     </trim>
@@ -79,6 +83,9 @@
       </if>
       <if test="depositFee != null">
         #{depositFee,jdbcType=BIGINT},
+      </if>
+      <if test=" transaction_id != null">
+        #{transactionId,jdbcType=VARCHAR},
       </if>
          addTime=NOW(),
       <if test="updateTime != null">

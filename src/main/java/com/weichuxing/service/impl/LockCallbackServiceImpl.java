@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class LockCallbackServiceImpl extends BaseServer implements LockCallbackS
 
     @Override
     @SystemServerLog(funcionExplain = "开锁回调")
-    public void openLockCallback(OpenLockCallbackRequest lockCallbackRequest){
+    public void openLockCallback(OpenLockCallbackRequest lockCallbackRequest) throws InvalidKeySpecException, NoSuchAlgorithmException {
         Map<String,Object> lockMap = new HashMap<>();
         lockMap.put("openid",lockCallbackRequest.getOpenid());
         lockMap.put("order_id",lockCallbackRequest.getOrder_id());
@@ -63,7 +65,7 @@ public class LockCallbackServiceImpl extends BaseServer implements LockCallbackS
 
     @Override
     @SystemServerLog(funcionExplain = "关锁回调")
-    public void closeLockCallback(CloseLockCallbackRequest closeLockCallbackRequest){
+    public void closeLockCallback(CloseLockCallbackRequest closeLockCallbackRequest) throws InvalidKeySpecException, NoSuchAlgorithmException {
         Map<String,Object> lockMap = new HashMap<>();
         lockMap.put("openid",closeLockCallbackRequest.getOpenid());
         lockMap.put("order_id",closeLockCallbackRequest.getOrder_id());

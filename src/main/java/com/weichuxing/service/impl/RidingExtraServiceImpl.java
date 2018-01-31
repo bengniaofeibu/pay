@@ -4,6 +4,7 @@ import com.weichuxing.entity.RidingExtraRequest.WcxFeedBackRequest;
 import com.weichuxing.model.FeedBackInfo;
 import com.weichuxing.mapper.FeedBackInfoMapper;
 import com.weichuxing.service.RidingExtraService;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -12,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-
+@Service
 public class RidingExtraServiceImpl implements RidingExtraService {
 
     @Resource

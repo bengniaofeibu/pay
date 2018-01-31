@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,21 +30,14 @@ public class RidingExtraController extends BaseController {
     private WcxServiceUtil wcxServiceUtil;
 
     @Resource
-    RidingExtraService ridingExtraServiceImpl;
+    private RidingExtraService ridingExtraService;
 
     @SystemControllerLog(funcionExplain = "查询指定骑行订单")
     @GetMapping(value = "/vcx_mch_check_order_flow.fcgi")
-    public WcxResult queryTransRecordById(@PathVariable String order_id) {
-        WcxTransRecordInfo wcxTransRecordInfo = null;
-        try {
+    public WcxResult queryTransRecordById(@PathVariable String order_id) throws InvalidKeySpecException, NoSuchAlgorithmException {
             Map<String,Object> param = new HashMap<>();
             param.put("order_id",order_id);
-            wcxTransRecordInfo = wcxServiceUtil.SendRequestToWcx(param, WcxEnum.VERIFY_USER_INFO,WcxTransRecordInfo.class);
-
-        }catch (Exception e){
-            LOGGER.error("ERROR {}",e.getMessage());
-        }
-
+            WcxTransRecordInfo wcxTransRecordInfo = wcxServiceUtil.SendRequestToWcx(param, WcxEnum.VERIFY_USER_INFO,WcxTransRecordInfo.class);
         return ResultUtil.success(wcxTransRecordInfo);
     }
 
@@ -53,7 +48,7 @@ public class RidingExtraController extends BaseController {
         WcxFeedBackRequest feedBackRequest = verificationSignAndDecode(feedBack,WcxFeedBackRequest.class);
 
         //添加反馈信息
-        ridingExtraServiceImpl.insertFeedBack(feedBackRequest);
+        ridingExtraService.insertFeedBack(feedBackRequest);
         return ResultUtil.success();
     }
 

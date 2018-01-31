@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 @RestController
 public class LockCallbackController extends BaseController{
 
@@ -18,7 +21,7 @@ public class LockCallbackController extends BaseController{
 
     @SystemControllerLog(funcionExplain = "开锁回调")
     @PostMapping(value = "/open_lock_call_back")
-    public WcxResult openLockCallback(OpenLockCallbackRequest lockCallbackInfo){
+    public WcxResult openLockCallback(OpenLockCallbackRequest lockCallbackInfo) throws InvalidKeySpecException, NoSuchAlgorithmException {
         OpenLockCallbackRequest openLockCallbackRequest = decodeLock(lockCallbackInfo, OpenLockCallbackRequest.class);
 
         lockCallbackService.openLockCallback(openLockCallbackRequest);
@@ -27,7 +30,7 @@ public class LockCallbackController extends BaseController{
 
     @SystemControllerLog(funcionExplain = "关锁回调")
     @PostMapping(value = "/close_lock_call_back")
-    public WcxResult closeLockCallback(CloseLockCallbackRequest closeLockCallbackInfo){
+    public WcxResult closeLockCallback(CloseLockCallbackRequest closeLockCallbackInfo) throws InvalidKeySpecException, NoSuchAlgorithmException {
         CloseLockCallbackRequest closeLockCallbackRequest = decodeLock(closeLockCallbackInfo, CloseLockCallbackRequest.class);
 
         lockCallbackService.closeLockCallback(closeLockCallbackRequest);

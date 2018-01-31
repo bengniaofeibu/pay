@@ -8,7 +8,9 @@ public enum WcxEnum implements EnumsService{
 
     OPEN_LOCK_CALLBACK(getMethod,"vcx_mch_callback_bike_unlock.fcgi","扫码开锁回调"),
 
-    CLOSE_LOCK_CALLBACK(getMethod,"vcx_mch_callback_bike_finish.fcgi","关锁回调");
+    CLOSE_LOCK_CALLBACK(getMethod,"vcx_mch_callback_bike_finish.fcgi","关锁回调"),
+
+    RET_DEPOSIT_APPLY(postMethod,"vcx_mch_ret_deposit_apply.fcgi","微出行交纳押金退回申请");
 
     String reqMethod;
 

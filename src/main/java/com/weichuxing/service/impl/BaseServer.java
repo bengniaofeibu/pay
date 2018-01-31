@@ -7,7 +7,13 @@ import com.weichuxing.model.TransRecordInfo;
 import com.weichuxing.model.TransRecordSupply;
 import com.weichuxing.utils.WcxServiceUtil;
 import com.weichuxing.utils.common.Md5Util;
+import com.weichuxing.utils.common.RSAUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Random;
 
 public class BaseServer {
 
@@ -43,4 +49,33 @@ public class BaseServer {
         return Md5Util.MD5(stringBuffer.toString()).substring(9, 25);
     }
 
+
+    /**
+     * 生成退押金的订单id
+     * @param rangeNum
+     * @return
+     */
+    protected   String generateDepositNum(int rangeNum){
+        Integer num = new Random().nextInt(rangeNum) + 1;
+        String str = num.toString();
+        while (str.length() < 3) {
+
+            str = "0" + str;
+        }
+        StringBuffer stringBuffer=new StringBuffer();
+        return System.currentTimeMillis()+str;
+    }
+
+    /**
+     * RSA私钥加密
+     * @param data
+     * @param key
+     * @return
+     * @throws InvalidKeySpecException
+     * @throws NoSuchAlgorithmException
+     */
+    public  String rsaEncrypt(String data,String key) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        RSAPrivateKey privateKey=  RSAUtils.getPrivateKey(key);
+      return   RSAUtils.privateEncrypt(data,privateKey);
+    }
 }

@@ -4,6 +4,7 @@ import com.weichuxing.entity.WcxRequest.BaseWcxRequest;
 import com.weichuxing.enums.WcxEnum;
 import com.weichuxing.enums.WcxResultEnum;
 import com.weichuxing.exception.UserException.SignFailException;
+import com.weichuxing.service.impl.BaseServer;
 import com.weichuxing.utils.HttpClient.HttpSendUtils;
 import com.weichuxing.utils.common.*;
 import org.apache.commons.lang3.ArrayUtils;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -22,7 +25,7 @@ public final class WcxServiceUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WcxServiceUtil.class);
 
-    private static final SimpleDateFormat DATA_FOMAT=new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat DATA_FOMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 
     // 运营平台 1：微信  2 ：QQ
@@ -65,6 +68,9 @@ public final class WcxServiceUtil {
 
     @Autowired
     private HttpSendUtils httpSendUtils;
+
+    @Autowired
+    private BaseServer baseServer;
 
     static {
         BASE_PARAM.put("version", VERSION);
@@ -168,43 +174,52 @@ public final class WcxServiceUtil {
         Map<String, Object> map = new LinkedHashMap<>();
         String valueEncoder;
         for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
-            if (res) {
-                //如果为true进行编码
-                valueEncoder = BaseUtil.getURLEncoder(entry.getValue().toString());
-            } else {
-                //如果为false进行解码
-                valueEncoder = BaseUtil.getURLDecode(entry.getValue().toString());
+            Object value = entry.getValue();
+            if (value != null) {
+                if (res) {
+                    //如果为true进行编码
+                    valueEncoder = BaseUtil.getURLEncoder(value.toString());
+                } else {
+                    //如果为false进行解码
+                    valueEncoder = BaseUtil.getURLDecode(value.toString());
+                }
+                map.put(entry.getKey(), valueEncoder);
             }
-            map.put(entry.getKey(), valueEncoder);
         }
         return map;
     }
 
     /**
      * 请求微出行接口公共请求方式
+     *
      * @param map
      * @param wcxEnum
      * @param tClass
      * @param <T>
      * @return
      */
-    public <T> T SendRequestToWcx(Map<String, Object> map, WcxEnum wcxEnum, Class<T> tClass) {
+    public <T> T SendRequestToWcx(Map<String, Object> map, WcxEnum wcxEnum, Class<T> tClass) throws InvalidKeySpecException, NoSuchAlgorithmException {
         map.putAll(BASE_PARAM);
+        //如果参数包含退押金的订单号，使用加密的nonce_str参数进行传输
+        if (map.containsKey("out_refund_no")){
+           map.put("nonce_str",baseServer.rsaEncrypt(map.get("nonce_str").toString(), RSAUtils.PRIVATE_KEY));
+        }
         map.put("sign", generateSign(map));
         Map<String, Object> paramMap = getParamMapToEncoder(map, true);
         String res = httpSendUtils.sendRequest(paramMap, wcxEnum);
         LOGGER.debug("返回结果 {}", res);
-        return (res==null || res.equals(""))?null:getResponseToObject(res,tClass);
+        return (res == null || res.equals("")) ? null : getResponseToObject(res, tClass);
     }
 
     /**
      * 把放回值转成对应的实体bean
+     *
      * @param result
      * @param tClass
      * @param <T>
      * @return
      */
-    private <T> T getResponseToObject(String result,Class<T> tClass){
+    private <T> T getResponseToObject(String result, Class<T> tClass) {
         WcxResult wcxResult = JSON.parseObject(result, WcxResult.class);
         return WcxResult.parseToObject(wcxResult.getData(), tClass);
     }
@@ -217,5 +232,6 @@ public final class WcxServiceUtil {
     }
 
     public static void main(String[] args) {
+
     }
 }
