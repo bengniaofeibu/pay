@@ -40,3 +40,13 @@ CREATE TABLE `t_wcx_user_info` (
 ALTER TABLE `t_electric_fance_info`
 DROP INDEX `i_area_name`,
 ADD INDEX `i_area_name` (`area_name`) USING BTREE ;
+
+ALTER TABLE `t_feedback_info`
+ADD COLUMN `platform`  int(2) NULL COMMENT '反馈来源(1.赳赳单车 2.微出行)' AFTER `is_bike_faulted`,
+ADD COLUMN `trans_id`  varchar(64) NULL COMMENT '骑行id' AFTER `platform`,
+ADD COLUMN `bike_lat`  varchar(10) NULL COMMENT '车辆纬度(WGS-84 坐标系)，不含地图纠偏数据' AFTER `trans_id`,
+ADD COLUMN `bike_lng`  varchar(10) NULL COMMENT '车辆经度(WGS-84 坐标系)，不含地图纠偏数据' AFTER `bike_lat`,
+ADD COLUMN `open_id`  varchar(64) NULL COMMENT '微出行用户id' AFTER `bike_lng`;
+
+
+

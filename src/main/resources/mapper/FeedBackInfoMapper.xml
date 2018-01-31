@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.weichuxing.mapper.FeedBackInfoMapper">
+
+<!--auto generated Code-->
+    <resultMap id="AllColumnMap" type="com.weichuxing.model.FeedBackInfo">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="type" property="type"/>
+        <result column="son_type" property="sonType"/>
+        <result column="picurl" property="picurl"/>
+        <result column="description" property="description"/>
+        <result column="add_time" property="addTime"/>
+        <result column="bicycle_num" property="bicycleNum"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+        <result column="platform" property="platform"/>
+        <result column="trans_id" property="transId"/>
+        <result column="bike_lat" property="bikeLat"/>
+        <result column="bike_lng" property="bikeLng"/>
+    </resultMap>
+
+<!--auto generated Code-->
+    <sql id="all_column">
+        id,
+        user_id,
+        type,
+        son_type,
+        picurl,
+        description,
+        add_time,
+        bicycle_num,
+        phone,
+        address,
+        platform,
+        trans_id,
+        bike_lat,
+        bike_lng
+    </sql>
+
+<!--auto generated Code-->
+    <insert id="insert">
+        INSERT INTO feed_back_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null"> id, </if>
+            <if test="pojo.userId != null"> user_id, </if>
+            <if test="pojo.type != null"> type, </if>
+            <if test="pojo.sonType != null"> son_type, </if>
+            <if test="pojo.picurl != null"> picurl, </if>
+            <if test="pojo.description != null"> description, </if>
+            <if test="pojo.addTime != null"> add_time, </if>
+            <if test="pojo.bicycleNum != null"> bicycle_num, </if>
+            <if test="pojo.phone != null"> phone, </if>
+            <if test="pojo.address != null"> address, </if>
+            <if test="pojo.platform != null"> platform, </if>
+            <if test="pojo.transId != null"> trans_id, </if>
+            <if test="pojo.bikeLat != null"> bike_lat, </if>
+            <if test="pojo.bikeLng != null"> bike_lng, </if>
+            <if test="pojo.openId != null"> open_id, </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pojo.id != null"> #{pojo.id}, </if>
+            <if test="pojo.userId != null"> #{pojo.userId}, </if>
+            <if test="pojo.type != null"> #{pojo.type}, </if>
+            <if test="pojo.sonType != null"> #{pojo.sonType}, </if>
+            <if test="pojo.picurl != null"> #{pojo.picurl}, </if>
+            <if test="pojo.description != null"> #{pojo.description}, </if>
+            <if test="pojo.addTime != null"> #{pojo.addTime}, </if>
+            <if test="pojo.bicycleNum != null"> #{pojo.bicycleNum}, </if>
+            <if test="pojo.phone != null"> #{pojo.phone}, </if>
+            <if test="pojo.address != null"> #{pojo.address}, </if>
+            <if test="pojo.platform != null"> #{pojo.platform}, </if>
+            <if test="pojo.transId != null"> #{pojo.transId}, </if>
+            <if test="pojo.bikeLat != null"> #{pojo.bikeLat}, </if>
+            <if test="pojo.bikeLng != null"> #{pojo.bikeLng}, </if>
+            <if test="pojo.openId != null"> #{pojo.openId}, </if>
+        </trim>
+    </insert>
+
+<!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO feed_back_info(
+        <include refid="all_column"/>
+        )VALUES
+        <foreach collection="pojos" item="pojo" index="index" separator=",">
+            (
+            #{pojo.id},
+            #{pojo.userId},
+            #{pojo.type},
+            #{pojo.sonType},
+            #{pojo.picurl},
+            #{pojo.description},
+            #{pojo.addTime},
+            #{pojo.bicycleNum},
+            #{pojo.phone},
+            #{pojo.address},
+            #{pojo.platform},
+            #{pojo.transId},
+            #{pojo.bikeLat},
+            #{pojo.bikeLng}
+            )
+        </foreach>
+    </insert>
+
+<!--auto generated Code-->
+    <update id="update">
+        UPDATE feed_back_info
+        <set>
+            <if test="pojo.id != null"> id = #{pojo.id}, </if>
+            <if test="pojo.userId != null"> user_id = #{pojo.userId}, </if>
+            <if test="pojo.type != null"> type = #{pojo.type}, </if>
+            <if test="pojo.sonType != null"> son_type = #{pojo.sonType}, </if>
+            <if test="pojo.picurl != null"> picurl = #{pojo.picurl}, </if>
+            <if test="pojo.description != null"> description = #{pojo.description}, </if>
+            <if test="pojo.addTime != null"> add_time = #{pojo.addTime}, </if>
+            <if test="pojo.bicycleNum != null"> bicycle_num = #{pojo.bicycleNum}, </if>
+            <if test="pojo.phone != null"> phone = #{pojo.phone}, </if>
+            <if test="pojo.address != null"> address = #{pojo.address}, </if>
+            <if test="pojo.platform != null"> platform = #{pojo.platform}, </if>
+            <if test="pojo.transId != null"> trans_id = #{pojo.transId}, </if>
+            <if test="pojo.bikeLat != null"> bike_lat = #{pojo.bikeLat}, </if>
+            <if test="pojo.bikeLng != null"> bike_lng = #{pojo.bikeLng} </if>
+        </set>
+         WHERE id = #{pojo.id}
+    </update>
+
+<!--auto generated Code-->
+    <select id="select" resultMap="AllColumnMap">
+        SELECT <include refid="all_column"/>
+        FROM feed_back_info
+        <where>
+            <if test="pojo.id != null"> AND id = #{pojo.id} </if>
+            <if test="pojo.userId != null"> AND user_id = #{pojo.userId} </if>
+            <if test="pojo.type != null"> AND type = #{pojo.type} </if>
+            <if test="pojo.sonType != null"> AND son_type = #{pojo.sonType} </if>
+            <if test="pojo.picurl != null"> AND picurl = #{pojo.picurl} </if>
+            <if test="pojo.description != null"> AND description = #{pojo.description} </if>
+            <if test="pojo.addTime != null"> AND add_time = #{pojo.addTime} </if>
+            <if test="pojo.bicycleNum != null"> AND bicycle_num = #{pojo.bicycleNum} </if>
+            <if test="pojo.phone != null"> AND phone = #{pojo.phone} </if>
+            <if test="pojo.address != null"> AND address = #{pojo.address} </if>
+            <if test="pojo.platform != null"> AND platform = #{pojo.platform} </if>
+            <if test="pojo.transId != null"> AND trans_id = #{pojo.transId} </if>
+            <if test="pojo.bikeLat != null"> AND bike_lat = #{pojo.bikeLat} </if>
+            <if test="pojo.bikeLng != null"> AND bike_lng = #{pojo.bikeLng} </if>
+        </where>
+        LIMIT 10000 
+    </select>
+
+<!--auto generated Code-->
+    <delete id="delete">
+        DELETE FROM feed_back_info where id = #{pojo.id}
+    </delete>
+</mapper>
