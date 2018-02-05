@@ -1,44 +1,28 @@
-/*
 package com.weichuxing.config;
 
-import org.apache.log4j.Logger;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import redis.clients.jedis.JedisPoolConfig;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-
-@Configuration
-@EnableAutoConfiguration
+@SpringBootConfiguration
 public class RedisConfig {
 
-    private static Logger logger = Logger.getLogger(RedisConfig.class);
+	@Bean
+    public RedisTemplate redisTemplate(
+			RedisConnectionFactory redisConnectionFactory) {
+		RedisTemplate<Object, Object> template = new RedisTemplate<Object, Object>();
+		StringRedisSerializer srs = new StringRedisSerializer();
+		Jackson2JsonRedisSerializer jsonRedisSerializer = new Jackson2JsonRedisSerializer(
+				Object.class);
+		template.setKeySerializer(srs);
+		template.setHashKeySerializer(srs);
+		template.setValueSerializer(jsonRedisSerializer);
+		template.setHashValueSerializer(jsonRedisSerializer);
+		template.setConnectionFactory(redisConnectionFactory);
+		return template;
+	}
 
-    @Bean
-    @ConfigurationProperties(prefix = "spring.redis")
-    public JedisPoolConfig getRedisConfig() {
-        JedisPoolConfig config = new JedisPoolConfig();
-        return config;
-    }
-
-    @Bean
-    @ConfigurationProperties(prefix = "spring.redis")
-    public JedisConnectionFactory getConnectionFactory() {
-        JedisConnectionFactory factory = new JedisConnectionFactory();
-        JedisPoolConfig config = getRedisConfig();
-        factory.setPoolConfig(config);
-        logger.info("JedisConnectionFactory bean init success.");
-        return factory;
-    }
-
-    @Bean
-    public RedisTemplate<?, ?> getRedisTemplate() {
-        RedisTemplate<?, ?> template = new StringRedisTemplate(getConnectionFactory());
-        return template;
-    }
 }
-*/

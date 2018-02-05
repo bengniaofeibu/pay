@@ -1,8 +1,8 @@
 package com.weichuxing.handle;
 
-import com.weichuxing.utils.WcxResult;
 import com.weichuxing.exception.BaseException;
 import com.weichuxing.utils.ResultUtil;
+import com.weichuxing.utils.WcxResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.MissingServletRequestParameterException;

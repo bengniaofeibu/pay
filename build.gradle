@@ -49,6 +49,9 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '1.5.7.RELEASE'   //应用健康状态实时监控
     compile group: 'org.json', name: 'json', version: '20171018'
     compile group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.1.1'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '1.5.2.RELEASE'
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk15', version: '1.45'
     runtime('mysql:mysql-connector-java')
     providedRuntime('org.springframework.boot:spring-boot-starter-jetty')   //删除默认的tomcat，添加jetty才能在idea下使用main函数启动
     testCompile('org.springframework.boot:spring-boot-starter-test')

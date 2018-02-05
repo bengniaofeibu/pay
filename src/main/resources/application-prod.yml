@@ -10,5 +10,12 @@ spring:
 #      cluster-nodes: localhost:9300
 #      repositories:
 #        enabled: true
-
-wcx.serviceUrl: https://test.wcx.qq.com/fcgi-bin/
+  redis:
+      database: 4
+      host: 139.196.194.172
+      password: test123
+      port: 6379
+      pool:
+       max-active: 8
+       max-wait: 1000
+      timeout: 1000

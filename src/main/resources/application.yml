@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+server.ssl.key-store: classpath:214075900090332.pfx
+server.ssl.key-store-password: 214075900090332
+server.ssl.keyStoreType: PKCS12
+
 spring:
   profiles:
     active: dev
@@ -16,6 +20,16 @@ spring:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.weichuxing.mapper
+
+
+wxApplet.appId: wxd1cfbb46ce504c75
+wxApplet.appSecret: 0299e03792b42b1bc589d1ed7aeec50a
+wxApplet.sessionTime: 1800
+
+
+sms.prefix: applet
+sms.url: http://106.15.47.133:8080/sms/captcha
+sms.checkUrl: http://106.15.47.133:8080/sms/ckCaptcha
 
 
 logging:

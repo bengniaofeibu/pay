@@ -15,16 +15,15 @@ spring:
 #      cluster-nodes: 172.16.20.14:9300
 #      repositories:
 #        enabled: true
-#  redis:
-#    database: 10
-#    host: 172.16.20.235
-#    password: test123
-#    port: 6379
-#    pool:
-#      max-active: 8
-#      max-idle: 1000
-#      min-idle: 0
-#      max-wait: -1
+  redis:
+    database: 4
+    host: 139.196.194.172
+    password: test123
+    port: 6379
+    pool:
+      max-active: 8
+      max-wait: 1000
+    timeout: 1000
 
 # LOGGING
 logging:
