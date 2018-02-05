@@ -36,4 +36,6 @@ mybatis:
   config-location: classpath:mybatis/mybatis.xml
 
 
-wcx.serviceUrl: https://test.wcx.qq.com/fcgi-bin/
+sms.prefix: applet
+sms.url: http://106.15.47.133:8080/sms/captcha
+sms.checkUrl: http://106.15.47.133:8080/sms/ckCaptcha

@@ -4,6 +4,7 @@ package com.weichuxing.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.weichuxing.entity.Cat;
+import com.weichuxing.entity.WxApplet;
 import com.weichuxing.utils.HttpClient.HttpsUtil;
 import com.weichuxing.utils.common.Md5Util;
 import com.weichuxing.utils.common.RedisUtil;
@@ -21,14 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/Authorized")
 public class AuthorizedController {
 
-    private String appId;
-
-    private String appSecret;
-
     @Autowired
     private RedisUtil redisUtil;
 
-    private Integer sessionTime;
+
+    @Autowired
+    private WxApplet wxApplet;
 
     @GetMapping("/init")
     public ResponseEntity<String> login(@RequestParam("js_code")String code){
@@ -38,9 +37,9 @@ public class AuthorizedController {
             StringBuffer sb = new StringBuffer();
             sb.append("https://api.weixin.qq.com/sns/jscode2session?");
             sb.append("appid=");
-            sb.append(appId);
+            sb.append(wxApplet.getAppId());
             sb.append("&secret=");
-            sb.append(appSecret);
+            sb.append(wxApplet.getAppSecret());
             sb.append("&js_code=");
             sb.append(code);
             sb.append("&grant_type=authorization_code");
@@ -64,7 +63,7 @@ public class AuthorizedController {
             cat.setOpenId(openId);
             cat.setSessionKey(sessionKey);
 
-            redisUtil.setObjAndExpire(rdSession,cat,sessionTime);
+            redisUtil.setObjAndExpire(rdSession,cat,wxApplet.getSessionTime());
             return ResponseEntity.status(HttpStatus.OK).body(rdSession);
         } catch (Exception e) {
             e.printStackTrace();

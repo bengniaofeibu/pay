@@ -50,25 +50,25 @@ public class RegisterController {
 
         //从缓存中获取session_key
         Object wxSessionObj = redisUtil.getValueObj(session);
-        if(null == wxSessionObj){
-            return rtnParam(40008, null);
-        }
-        String wxSessionStr = (String)wxSessionObj;
-        String sessionKey = wxSessionStr.split("#")[0];
-
-        try {
-            AES aes = new AES();
-            byte[] resultByte = aes.decrypt(Base64.decodeBase64(encryptedData), Base64.decodeBase64(sessionKey), Base64.decodeBase64(iv));
-            if(null != resultByte && resultByte.length > 0){
-                String userInfo = new String(resultByte, "UTF-8");
-                return rtnParam(0, userInfo);
-            }
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return rtnParam(50021, null);
+//        if(null == wxSessionObj){
+//            return rtnParam(40008, null);
+//        }
+//        String wxSessionStr = (String)wxSessionObj;
+//        String sessionKey = wxSessionStr.split("#")[0];
+//
+//        try {
+//            AES aes = new AES();
+//            byte[] resultByte = aes.decrypt(Base64.decodeBase64(encryptedData), Base64.decodeBase64(sessionKey), Base64.decodeBase64(iv));
+//            if(null != resultByte && resultByte.length > 0){
+//                String userInfo = new String(resultByte, "UTF-8");
+//                return rtnParam(0, userInfo);
+//            }
+//        } catch (InvalidAlgorithmParameterException e) {
+//            e.printStackTrace();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        return rtnParam(50021, null);
 
         return  null;
 

@@ -1,6 +1,6 @@
 package com.weichuxing.utils.common;
 
-import com.wxapplet.config.HttpRequest;
+import com.weichuxing.config.HttpRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
