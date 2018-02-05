@@ -1,6 +1,7 @@
 package com.weichuxing.utils.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,10 +27,10 @@ public class RedisUtil {
 	@Autowired
 	private RedisTemplate<Object, Object> redisTemplate;
 
-	@Autowired
+	@Resource(name = "stringRedisTemplate")
 	private ValueOperations<String, String> valOpsStr;
 
-	@Autowired
+	@Resource(name = "redisTemplate")
 	private ValueOperations<Object, Object> valOps;
 
 	@Bean
