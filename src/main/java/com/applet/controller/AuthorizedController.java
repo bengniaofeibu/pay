@@ -4,23 +4,30 @@ package com.applet.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.applet.entity.Cat;
+import com.applet.entity.UserInfo.SessionResponse;
 import com.applet.entity.WxApplet;
+import com.applet.enums.ResultEnums;
+import com.applet.utils.AppletResult;
 import com.applet.utils.HttpClient.HttpsUtil;
+import com.applet.utils.ResultUtil;
 import com.applet.utils.common.Md5Util;
 import com.applet.utils.common.RedisUtil;
 import com.applet.utils.common.UuidUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/Authorized")
+@RequestMapping("/authorized")
 public class AuthorizedController {
+
+    private static final Logger LOGGER= LoggerFactory.getLogger(AuthorizedController.class);
+
+    private static final String WX_API_URL="https://api.weixin.qq.com/sns/jscode2session?";
 
     @Autowired
     private RedisUtil redisUtil;
@@ -29,19 +36,16 @@ public class AuthorizedController {
     @Autowired
     private WxApplet wxApplet;
 
-    @GetMapping("/init")
-    public ResponseEntity<String> login(@RequestParam("js_code")String code){
+    @GetMapping("/wx_xcx_init")
+    public AppletResult login(@RequestParam("js_code")String code){
 
         try {
             Cat cat = new Cat();
             StringBuffer sb = new StringBuffer();
-            sb.append("https://api.weixin.qq.com/sns/jscode2session?");
-            sb.append("appid=");
-            sb.append(wxApplet.getAppId());
-            sb.append("&secret=");
-            sb.append(wxApplet.getAppSecret());
-            sb.append("&js_code=");
-            sb.append(code);
+            sb.append(WX_API_URL);
+            sb.append("appid=").append(wxApplet.getAppId());
+            sb.append("&secret=").append(wxApplet.getAppSecret());
+            sb.append("&js_code=").append(code);
             sb.append("&grant_type=authorization_code");
             String s = HttpsUtil.httpMethodGet(sb.toString());
             JSONObject jo = JSON.parseObject(s);
@@ -50,43 +54,22 @@ public class AuthorizedController {
             String sessionKey = jo.getString("session_key");
 
 
-            if(StringUtils.isBlank(openId)||StringUtils.isBlank(sessionKey)){
-
-                return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
 
             String unionId = jo.getString("unionid");
 
             String uuid = UuidUtil.getUuid();
-            String rdSession = Md5Util.MD5(uuid + openId);
+            String session = Md5Util.MD5(uuid + openId);
 
             cat.setOpenId(openId);
             cat.setSessionKey(sessionKey);
 
-            redisUtil.setObj(rdSession,cat);
-            return ResponseEntity.status(HttpStatus.OK).body(rdSession);
+            redisUtil.setObj(session,cat);
+            LOGGER.debug("3rd_session {} 存入缓存 openid {},session_key {}",session,openId,sessionKey);
+            return ResultUtil.success(new SessionResponse(session));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR {}",e.getMessage());
+            return ResultUtil.error(ResultEnums.SERVER_ERROR);
         }
-        return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-
-    @GetMapping("/check")
-    public ResponseEntity<Boolean>  checkSession(@RequestParam("session")String session){
-
-        try {
-            Object valueObj = redisUtil.getValueObj(session);
-            if(valueObj == null){
-
-                return ResponseEntity.status(HttpStatus.OK).body(false);
-            }else{
-
-                return ResponseEntity.status(HttpStatus.OK).body(true);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 }
 
