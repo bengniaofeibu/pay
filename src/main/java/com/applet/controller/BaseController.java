@@ -4,6 +4,8 @@ package com.applet.controller;
 import com.applet.entity.Cat;
 import com.applet.entity.RequestEntity;
 import com.applet.enums.ResultEnums;
+import com.applet.service.RidingService;
+import com.applet.service.ScavengingUnlockService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.JSON;
@@ -18,6 +20,12 @@ public class BaseController {
 
     @Autowired
     protected RedisUtil redisUtil;
+
+    @Autowired
+    protected ScavengingUnlockService scavengingUnlockService;
+
+    @Autowired
+    protected RidingService ridingService;
 
     /**
      * 验证请求参数
