@@ -2,7 +2,7 @@ package com.applet.utils.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JSON {
+public class JSONUtil {
 
 	public static String toJSONString(Object object) {
 		try {

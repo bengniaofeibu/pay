@@ -1,4 +1,4 @@
-package com.applet.entity;
+package com.applet.entity.UserInfo;
 
 import com.applet.entity.UserInfo.Watermark;
 

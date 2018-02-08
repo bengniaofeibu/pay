@@ -43,6 +43,7 @@ public class SMSController{
             m.put("smsType", TYPE);
 
             String s = PostRequestUtils.httpPostWithJSON(sms.getUrl(), JSON.toJSONString(m));
+            LOGGER.debug("发送短信的返回结果 {}",s);
             return ResultUtil.success();
         } catch (Exception e) {
             LOGGER.error("ERROR {}",e.getMessage());
@@ -59,6 +60,7 @@ public class SMSController{
             m.put("markId", sms.getPrefix());
             m.put("captchaNum", captchaNum);
             String s = PostRequestUtils.httpPostWithJSON(sms.getCheckUrl(), JSON.toJSONString(m));
+            LOGGER.debug("验证验证码的返回结果 {}",s);
             return ResultUtil.success();
         } catch (Exception e) {
             LOGGER.error("ERROR {}",e.getMessage());

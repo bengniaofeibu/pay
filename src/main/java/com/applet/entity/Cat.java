@@ -6,6 +6,13 @@ public class Cat {
 
     private String sessionKey;
 
+    public Cat() {
+    }
+
+    public Cat(String openId, String sessionKey) {
+        this.openId = openId;
+        this.sessionKey = sessionKey;
+    }
 
     public String getOpenId() {
         return openId;

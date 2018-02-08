@@ -7,14 +7,13 @@ import com.applet.mapper.WxUserInfoMapper;
 import com.applet.model.UserInfo;
 import com.applet.model.WxUserInfo;
 import com.applet.service.UserInfoService;
-import com.applet.utils.common.JSON;
+import com.applet.utils.common.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
@@ -22,7 +21,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(UserInfoServiceImpl.class);
 
-    private static final SimpleDateFormat DATE_FOMAT=new SimpleDateFormat("HH:mm");
 
     @Autowired
     private UserInfoMapper userInfoMapper;
@@ -36,15 +34,15 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Transactional(rollbackFor = Exception.class)
     public UserInfoResponse addRegisterUser(UserInfo userInfo,WxUserInfo wxUserInfo) {
         userInfoMapper.insertSelective(userInfo);
-        LOGGER.debug("记录单车用户信息 {}", JSON.toJSONString(userInfo));
+        LOGGER.debug("记录单车用户信息 {}", JSONUtil.toJSONString(userInfo));
         wxUserInfo.setUserId(userInfo.getId());
         wxUserInfoMapper.insertSelective(wxUserInfo);
-        LOGGER.debug("记录微信用户信息 {}", JSON.toJSONString(wxUserInfo));
+        LOGGER.debug("记录微信用户信息 {}", JSONUtil.toJSONString(wxUserInfo));
 
         UserInfoResponse info=new UserInfoResponse();
         info.setAdminId(userInfo.getId());
         info.setStatus(userInfo.getAccountStatus());
-       return  info;
+        return  info;
     }
 
     /**

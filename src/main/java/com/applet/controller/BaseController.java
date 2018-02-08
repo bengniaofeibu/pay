@@ -8,10 +8,11 @@ import com.applet.mapper.WxUserInfoMapper;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.EncrypUtil;
-import com.applet.utils.common.JSON;
+import com.applet.utils.common.JSONUtil;
 import com.applet.utils.common.RedisUtil;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
@@ -32,7 +33,7 @@ public class BaseController {
      * @return
      */
     protected AppletResult validateReqParam(BaseRequestEntity request){
-        Map<String,Object> map = JSON.parseObject(JSON.toJSONString(request), Map.class);
+        Map<String,Object> map = JSONUtil.parseObject(JSONUtil.toJSONString(request), Map.class);
         for (Map.Entry<String,Object> entry:map.entrySet()) {
            if (entry.getValue()==null || "".equals(entry.getValue()) ){
                 return ResultUtil.error(ResultEnums.PARAM_IS_NULL,new String[]{entry.getKey()});
@@ -48,7 +49,7 @@ public class BaseController {
      */
     protected Cat getAuthInfo(String session){
      Object obj = redisUtil.getValueObj(session);
-      return JSON.parseObject(JSON.toJSONString(obj),Cat.class);
+      return JSONUtil.parseObject(JSONUtil.toJSONString(obj),Cat.class);
     }
 
 
@@ -67,7 +68,7 @@ public class BaseController {
         byte[] resultByte = EncrypUtil.decrypt(Base64.decodeBase64(encryptedData), Base64.decodeBase64(sessionKey), Base64.decodeBase64(iv));
         if (null != resultByte && resultByte.length > 0) {
             String userInfo = new String(resultByte, "UTF-8");
-            return JSON.parseObject(userInfo, tClass);
+            return JSONUtil.parseObject(userInfo, tClass);
         }
            return null;
     }

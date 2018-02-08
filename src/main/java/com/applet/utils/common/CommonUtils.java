@@ -216,7 +216,7 @@ public class CommonUtils {
 		return str.toString();
 	}
 	
-	public static String stringToXml(SortedMap<Object,Object> parameters){
+	public static String stringToXml(Map<String,Object> parameters){
 		if(parameters!=null){
 			StringBuffer xml = new StringBuffer();
 			xml.append("<xml>");  
