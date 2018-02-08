@@ -2,6 +2,7 @@ package com.applet.controller.LockController;
 
 import com.applet.annotation.SystemControllerLog;
 import com.applet.controller.BaseController;
+import com.applet.entity.LockRequest.ScaveningUnlockRequest;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import org.slf4j.Logger;
@@ -19,9 +20,8 @@ public class ScavengingUnlockController extends BaseController{
 
     @SystemControllerLog(funcionExplain = "扫码开锁")
     @PostMapping(value = "/wx_xcx_openlock")
-    public AppletResult scaveningUnlock(String uuid){
-        System.out.println("aa");
-
-        return ResultUtil.success(uuid);
+    public AppletResult scaveningUnlock(ScaveningUnlockRequest scaveningUnlockRequest){
+        AppletResult appletResult = scavengingUnlockService.scaveningUnlock(scaveningUnlockRequest);
+        return appletResult;
     }
 }

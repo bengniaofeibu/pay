@@ -5,6 +5,8 @@ import com.applet.entity.Cat;
 import com.applet.entity.BaseEntity.BaseRequestEntity;
 import com.applet.enums.ResultEnums;
 import com.applet.mapper.WxUserInfoMapper;
+import com.applet.service.RidingService;
+import com.applet.service.ScavengingUnlockService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.EncrypUtil;
@@ -27,6 +29,12 @@ public class BaseController {
 
     @Autowired
     private WxUserInfoMapper wxUserInfoMapper;
+
+    @Autowired
+    protected RidingService ridingService;
+
+    @Autowired
+    protected ScavengingUnlockService scavengingUnlockService;
 
     /**
      * 验证请求参数

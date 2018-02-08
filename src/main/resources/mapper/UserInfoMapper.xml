@@ -542,4 +542,9 @@
       user_source = #{userSource,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <update id="updateBorrowFlagById" parameterType="com.applet.model.UserInfo">
+    update t_user_info
+    SET m_borrow_bicycle = #{mBorrowBicycle,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>
