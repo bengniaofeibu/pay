@@ -10,8 +10,6 @@ public enum ResultEnums {
 
     USER_DATA_VALIDATE_FAIL(1002,"用户数据验证失败"),
 
-    USER_ALREADY_EXIST(10003,"用户已经存在"),
-
     INVALID_USER(20001,"无效用户"),
 
     USER_NON_RECHARGE(20002,"用户未充值"),
@@ -26,7 +24,8 @@ public enum ResultEnums {
 
     SCAVENING_UNLOCK_BICYCLENONOTFINISH(20007,"车辆不存在"),
 
-    SCAVENING_UNLOCK_ERRORBARCODE(20008,"非法二维码");
+    SCAVENING_UNLOCK_ERRORBARCODE(20008,"非法二维码"),
+
     USER_ALREADY_EXIST(1003,"用户已经存在"),
 
     WX_PLAY_FAIL(1004,"微信支付失败");
