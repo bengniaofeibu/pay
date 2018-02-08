@@ -14,7 +14,6 @@ import com.applet.service.ScavengingUnlockService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.HttpClient.HttpLockApiUtils;
 import com.applet.utils.ResultUtil;
-import com.applet.utils.common.Base64;
 import com.applet.utils.common.CommonUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
