@@ -27,7 +27,7 @@
   </select>
   <select id="selectNumByOpenId" parameterType="java.lang.String" resultType="java.lang.Integer">
     select
-    COUNT (1)
+    COUNT(1)
     from t_wx_user_info
     where open_id = #{openId,jdbcType=BIGINT}
   </select>

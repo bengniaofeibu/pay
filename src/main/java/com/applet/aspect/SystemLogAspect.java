@@ -2,7 +2,7 @@ package com.applet.aspect;
 
 import com.applet.annotation.SystemControllerLog;
 import com.applet.annotation.SystemServerLog;
-import com.applet.utils.common.JSON;
+import com.applet.utils.common.JSONUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -74,7 +74,7 @@ public class SystemLogAspect {
     @AfterReturning(returning = "object", pointcut = "serverAspect()")
     public void doAfterReturning(Object object) {
         if (LOGGER.isDebugEnabled()){
-            LOGGER.debug("response={}", JSON.toJSONString(object));
+            LOGGER.debug("response={}", JSONUtil.toJSONString(object));
         }
     }
 

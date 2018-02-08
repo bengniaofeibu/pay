@@ -3,6 +3,7 @@ package com.applet.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.applet.annotation.SystemControllerLog;
 import com.applet.entity.Cat;
 import com.applet.entity.UserInfo.SessionResponse;
 import com.applet.entity.WxApplet;
@@ -36,11 +37,11 @@ public class AuthorizedController {
     @Autowired
     private WxApplet wxApplet;
 
+    @SystemControllerLog(funcionExplain = "进入微信初始化控制层")
     @GetMapping("/wx_xcx_init")
     public AppletResult login(@RequestParam("js_code")String code){
 
         try {
-            Cat cat = new Cat();
             StringBuffer sb = new StringBuffer();
             sb.append(WX_API_URL);
             sb.append("appid=").append(wxApplet.getAppId());
@@ -60,10 +61,8 @@ public class AuthorizedController {
             String uuid = UuidUtil.getUuid();
             String session = Md5Util.MD5(uuid + openId);
 
-            cat.setOpenId(openId);
-            cat.setSessionKey(sessionKey);
 
-            redisUtil.setObj(session,cat);
+            redisUtil.setObj(session,new Cat(openId,sessionKey));
             LOGGER.debug("3rd_session {} 存入缓存 openid {},session_key {}",session,openId,sessionKey);
             return ResultUtil.success(new SessionResponse(session));
         } catch (Exception e) {

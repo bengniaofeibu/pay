@@ -7,7 +7,7 @@ import com.applet.entity.UserInfo.WxGeneralUserInfo;
 import com.applet.entity.UserInfo.WxUserRegisterRequest;
 import com.applet.entity.UserInfo.PhoneRegisterRequest;
 import com.applet.entity.UserInfo.UserInfoResponse;
-import com.applet.entity.WxDetailedUserInfo;
+import com.applet.entity.UserInfo.WxDetailedUserInfo;
 import com.applet.enums.ResultEnums;
 import com.applet.model.UserInfo;
 import com.applet.model.WxUserInfo;
@@ -15,7 +15,6 @@ import com.applet.service.UserInfoService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.*;
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
-
 
 @RestController
 @RequestMapping("/re")
@@ -41,7 +39,7 @@ public class UserController extends BaseController {
     public AppletResult register(WxUserRegisterRequest request, @RequestHeader("session") String session) {
 
         Cat authInfo = getAuthInfo(session);
-        LOGGER.debug(" authInfo {}", JSON.toJSONString(authInfo));
+        LOGGER.debug(" authInfo {}", JSONUtil.toJSONString(authInfo));
 
 
         //验证请求参数是否完整
@@ -66,7 +64,7 @@ public class UserController extends BaseController {
 
         try {
 
-            WxDetailedUserInfo detailedUserInfo = JSON.parseObject(request.getRawData(), WxDetailedUserInfo.class);
+            WxDetailedUserInfo detailedUserInfo = JSONUtil.parseObject(request.getRawData(), WxDetailedUserInfo.class);
 
             WxGeneralUserInfo generalUserInfo = encryptedDataToObject(request.getGeneralEncryptedData(), authInfo.getSessionKey(), request.getIv(), WxGeneralUserInfo.class);
 
@@ -84,11 +82,11 @@ public class UserController extends BaseController {
     @SystemControllerLog(funcionExplain = "进入手机号注册登录控制层")
     @GetMapping("/wx_xcx_phone")
     public AppletResult phoneRegister(PhoneRegisterRequest request, @RequestHeader("session") String session) {
-
+        System.out.println("进入手机号注册登录控制层");
         try {
 
             Cat authInfo = getAuthInfo(session);
-            LOGGER.debug(" authInfo {}", JSON.toJSONString(authInfo));
+            LOGGER.debug(" authInfo {}", JSONUtil.toJSONString(authInfo));
 
             //验证用户是否已经注册
             AppletResult userRegistered = isUserRegistered(authInfo.getOpenId());

@@ -2,7 +2,7 @@ package com.applet.utils;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.applet.utils.common.JSON;
+import com.applet.utils.common.JSONUtil;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AppletResult {
@@ -47,7 +47,7 @@ public class AppletResult {
      */
     public static <T> T parseToObject(Object data,Class<T> tClass){
         if (data!=null){
-            return  JSON.parseObject(JSON.toJSONString(data),tClass);
+            return  JSONUtil.parseObject(JSONUtil.toJSONString(data),tClass);
         }
        return null;
     }
