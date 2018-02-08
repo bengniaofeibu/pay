@@ -28,7 +28,9 @@ public enum ResultEnums {
 
     USER_ALREADY_EXIST(1003,"用户已经存在"),
 
-    WX_PLAY_FAIL(1004,"微信支付失败");
+    WX_PLAY_FAIL(1004,"微信支付失败"),
+
+    SCAVENING_UNLOCK_ERRORTRANSRECORD(20008,"订单错误");
 
     private Integer code;
 

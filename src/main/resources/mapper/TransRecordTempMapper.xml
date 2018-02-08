@@ -405,4 +405,10 @@
         state = #{state,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=VARCHAR} ORDER BY borrow_date_time DESC LIMIT 1
   </update>
+  <select id="selectByUserIdAndTransFlag" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_trans_record_temp
+    where user_id = #{userId,jdbcType=VARCHAR} AND trans_flag = 0 ORDER BY borrow_date_time DESC LIMIT 1
+  </select>
 </mapper>

@@ -14,4 +14,5 @@ public interface UserInfoMapper {
 
     int updateByPrimaryKeySelective(UserInfo record);
 
+    int updateBorrowFlagById(UserInfo record);
 }

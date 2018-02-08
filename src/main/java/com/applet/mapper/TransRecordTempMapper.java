@@ -20,4 +20,6 @@ public interface TransRecordTempMapper {
     int updateByPrimaryKey(TransRecordTemp record);
 
     int updateByUserIdAndBorrowFlag(TransRecordTemp record);
+
+    TransRecordTemp selectByUserIdAndTransFlag(String userId);
 }

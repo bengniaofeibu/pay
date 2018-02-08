@@ -75,13 +75,26 @@ public class RidingServiceImpl implements RidingService{
                 feedbackInfo.setUserId(endOrderRequest.getUserId());
                 feedbackInfo.setPlatform(3);
                 if(Integer.parseInt(endOrderRequest.getSonType()) == 1 && endOrderRequest.getType() == 2){
-                    TransRecordTemp transRecordTemp = new TransRecordTemp();
-                    transRecordTemp.setUserId(endOrderRequest.getUserId());
-                    transRecordTemp.setTransFlag(1);
-                    transRecordTemp.setState(1);
-                    transRecordTemp.setRecessionDateTime(new Date());
-                    transRecordTempMapper.updateByUserIdAndBorrowFlag(transRecordTemp);
-
+                    TransRecordTemp transRecordTemp = transRecordTempMapper.selectByUserIdAndTransFlag(endOrderRequest.getUserId());
+                    if(transRecordTemp != null){
+                        transRecordTemp.setUserId(endOrderRequest.getUserId());
+                        transRecordTemp.setTransFlag(1);
+                        transRecordTemp.setState(1);
+                        transRecordTemp.setRecessionDateTime(new Date());
+                        transRecordTempMapper.updateByUserIdAndBorrowFlag(transRecordTemp);
+                        userInfo.setmBorrowBicycle(0);
+                        userInfo.setId(endOrderRequest.getUserId());
+                        userInfoMapper.updateBorrowFlagById(userInfo);
+                        feedbackInfo.setTransId(transRecordTemp.getId());
+                    }else{
+                        return ResultUtil.error(ResultEnums.SCAVENING_UNLOCK_ERRORTRANSRECORD);
+                    }
+                }
+                if(!CommonUtils.isEmptyString(endOrderRequest.getLongitude())){
+                    feedbackInfo.setBikeLng(endOrderRequest.getLongitude());
+                }
+                if(!CommonUtils.isEmptyString(endOrderRequest.getLatitude())){
+                    feedbackInfo.setBikeLat(endOrderRequest.getLatitude());
                 }
                 return ResultUtil.success();
             }else{
