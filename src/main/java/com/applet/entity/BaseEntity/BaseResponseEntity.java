@@ -1,8 +1,7 @@
-package com.applet.entity;
+package com.applet.entity.BaseEntity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RequestEntity {
-
+public abstract class BaseResponseEntity {
 }

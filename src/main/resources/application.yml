@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 8080
 
 server.ssl.key-store: classpath:214075900090332.pfx
 server.ssl.key-store-password: 214075900090332

@@ -6,7 +6,7 @@ import sun.misc.BASE64Encoder;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-public class Base64 {
+public class Base64Util {
 
     /*编码
     * */
@@ -44,6 +44,6 @@ public class Base64 {
         String encodeText = encode(text);
         System.out.println("编码:" + encodeText);
         String decodeText = decode(encodeText);
-        System.out.println("解码:" + decodeText);
+        System.out.println("解码:" + decodeText.length());
     }
 }

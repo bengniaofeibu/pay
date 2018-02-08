@@ -19,15 +19,21 @@
     id, open_id, user_id, user_name, user_mobile, userid_hash, regist_flag, deposit_flag, 
     deposit_fee, transaction_id, add_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_wx_user_info
-    where id = #{id,jdbcType=BIGINT}
+    where open_id = #{openId,jdbcType=BIGINT}
+  </select>
+  <select id="selectNumByOpenId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    COUNT (1)
+    from t_wx_user_info
+    where open_id = #{openId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_wx_user_info
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insertSelective" parameterType="com.applet.model.WxUserInfo">
     insert into t_wx_user_info
@@ -59,12 +65,8 @@
       <if test="transactionId != null">
         transaction_id,
       </if>
-      <if test="addTime != null">
         add_time,
-      </if>
-      <if test="updateTime != null">
         update_time,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">

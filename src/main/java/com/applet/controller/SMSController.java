@@ -3,7 +3,12 @@ package com.applet.controller;
 import com.alibaba.fastjson.JSON;
 import com.applet.annotation.SystemControllerLog;
 import com.applet.entity.Sms;
+import com.applet.enums.ResultEnums;
+import com.applet.utils.AppletResult;
+import com.applet.utils.ResultUtil;
 import com.applet.utils.common.PostRequestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +22,9 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/sms")
-public class SMSController {
+public class SMSController{
+
+    private static final Logger LOGGER= LoggerFactory.getLogger(SMSController.class);
 
     private static final Integer TYPE = 1;
 
@@ -25,9 +32,9 @@ public class SMSController {
     private Sms sms;
 
 
-    @GetMapping("/cat")
+    @GetMapping("/wx_xcx_cat")
     @SystemControllerLog(funcionExplain = "进入发送验证码控制层")
-    public ResponseEntity<String> get(@RequestParam("phone") String phone) {
+    public AppletResult get(@RequestParam("phone") String phone) {
 
         try {
             Map<String, Object> m = new HashMap<>();
@@ -36,27 +43,26 @@ public class SMSController {
             m.put("smsType", TYPE);
 
             String s = PostRequestUtils.httpPostWithJSON(sms.getUrl(), JSON.toJSONString(m));
-            return ResponseEntity.status(HttpStatus.OK).body(s);
+            return ResultUtil.success();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR {}",e.getMessage());
+            return ResultUtil.error(ResultEnums.SERVER_ERROR);
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
-    @GetMapping("/fish")
+    @GetMapping("/wx_xcx_fish")
     @SystemControllerLog(funcionExplain = "进入验证验证码控制层")
-    public ResponseEntity<String> check(@RequestParam("phone") String phone, @RequestParam("captchaNum") String captchaNum) {
+    public AppletResult check(@RequestParam("phone") String phone, @RequestParam("captchaNum") String captchaNum) {
         try {
             Map<String, Object> m = new HashMap<>();
             m.put("phone", phone);
             m.put("markId", sms.getPrefix());
             m.put("captchaNum", captchaNum);
             String s = PostRequestUtils.httpPostWithJSON(sms.getCheckUrl(), JSON.toJSONString(m));
-            return ResponseEntity.status(HttpStatus.OK).body(s);
+            return ResultUtil.success();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("ERROR {}",e.getMessage());
+            return ResultUtil.error(ResultEnums.SERVER_ERROR);
         }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-
     }
 }

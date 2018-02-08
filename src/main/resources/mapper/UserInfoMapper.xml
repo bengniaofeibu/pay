@@ -52,13 +52,7 @@
     <result column="user_source" jdbcType="INTEGER" property="userSource" />
   </resultMap>
   <sql id="Base_Column_List">
-     id, account_status, add_time, app_version, certificate_negative, certificate_positive,
-    change_battery_status, city_no, credit_score, deposit, guester_state, id_cardnum, 
-    integral, login_state, login_time, m_borrow_bicycle, m_borrow_bicycle_date, m_phone_system_version, 
-    nationality, nickname, open_date, phone, picurl, real_name, status_change_time, user_level, 
-    validate_date, create_by, create_date, update_by, update_date, remarks, del_flag, 
-    balance, balance_free, month_card_time, gender, lucky_money, age, alipay_account, 
-    phone_province, phone_city, channel, register_city, imei, mac, idfa, user_source
+     id, account_status,  m_borrow_bicycle, m_borrow_bicycle_date
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -80,9 +74,7 @@
       <if test="accountStatus != null">
         account_status,
       </if>
-      <if test="addTime != null">
         add_time,
-      </if>
       <if test="appVersion != null">
         app_version,
       </if>
@@ -158,21 +150,15 @@
       <if test="createBy != null">
         create_by,
       </if>
-      <if test="createDate != null">
         create_date,
-      </if>
       <if test="updateBy != null">
         update_by,
       </if>
-      <if test="updateDate != null">
         update_date,
-      </if>
       <if test="remarks != null">
         remarks,
       </if>
-      <if test="delFlag != null">
         del_flag,
-      </if>
       <if test="balance != null">
         balance,
       </if>
