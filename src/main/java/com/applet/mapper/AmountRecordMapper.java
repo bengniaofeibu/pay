@@ -11,9 +11,9 @@ public interface AmountRecordMapper {
 
     int insertSelective(AmountRecord record);
 
-    AmountRecord selectByPrimaryKey(String id);
+    AmountRecord selectUserStatusByRechargeId(String rechargeId);
 
-    int updateByPrimaryKeySelective(AmountRecord record);
+    int updateUserStatusById(AmountRecord record);
 
     int updateByPrimaryKey(AmountRecord record);
 }

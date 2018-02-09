@@ -29,17 +29,11 @@
     <result column="trans_account_no" jdbcType="VARCHAR" property="transAccountNo" />
     <result column="ali_user_id" jdbcType="VARCHAR" property="aliUserId" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id, recharge_id, add_time, amount, batch_no, order_mode, recharge_mode, recharge_way, 
-    state, trade_no, update_time, user_id, create_by, create_date, update_by, update_date, 
-    remarks, del_flag, order_num, description, refund_count, wrong_code, wrong_msg, account_zhi, 
-    trans_account_no, ali_user_id
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectUserStatusByRechargeId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List" />
+     amount,state
     from t_amount_record
-    where id = #{id,jdbcType=VARCHAR}
+    where recharge_id = #{rechargeId,jdbcType=DECIMAL} AND del_flag = 0
   </select>
   <insert id="insertSelective" parameterType="com.applet.model.AmountRecord">
     insert into t_amount_record
@@ -66,7 +60,7 @@
       <if test="tradeNo != null">
         trade_no,
       </if>
-      <if test="update_time != null">
+      <if test="updateTime != null">
         update_time,
       </if>
       <if test="userId != null">
@@ -172,114 +166,14 @@
         #{aliUserId,jdbcType=VARCHAR},
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.AmountRecord">
+  <update id="updateUserStatusById" parameterType="com.applet.model.AmountRecord">
     update t_amount_record
     <set>
-      <if test="rechargeId != null">
-        recharge_id = #{rechargeId,jdbcType=DECIMAL},
-      </if>
-      <if test="addTime != null">
-        add_time = #{addTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="amount != null">
-        amount = #{amount,jdbcType=DECIMAL},
-      </if>
-      <if test="batchNo != null">
-        batch_no = #{batchNo,jdbcType=VARCHAR},
-      </if>
-      <if test="orderMode != null">
-        order_mode = #{orderMode,jdbcType=INTEGER},
-      </if>
-      <if test="rechargeMode != null">
-        recharge_mode = #{rechargeMode,jdbcType=INTEGER},
-      </if>
-      <if test="rechargeWay != null">
-        recharge_way = #{rechargeWay,jdbcType=INTEGER},
-      </if>
       <if test="state != null">
         state = #{state,jdbcType=INTEGER},
       </if>
-      <if test="tradeNo != null">
-        trade_no = #{tradeNo,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="createBy != null">
-        create_by = #{createBy,jdbcType=VARCHAR},
-      </if>
-      <if test="createDate != null">
-        create_date = #{createDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateBy != null">
-        update_by = #{updateBy,jdbcType=VARCHAR},
-      </if>
-      <if test="updateDate != null">
-        update_date = #{updateDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="remarks != null">
-        remarks = #{remarks,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null">
-        del_flag = #{delFlag,jdbcType=CHAR},
-      </if>
-      <if test="orderNum != null">
-        order_num = #{orderNum,jdbcType=DECIMAL},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="refundCount != null">
-        refund_count = #{refundCount,jdbcType=INTEGER},
-      </if>
-      <if test="wrongCode != null">
-        wrong_code = #{wrongCode,jdbcType=VARCHAR},
-      </if>
-      <if test="wrongMsg != null">
-        wrong_msg = #{wrongMsg,jdbcType=VARCHAR},
-      </if>
-      <if test="accountZhi != null">
-        account_zhi = #{accountZhi,jdbcType=VARCHAR},
-      </if>
-      <if test="transAccountNo != null">
-        trans_account_no = #{transAccountNo,jdbcType=VARCHAR},
-      </if>
-      <if test="aliUserId != null">
-        ali_user_id = #{aliUserId,jdbcType=VARCHAR},
-      </if>
+        update_time = NOW(),
     </set>
-    where id = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.applet.model.AmountRecord">
-    update t_amount_record
-    set recharge_id = #{rechargeId,jdbcType=DECIMAL},
-      add_time = #{addTime,jdbcType=TIMESTAMP},
-      amount = #{amount,jdbcType=DECIMAL},
-      batch_no = #{batchNo,jdbcType=VARCHAR},
-      order_mode = #{orderMode,jdbcType=INTEGER},
-      recharge_mode = #{rechargeMode,jdbcType=INTEGER},
-      recharge_way = #{rechargeWay,jdbcType=INTEGER},
-      state = #{state,jdbcType=INTEGER},
-      trade_no = #{tradeNo,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      user_id = #{userId,jdbcType=VARCHAR},
-      create_by = #{createBy,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_by = #{updateBy,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      remarks = #{remarks,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=CHAR},
-      order_num = #{orderNum,jdbcType=DECIMAL},
-      description = #{description,jdbcType=VARCHAR},
-      refund_count = #{refundCount,jdbcType=INTEGER},
-      wrong_code = #{wrongCode,jdbcType=VARCHAR},
-      wrong_msg = #{wrongMsg,jdbcType=VARCHAR},
-      account_zhi = #{accountZhi,jdbcType=VARCHAR},
-      trans_account_no = #{transAccountNo,jdbcType=VARCHAR},
-      ali_user_id = #{aliUserId,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=VARCHAR}
+    where recharge_id = #{rechargeId,jdbcType=DECIMAL}
   </update>
 </mapper>

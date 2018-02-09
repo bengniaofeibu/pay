@@ -11,9 +11,9 @@ public interface WxUserInfoMapper {
 
     int insertSelective(WxUserInfo record);
 
-    WxUserInfo selectByPrimaryKey(String id);
+    String selectUserIdByOpenId(String openId);
 
-    int updateByPrimaryKeySelective(WxUserInfo record);
+    int updateUserStatusById(WxUserInfo record);
 
     Integer selectNumByOpenId(String openId);
 

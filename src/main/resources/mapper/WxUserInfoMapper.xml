@@ -15,13 +15,9 @@
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <sql id="Base_Column_List">
-    id, open_id, user_id, user_name, user_mobile, userid_hash, regist_flag, deposit_flag, 
-    deposit_fee, transaction_id, add_time, update_time
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectUserIdByOpenId" parameterType="java.lang.String" resultType="java.lang.String">
     select 
-    <include refid="Base_Column_List" />
+    user_id
     from t_wx_user_info
     where open_id = #{openId,jdbcType=BIGINT}
   </select>
@@ -103,27 +99,9 @@
       NOW()
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.WxUserInfo">
+  <update id="updateUserStatusById" parameterType="com.applet.model.WxUserInfo">
     update t_wx_user_info
     <set>
-      <if test="openId != null">
-        open_id = #{openId,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=VARCHAR},
-      </if>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
-      </if>
-      <if test="userMobile != null">
-        user_mobile = #{userMobile,jdbcType=VARCHAR},
-      </if>
-      <if test="useridHash != null">
-        userid_hash = #{useridHash,jdbcType=VARCHAR},
-      </if>
-      <if test="registFlag != null">
-        regist_flag = #{registFlag,jdbcType=INTEGER},
-      </if>
       <if test="depositFlag != null">
         deposit_flag = #{depositFlag,jdbcType=INTEGER},
       </if>
@@ -133,28 +111,8 @@
       <if test="transactionId != null">
         transaction_id = #{transactionId,jdbcType=VARCHAR},
       </if>
-      <if test="addTime != null">
-        add_time = #{addTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+        update_time = NOW(),
     </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.applet.model.WxUserInfo">
-    update t_wx_user_info
-    set open_id = #{openId,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=VARCHAR},
-      user_name = #{userName,jdbcType=VARCHAR},
-      user_mobile = #{userMobile,jdbcType=VARCHAR},
-      userid_hash = #{useridHash,jdbcType=VARCHAR},
-      regist_flag = #{registFlag,jdbcType=INTEGER},
-      deposit_flag = #{depositFlag,jdbcType=INTEGER},
-      deposit_fee = #{depositFee,jdbcType=BIGINT},
-      transaction_id = #{transactionId,jdbcType=VARCHAR},
-      add_time = #{addTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+    where open_id = #{openId,jdbcType=BIGINT} AND regist_flag = 4
   </update>
 </mapper>

@@ -1,9 +1,8 @@
 server:
-  port: 8080
-
-server.ssl.key-store: classpath:214075900090332.pfx
-server.ssl.key-store-password: 214075900090332
-server.ssl.keyStoreType: PKCS12
+  port: 8443
+  ssl.key-store: classpath:214075900090332.pfx
+  ssl.key-store-password: 214075900090332
+  ssl.keyStoreType: PKCS12
 
 spring:
   profiles:
@@ -26,6 +25,6 @@ logging:
     config: classpath:logback/logback-dev.xml
 
 wxApplet.appId: wxd1cfbb46ce504c75
-wxApplet.appSecret: 0299e03792b42b1bc589d1ed7aeec50a
+wxApplet.appSecret: b9ed8ecf76a6156455d9d0b6bcf46330
 wxApplet.sessionTime: 1800
 

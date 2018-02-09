@@ -58,7 +58,7 @@
     select 
     <include refid="Base_Column_List" />
     from t_user_info
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR} and del_flag = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_user_info
@@ -545,6 +545,19 @@
   <update id="updateBorrowFlagById" parameterType="com.applet.model.UserInfo">
     update t_user_info
     SET m_borrow_bicycle = #{mBorrowBicycle,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByStatusById" parameterType="com.applet.model.UserInfo">
+    update t_user_info
+    <set>
+      <if test="accountStatus != null">
+        account_status = #{accountStatus,jdbcType=INTEGER},
+      </if>
+      <if test="deposit != null">
+        deposit = #{deposit,jdbcType=DECIMAL},
+      </if>
+      update_date = NOW(),
+    </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

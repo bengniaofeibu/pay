@@ -4,6 +4,8 @@ package com.applet.controller;
 import com.applet.entity.Cat;
 import com.applet.entity.BaseEntity.BaseRequestEntity;
 import com.applet.enums.ResultEnums;
+import com.applet.enums.WxCallBackResultEnums;
+import com.applet.mapper.UserInfoMapper;
 import com.applet.mapper.WxUserInfoMapper;
 import com.applet.service.RidingService;
 import com.applet.service.ScavengingUnlockService;
@@ -12,12 +14,14 @@ import com.applet.utils.ResultUtil;
 import com.applet.utils.common.EncrypUtil;
 import com.applet.utils.common.JSONUtil;
 import com.applet.utils.common.RedisUtil;
+import com.applet.utils.common.XmlOrMapUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class BaseController {
@@ -93,5 +97,20 @@ public class BaseController {
             return ResultUtil.error(ResultEnums.USER_ALREADY_EXIST);
         }
         return null;
+    }
+
+    /**
+     * 通知微信回调结果
+     * @return
+     */
+    protected String notifyWxCallBackResult(WxCallBackResultEnums callBackResult) throws Exception {
+      Map<String,Object> result=new HashMap<>();
+      if (callBackResult!=null){
+           result.put("return_code",callBackResult.getReturn_code());
+          if (!callBackResult.getReturn_msg().equals("")){
+              result.put("return_msg",callBackResult.getReturn_msg());
+          }
+      }
+       return XmlOrMapUtils.mapToXml(result);
     }
 }

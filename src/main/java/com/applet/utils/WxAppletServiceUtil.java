@@ -25,7 +25,7 @@ public final class WxAppletServiceUtil {
      **/
     private static final String MCH_ID = "1461111202";
 
-    private static final String APP_ID="wxd1cfbb46ce504c75";
+    public static final String APP_ID="wxd1cfbb46ce504c75";
 
     /**
      * 小程序的key
@@ -42,7 +42,7 @@ public final class WxAppletServiceUtil {
 
     private static final Map<String, Object> BASE_PARAM = new HashMap<>();
 
-    private static final List<String> NOT_SIGN_VALUE = Arrays.asList("sign", "key");
+    private static final List<String> NOT_SIGN_VALUE = Arrays.asList("sign");
 
 
     static {
@@ -101,17 +101,15 @@ public final class WxAppletServiceUtil {
         return map;
     }
 
-//    /**
-//     * 验证签名
-//     *
-//     * @param baseWcxRequest
-//     */
-//    public static void verificationSign(BaseRequestEntity baseWcxRequest) {
-//        String sign = generateSign(generateSignMap(baseWcxRequest));
-//        if (!sign.equals(baseWcxRequest.getSign())) {
-//            throw new SignFailException(WcxResultEnum.SIGN_FAIL);
-//        }
-//    }
+    /**
+     * 验证签名
+     *
+     * @param baseWcxRequest
+     */
+    public static boolean verificationSign(BaseRequestEntity baseWcxRequest) {
+        String sign = generateSign(generateSignMap(baseWcxRequest));
+        return baseWcxRequest.getSign().equals(sign);
+    }
 
 
     /**
@@ -148,7 +146,7 @@ public final class WxAppletServiceUtil {
     public   String SendRequestToWcx(Map<String, Object> map) throws Exception {
         map.put("nonce_str",BaseUtil.getRandomUUID());
         map.put("trade_type",TRADE_TYPE);
-        map.put("notify_url","http://www.weixin.qq.com/wxpay/pay.php");
+        map.put("notify_url",wxAppletRootUrl);
         map.put("mch_id", MCH_ID);
         map.putAll(BASE_PARAM);
         map.put("sign", generateSign(map).toUpperCase());
