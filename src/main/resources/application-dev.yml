@@ -39,3 +39,5 @@ mybatis:
 sms.prefix: applet
 sms.url: http://106.15.47.133:8080/sms/captcha
 sms.checkUrl: http://106.15.47.133:8080/sms/ckCaptcha
+
+wxAppletRootUrl: http://139.196.250.4/payback/wxPayBack/callBack
