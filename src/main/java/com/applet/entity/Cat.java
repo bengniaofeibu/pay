@@ -6,6 +6,8 @@ public class Cat {
 
     private String sessionKey;
 
+    private String test;
+
     public Cat() {
     }
 
@@ -28,5 +30,13 @@ public class Cat {
 
     public void setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey;
+    }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
     }
 }

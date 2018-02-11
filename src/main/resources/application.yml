@@ -1,8 +1,9 @@
 server:
-  port: 8443
+  port: 8080
   ssl.key-store: classpath:214075900090332.pfx
   ssl.key-store-password: 214075900090332
   ssl.keyStoreType: PKCS12
+  server.ssl.keyAlias: tomcat
 
 spring:
   profiles:

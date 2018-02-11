@@ -28,6 +28,7 @@
     <result column="account_zhi" jdbcType="VARCHAR" property="accountZhi" />
     <result column="trans_account_no" jdbcType="VARCHAR" property="transAccountNo" />
     <result column="ali_user_id" jdbcType="VARCHAR" property="aliUserId" />
+    <result column="rescoure_id" jdbcType="INTEGER" property="rescoureId" />
   </resultMap>
   <select id="selectUserStatusByRechargeId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -100,6 +101,7 @@
         trans_account_no,
       </if>
         ali_user_id,
+        rescoure_id,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
         #{id,jdbcType=VARCHAR},
@@ -164,6 +166,7 @@
         #{transAccountNo,jdbcType=VARCHAR},
       </if>
         #{aliUserId,jdbcType=VARCHAR},
+        #{rescoureId,jdbcType=INTEGER},
     </trim>
   </insert>
   <update id="updateUserStatusById" parameterType="com.applet.model.AmountRecord">

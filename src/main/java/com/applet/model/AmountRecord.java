@@ -56,6 +56,8 @@ public class AmountRecord {
 
     private String aliUserId;
 
+    private Integer rescoureId;
+
     public String getId() {
         return id;
     }
@@ -262,5 +264,13 @@ public class AmountRecord {
 
     public void setAliUserId(String aliUserId) {
         this.aliUserId = aliUserId == null ? null : aliUserId.trim();
+    }
+
+    public Integer getRescoureId() {
+        return rescoureId;
+    }
+
+    public void setRescoureId(Integer rescoureId) {
+        this.rescoureId = rescoureId;
     }
 }

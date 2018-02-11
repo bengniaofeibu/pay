@@ -92,6 +92,7 @@ public class WxAppletPayServiceImpl implements WxAppleetPayService {
         amountRecord.setAmount(new BigDecimal(wxAppletPayRequest.getAmount()));
         amountRecord.setUserId(wxAppletPayRequest.getAdminId());
         amountRecord.setAliUserId(wxAppletPayRequest.getOpenId());
+        amountRecord.setRescoureId(2);
         amountRecord.setRechargeWay(1);
         amountRecordMapper.insertSelective(amountRecord);
         return ResultUtil.success(requestPayment);
