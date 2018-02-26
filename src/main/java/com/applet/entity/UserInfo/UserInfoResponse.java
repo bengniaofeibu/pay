@@ -12,7 +12,7 @@ public class UserInfoResponse extends BaseResponseEntity{
 
     private Integer borrowBicycle;
 
-    private Integer borrowBicycleDate;
+    private Long ridingTime;
 
     public String getAdminId() {
         return adminId;
@@ -46,11 +46,11 @@ public class UserInfoResponse extends BaseResponseEntity{
         this.borrowBicycle = borrowBicycle;
     }
 
-    public Integer getBorrowBicycleDate() {
-        return borrowBicycleDate;
+    public Long getRidingTime() {
+        return ridingTime;
     }
 
-    public void setBorrowBicycleDate(Integer borrowBicycleDate) {
-        this.borrowBicycleDate = borrowBicycleDate;
+    public void setRidingTime(Long ridingTime) {
+        this.ridingTime = ridingTime;
     }
 }
