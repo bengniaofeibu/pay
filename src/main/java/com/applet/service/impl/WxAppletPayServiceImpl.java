@@ -97,44 +97,4 @@ public class WxAppletPayServiceImpl implements WxAppleetPayService {
         amountRecordMapper.insertSelective(amountRecord);
         return ResultUtil.success(requestPayment);
     }
-
-    /**
-     * 更新用户订单状态
-     *
-     * @return
-     */
-    @SystemServerLog(funcionExplain = "微信支付结果通知")
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public int updateUserStatus(WxAppletPayCallBack wxAppletPayCallBack) {
-        String userId = wxUserInfoMapper.selectUserIdByOpenId(wxAppletPayCallBack.getOpenid());
-        AmountRecord record = amountRecordMapper.selectUserStatusByRechargeId(wxAppletPayCallBack.getOut_trade_no());
-
-        int userUpdateNum = 0;
-        int wxUserUpdateNum = 0;
-        int amountRecordUpdateNum = 0;
-        if (userId != null && record != null) {
-            final UserInfo userInfo = new UserInfo();
-            userInfo.setId(userId);
-            userInfo.setAccountStatus(1);
-            userInfo.setDeposit(new BigDecimal(wxAppletPayCallBack.getTotal_fee()));
-            userUpdateNum = userInfoMapper.updateByStatusById(userInfo);
-            LOGGER.debug("更新用户状态(t_user_info)，更新内容 {} 更新条数 {}", JSONUtil.toJSONString(userInfo), userUpdateNum);
-
-            final WxUserInfo wxUserInfo = new WxUserInfo();
-            wxUserInfo.setDepositFee(7L);
-            wxUserInfo.setDepositFlag(wxAppletPayCallBack.getTotal_fee());
-            wxUserInfo.setTransactionId(wxAppletPayCallBack.getTransaction_id());
-            wxUserInfo.setOpenId(wxAppletPayCallBack.getOpenid());
-            wxUserUpdateNum = wxUserInfoMapper.updateUserStatusById(wxUserInfo);
-            LOGGER.debug("更新小程序用户消息(t_wx_user_info) 更新内容 {} 更新条数 {}", JSONUtil.toJSONString(wxUserInfo), wxUserUpdateNum);
-
-            final AmountRecord amountRecord = new AmountRecord();
-            amountRecord.setState(1);
-            amountRecord.setRechargeId(new BigDecimal(wxAppletPayCallBack.getOut_trade_no()));
-            amountRecordUpdateNum = amountRecordMapper.updateUserStatusById(amountRecord);
-            LOGGER.debug("更新订单状态(t_amount_record) 更新内容 {} 更新条数 {}", JSONUtil.toJSONString(amountRecord), amountRecordUpdateNum);
-        }
-        return (userUpdateNum + wxUserUpdateNum + amountRecordUpdateNum);
-    }
 }

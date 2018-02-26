@@ -60,8 +60,8 @@ public class UserInfoServiceImpl implements UserInfoService {
         Integer borrowBicycle = info.getmBorrowBicycle();
         userInfoResponse.setBorrowBicycle(borrowBicycle);
         if(borrowBicycle.intValue()==1){
-            int borrowBicycleDate=(int)(new Date().getTime()-info.getmBorrowBicycleDate().getTime())/(60*1000);
-            userInfoResponse.setBorrowBicycleDate(borrowBicycleDate);
+            long borrowBicycleDate=(new Date().getTime()-info.getmBorrowBicycleDate().getTime())/(60*1000);
+            userInfoResponse.setRidingTime(borrowBicycleDate);
         }
         return userInfoResponse;
     }

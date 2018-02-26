@@ -12,11 +12,4 @@ public interface WxAppleetPayService {
      * @return
      */
     AppletResult appletPay(WxAppletPayRequest request) throws Exception;
-
-
-    /**
-     * 更新用户订单状态
-     * @return
-     */
-    int updateUserStatus(WxAppletPayCallBack wxAppletPayCallBack);
 }
