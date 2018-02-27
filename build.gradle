@@ -57,6 +57,7 @@ dependencies {
     providedRuntime('org.springframework.boot:spring-boot-starter-jetty')   //删除默认的tomcat，添加jetty才能在idea下使用main函数启动
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.2.1'
 }
 
 def getDbProperties = {

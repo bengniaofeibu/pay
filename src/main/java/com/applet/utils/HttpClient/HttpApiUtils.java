@@ -15,12 +15,12 @@ public class HttpApiUtils {
     }
 
     public static String getBikeInfos(Map params){
-        String url ="http://139.196.194.172:8084/LockApi/lock?action=GETBIKEINFOS";//测试环境
+        String url ="http://106.15.47.133:8084/LockApi/lock?action=GETBIKEINFOS";//测试环境
         return HttpRequestProxy.doPost(url, params , getRecEncoding());
     }
 
     public static String openLockByGprs(Map params){
-        String url = "http://10.0.180.37/MidComPro/lock?action=OPENLOCK";
+        String url = "http://106.15.47.133:8082/MidComPro/lock?action=OPENLOCK";
         return HttpRequestProxy.doPost(url, params , getRecEncoding());
     }
 

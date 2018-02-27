@@ -37,7 +37,7 @@ public class RidingServiceImpl implements RidingService{
     @Override
     @SystemServerLog(funcionExplain = "查询骑行状态")
     public AppletResult queryRidingStatus(QueryRidingStatusRequest queryRidingStatusRequest){
-        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(queryRidingStatusRequest.getUserId());
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(queryRidingStatusRequest.getId());
         if(userInfo != null){
             QueryRidingStatusResponse queryRidingStatusResponse = new QueryRidingStatusResponse();
             queryRidingStatusResponse.setRidingFlag(userInfo.getmBorrowBicycle());
@@ -59,7 +59,7 @@ public class RidingServiceImpl implements RidingService{
     @Override
     @SystemServerLog(funcionExplain = "故障报修")
     public AppletResult endOrder(EndOrderRequest endOrderRequest){
-        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(endOrderRequest.getUserId());
+        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(endOrderRequest.getId());
         if(userInfo != null){
             String bicycleNo = CommonUtils.DecodeBarcode(endOrderRequest.getBarcode());
             if(!bicycleNo.equals("0")){
@@ -72,18 +72,18 @@ public class RidingServiceImpl implements RidingService{
                 feedbackInfo.setPicurl(endOrderRequest.getPicurl());
                 feedbackInfo.setSonType(endOrderRequest.getSonType());
                 feedbackInfo.setType(endOrderRequest.getType());
-                feedbackInfo.setUserId(endOrderRequest.getUserId());
+                feedbackInfo.setUserId(endOrderRequest.getId());
                 feedbackInfo.setPlatform(3);
                 if(Integer.parseInt(endOrderRequest.getSonType()) == 1 && endOrderRequest.getType() == 2){
-                    TransRecordTemp transRecordTemp = transRecordTempMapper.selectByUserIdAndTransFlag(endOrderRequest.getUserId());
+                    TransRecordTemp transRecordTemp = transRecordTempMapper.selectByUserIdAndTransFlag(endOrderRequest.getId());
                     if(transRecordTemp != null){
-                        transRecordTemp.setUserId(endOrderRequest.getUserId());
+                        transRecordTemp.setUserId(endOrderRequest.getId());
                         transRecordTemp.setTransFlag(1);
                         transRecordTemp.setState(1);
                         transRecordTemp.setRecessionDateTime(new Date());
                         transRecordTempMapper.updateByUserIdAndBorrowFlag(transRecordTemp);
                         userInfo.setmBorrowBicycle(0);
-                        userInfo.setId(endOrderRequest.getUserId());
+                        userInfo.setId(endOrderRequest.getId());
                         userInfoMapper.updateBorrowFlagById(userInfo);
                         feedbackInfo.setTransId(transRecordTemp.getId());
                     }else{

@@ -30,7 +30,7 @@ public class RidingController extends BaseController{
     @SystemControllerLog(funcionExplain = "故障报修")
     @GetMapping(value = "/wx_xcx_end_order")
     public AppletResult endOrder(EndOrderRequest endOrderRequest){
-
-        return ResultUtil.success();
+        AppletResult appletResult = ridingService.endOrder(endOrderRequest);
+        return appletResult;
     }
 }

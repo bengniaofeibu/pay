@@ -44,7 +44,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
     public AppletResult scaveningUnlock(ScaveningUnlockRequest scaveningUnlockRequest){
         String bicycleNo = CommonUtils.DecodeBarcode(scaveningUnlockRequest.getBarcode());
         if(!bicycleNo.equals("0")){
-            UserInfo userInfo = userInfoMapper.selectByPrimaryKey(scaveningUnlockRequest.getUserId());
+            UserInfo userInfo = userInfoMapper.selectByPrimaryKey(scaveningUnlockRequest.getId());
             if(userInfo != null){
                 if(userInfo.getAccountStatus() == 0 || userInfo.getAccountStatus() == 2){
                     return ResultUtil.error(ResultEnums.USER_NON_RECHARGE);
@@ -59,8 +59,8 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
                             JSONObject jsonBikeInfo = new JSONObject(bikeInfo);
                             JSONObject jsonLockGPRSRealData = new JSONObject(lockGPSRealData);
                             if(Integer.parseInt(jsonLockGPRSRealData.get("batteryLevel").toString()) >= 20){
-                                if(jsonBikeInfo.get("lock_series") != null){
-                                    if(Integer.parseInt(jsonBikeInfo.get("lock_series").toString()) == 2){
+                                if(jsonBikeInfo.get("lockSeries") != null){
+                                    if(Integer.parseInt(jsonBikeInfo.get("lockSeries").toString()) == 2){
                                         //短信开锁
                                         int resSmsOpenlock = openLockBySms(scaveningUnlockRequest,jsonBikeInfo,userInfo);
                                         if(resSmsOpenlock == 1){
@@ -126,7 +126,8 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
             transRecordTemp.setUseBlueTooth(2);
             transRecordTemp.setUserType(0);
             transRecordTemp.setCityNo(Integer.parseInt(jsonBikeInfo.get("cityNo").toString()));
-            transRecordTemp.setUserId(scaveningUnlockRequest.getUserId());
+            transRecordTemp.setUserId(scaveningUnlockRequest.getId());
+            transRecordTemp.setEndPosition(scaveningUnlockRequest.getLatitude() + "," + scaveningUnlockRequest.getLongitude());
 
             TransRecordSupply transRecordSupply = new TransRecordSupply();
             transRecordSupply.setTransId(uuid);
@@ -167,13 +168,14 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
             transRecordTemp.setUseBlueTooth(0);
             transRecordTemp.setUserType(0);
             transRecordTemp.setCityNo(Integer.parseInt(jsonBikeInfo.get("cityNo").toString()));
-            transRecordTemp.setUserId(scaveningUnlockRequest.getUserId());
+            transRecordTemp.setUserId(scaveningUnlockRequest.getId());
 
             TransRecordSupply transRecordSupply = new TransRecordSupply();
             transRecordSupply.setTransId(uuid);
             transRecordSupply.setDiscountMoney(new BigDecimal("0"));
             transRecordSupply.setFenceStatus(0);
             transRecordSupply.setOrderFrom("xcx");
+            transRecordSupply.setUpdateTime(new Date());
 
             userInfo.setmBorrowBicycle(4);
             userInfoMapper.updateByPrimaryKeySelective(userInfo);
