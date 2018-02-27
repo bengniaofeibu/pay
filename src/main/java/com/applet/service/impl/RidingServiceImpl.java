@@ -61,10 +61,30 @@ public class RidingServiceImpl implements RidingService{
     public AppletResult endOrder(EndOrderRequest endOrderRequest){
         UserInfo userInfo = userInfoMapper.selectByPrimaryKey(endOrderRequest.getId());
         if(userInfo != null){
-            String bicycleNo = CommonUtils.DecodeBarcode(endOrderRequest.getBarcode());
+            String uuid = UUID.randomUUID().toString();
+            FeedbackInfo feedbackInfo = new FeedbackInfo();
+            String bicycleNo;
+            if(Integer.parseInt(endOrderRequest.getSonType()) == 1 && endOrderRequest.getType() == 2){
+                TransRecordTemp transRecordTemp = transRecordTempMapper.selectByUserIdAndTransFlag(endOrderRequest.getId());
+                if(transRecordTemp != null){
+                    transRecordTemp.setUserId(endOrderRequest.getId());
+                    transRecordTemp.setTransFlag(1);
+                    transRecordTemp.setState(1);
+                    transRecordTemp.setRecessionDateTime(new Date());
+                    transRecordTempMapper.updateByUserIdAndBorrowFlag(transRecordTemp);
+                    userInfo.setmBorrowBicycle(0);
+                    userInfo.setId(endOrderRequest.getId());
+                    userInfoMapper.updateBorrowFlagById(userInfo);
+                    feedbackInfo.setTransId(transRecordTemp.getId());
+                    bicycleNo = String.valueOf(transRecordTemp.getBorrowBicycleNum());
+                }else{
+                    return ResultUtil.error(ResultEnums.SCAVENING_UNLOCK_ERRORTRANSRECORD);
+                }
+            }else{
+                bicycleNo = CommonUtils.DecodeBarcode(endOrderRequest.getBarcode());
+            }
+
             if(!bicycleNo.equals("0")){
-                String uuid = UUID.randomUUID().toString();
-                FeedbackInfo feedbackInfo = new FeedbackInfo();
                 feedbackInfo.setId(uuid);
                 feedbackInfo.setAddtime(new Date());
                 feedbackInfo.setBicycleNum(Integer.parseInt(bicycleNo));
@@ -74,22 +94,6 @@ public class RidingServiceImpl implements RidingService{
                 feedbackInfo.setType(endOrderRequest.getType());
                 feedbackInfo.setUserId(endOrderRequest.getId());
                 feedbackInfo.setPlatform(3);
-                if(Integer.parseInt(endOrderRequest.getSonType()) == 1 && endOrderRequest.getType() == 2){
-                    TransRecordTemp transRecordTemp = transRecordTempMapper.selectByUserIdAndTransFlag(endOrderRequest.getId());
-                    if(transRecordTemp != null){
-                        transRecordTemp.setUserId(endOrderRequest.getId());
-                        transRecordTemp.setTransFlag(1);
-                        transRecordTemp.setState(1);
-                        transRecordTemp.setRecessionDateTime(new Date());
-                        transRecordTempMapper.updateByUserIdAndBorrowFlag(transRecordTemp);
-                        userInfo.setmBorrowBicycle(0);
-                        userInfo.setId(endOrderRequest.getId());
-                        userInfoMapper.updateBorrowFlagById(userInfo);
-                        feedbackInfo.setTransId(transRecordTemp.getId());
-                    }else{
-                        return ResultUtil.error(ResultEnums.SCAVENING_UNLOCK_ERRORTRANSRECORD);
-                    }
-                }
                 if(!CommonUtils.isEmptyString(endOrderRequest.getLongitude())){
                     feedbackInfo.setBikeLng(endOrderRequest.getLongitude());
                 }
