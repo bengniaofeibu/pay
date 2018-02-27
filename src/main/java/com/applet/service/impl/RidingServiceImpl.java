@@ -5,6 +5,7 @@ import com.applet.entity.LockRequest.EndOrderRequest;
 import com.applet.entity.LockRequest.QueryRidingStatusRequest;
 import com.applet.entity.LockResponse.QueryRidingStatusResponse;
 import com.applet.enums.ResultEnums;
+import com.applet.mapper.FeedbackInfoMapper;
 import com.applet.mapper.TransRecordTempMapper;
 import com.applet.mapper.UserInfoMapper;
 import com.applet.model.FeedbackInfo;
@@ -31,6 +32,9 @@ public class RidingServiceImpl implements RidingService{
 
     @Autowired
     private TransRecordTempMapper transRecordTempMapper;
+
+    @Autowired
+    private FeedbackInfoMapper feedbackInfoMapper;
 
     private static final Logger LOGGER= LoggerFactory.getLogger(RidingServiceImpl.class);
 
@@ -100,6 +104,7 @@ public class RidingServiceImpl implements RidingService{
                 if(!CommonUtils.isEmptyString(endOrderRequest.getLatitude())){
                     feedbackInfo.setBikeLat(endOrderRequest.getLatitude());
                 }
+                feedbackInfoMapper.insert(feedbackInfo);
                 return ResultUtil.success();
             }else{
                 return ResultUtil.error(ResultEnums.SCAVENING_UNLOCK_ERRORBARCODE);
