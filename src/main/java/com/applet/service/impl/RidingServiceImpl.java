@@ -47,8 +47,12 @@ public class RidingServiceImpl implements RidingService{
             queryRidingStatusResponse.setRidingFlag(userInfo.getmBorrowBicycle());
             Date currentTime = new Date();
             long ridingTime;
-            if(currentTime.getTime() > userInfo.getmBorrowBicycleDate().getTime()){
-                ridingTime = (currentTime.getTime() - userInfo.getmBorrowBicycleDate().getTime())/1000/60;
+            if(userInfo.getmBorrowBicycleDate() != null){
+                if(currentTime.getTime() > userInfo.getmBorrowBicycleDate().getTime()){
+                    ridingTime = (currentTime.getTime() - userInfo.getmBorrowBicycleDate().getTime())/1000/60;
+                }else{
+                    ridingTime = 0;
+                }
             }else{
                 ridingTime = 0;
             }
