@@ -98,19 +98,4 @@ public class BaseController {
         }
         return null;
     }
-
-    /**
-     * 通知微信回调结果
-     * @return
-     */
-    protected String notifyWxCallBackResult(WxCallBackResultEnums callBackResult) throws Exception {
-      Map<String,Object> result=new HashMap<>();
-      if (callBackResult!=null){
-           result.put("return_code",callBackResult.getReturn_code());
-          if (!callBackResult.getReturn_msg().equals("")){
-              result.put("return_msg",callBackResult.getReturn_msg());
-          }
-      }
-       return XmlOrMapUtils.mapToXml(result);
-    }
 }
