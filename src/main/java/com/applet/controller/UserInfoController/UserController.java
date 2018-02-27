@@ -9,6 +9,7 @@ import com.applet.entity.UserInfo.PhoneRegisterRequest;
 import com.applet.entity.UserInfo.UserInfoResponse;
 import com.applet.entity.UserInfo.WxDetailedUserInfo;
 import com.applet.enums.ResultEnums;
+import com.applet.mapper.UserInfoMapper;
 import com.applet.model.UserInfo;
 import com.applet.model.WxUserInfo;
 import com.applet.service.UserInfoService;
@@ -34,6 +35,7 @@ public class UserController extends BaseController {
     @Autowired
     private UserInfoService userInfoService;
 
+
     @SystemControllerLog(funcionExplain = "进入微信注册登录控制层")
     @GetMapping("/wx_xcx_auth")
     public AppletResult register(WxUserRegisterRequest request, @RequestHeader("session") String session) {
@@ -51,7 +53,9 @@ public class UserController extends BaseController {
         //验证用户是否已经注册
         AppletResult userRegistered = isUserRegistered(authInfo.getOpenId());
         if (userRegistered!=null){
-            return userRegistered;
+            String userId = wxUserInfoMapper.selectUserIdByOpenId(authInfo.getOpenId());
+            UserInfoResponse userInfo = userInfoService.getUserInfo(userId);
+            return ResultUtil.success(userInfo);
         }
 
 
@@ -70,13 +74,10 @@ public class UserController extends BaseController {
 
             UserInfoResponse info = baseAddRegisterUser(authInfo.getOpenId(), generalUserInfo.getPhoneNumber(), detailedUserInfo.getCountry(), detailedUserInfo.getGender(), detailedUserInfo.getNickName(),detailedUserInfo.getAvatarUrl());
             return ResultUtil.success(info);
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error(" ERROR {}", e.getMessage());
+            return ResultUtil.error(ResultEnums.SERVER_ERROR);
         }
-
-        return null;
     }
 
     @SystemControllerLog(funcionExplain = "进入手机号注册登录控制层")
@@ -91,7 +92,9 @@ public class UserController extends BaseController {
             //验证用户是否已经注册
             AppletResult userRegistered = isUserRegistered(authInfo.getOpenId());
             if (userRegistered!=null){
-                return userRegistered;
+                String userId = wxUserInfoMapper.selectUserIdByOpenId(authInfo.getOpenId());
+                UserInfoResponse userInfo = userInfoService.getUserInfo(userId);
+                return ResultUtil.success(userInfo);
             }
 
             UserInfoResponse info = baseAddRegisterUser(authInfo.getOpenId(), request.getPhone(), null, null, null,null);

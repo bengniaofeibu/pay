@@ -32,7 +32,7 @@ public class BaseController {
     protected RedisUtil redisUtil;
 
     @Autowired
-    private WxUserInfoMapper wxUserInfoMapper;
+    protected WxUserInfoMapper wxUserInfoMapper;
 
     @Autowired
     protected RidingService ridingService;

@@ -35,9 +35,6 @@ public class ApplePayController extends BaseController {
     @Autowired
     private WxAppleetPayService wxAppleetPlayService;
 
-    @Autowired
-    private AmountRecordMapper amountRecordMapper;
-
 
     @SystemControllerLog(funcionExplain = "进入微信支付控制层")
     @GetMapping(value = "/wx_xcx_appletpay")
