@@ -103,6 +103,7 @@ public class RidingServiceImpl implements RidingService{
                 feedbackInfo.setType(endOrderRequest.getType());
                 feedbackInfo.setUserId(endOrderRequest.getId());
                 feedbackInfo.setPlatform(3);
+                feedbackInfo.setOpenId(endOrderRequest.getOpenId());
                 if(!CommonUtils.isEmptyString(endOrderRequest.getLongitude())){
                     feedbackInfo.setBikeLng(endOrderRequest.getLongitude());
                 }

@@ -128,9 +128,6 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
             transRecordTemp.setCityNo(Integer.parseInt(jsonBikeInfo.get("cityNo").toString()));
             transRecordTemp.setUserId(scaveningUnlockRequest.getId());
             transRecordTemp.setEndPosition(scaveningUnlockRequest.getLatitude() + "," + scaveningUnlockRequest.getLongitude());
-            transRecordTemp.setCalorie(new Long(0));
-            transRecordTemp.setKilometers(new BigDecimal(0));
-            transRecordTemp.setDelFlag(0);
 
             TransRecordSupply transRecordSupply = new TransRecordSupply();
             transRecordSupply.setTransId(uuid);

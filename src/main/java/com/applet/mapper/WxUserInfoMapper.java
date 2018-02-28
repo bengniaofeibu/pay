@@ -11,11 +11,11 @@ public interface WxUserInfoMapper {
 
     int insertSelective(WxUserInfo record);
 
-    String selectUserIdByOpenId(String openId);
+    String selectUserIdByMobile(String userMobile);
 
     int updateUserStatusById(WxUserInfo record);
 
-    Integer selectNumByOpenId(String openId);
+    Integer selectNumByMobile(String userMobile);
 
 
 

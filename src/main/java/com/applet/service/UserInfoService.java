@@ -3,6 +3,7 @@ package com.applet.service;
 import com.applet.entity.UserInfo.UserInfoResponse;
 import com.applet.model.UserInfo;
 import com.applet.model.WxUserInfo;
+import com.applet.utils.AppletResult;
 
 public interface UserInfoService {
 

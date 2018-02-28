@@ -3,12 +3,14 @@ package com.applet.controller;
 
 import com.applet.entity.Cat;
 import com.applet.entity.BaseEntity.BaseRequestEntity;
+import com.applet.entity.UserInfo.UserInfoResponse;
 import com.applet.enums.ResultEnums;
 import com.applet.enums.WxCallBackResultEnums;
 import com.applet.mapper.UserInfoMapper;
 import com.applet.mapper.WxUserInfoMapper;
 import com.applet.service.RidingService;
 import com.applet.service.ScavengingUnlockService;
+import com.applet.service.UserInfoService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.EncrypUtil;
@@ -40,19 +42,12 @@ public class BaseController {
     @Autowired
     protected ScavengingUnlockService scavengingUnlockService;
 
-    /**
-     * 验证请求参数
-     * @return
-     */
-    protected AppletResult validateReqParam(BaseRequestEntity request){
-        Map<String,Object> map = JSONUtil.parseObject(JSONUtil.toJSONString(request), Map.class);
-        for (Map.Entry<String,Object> entry:map.entrySet()) {
-           if (entry.getValue()==null || "".equals(entry.getValue()) ){
-                return ResultUtil.error(ResultEnums.PARAM_IS_NULL,new String[]{entry.getKey()});
-           }
-        }
-        return null;
-    }
+    @Autowired
+    protected UserInfoService userInfoService;
+
+    @Autowired
+    protected UserInfoMapper userInfoMapper;
+
 
     /**
      * 获取授权信息
@@ -88,14 +83,28 @@ public class BaseController {
 
     /**
      * 判断用法是否存在
-     * @param openId
+     * @param userMobile
      * @return
      */
-    protected AppletResult isUserRegistered(String openId){
-        Integer count = wxUserInfoMapper.selectNumByOpenId(openId);
+    protected AppletResult isUserRegistered(String userMobile){
+        Integer count = wxUserInfoMapper.selectNumByMobile(userMobile);
         if (count>0){
             return ResultUtil.error(ResultEnums.USER_ALREADY_EXIST);
         }
         return null;
+    }
+
+
+    /**
+     * 获取用户信息通过openId
+     *
+     * @param userMobile
+     * @return
+     */
+    protected UserInfoResponse getUserInfoByopenId(String userMobile) {
+        String userId = wxUserInfoMapper.selectUserIdByMobile(userMobile);
+        UserInfoResponse userInfo = userInfoService.getUserInfo(userId);
+        userInfo.setAdminId(userId);
+        return userInfo;
     }
 }

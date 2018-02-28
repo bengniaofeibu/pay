@@ -18,6 +18,8 @@ public class EndOrderRequest extends BaseLockRequest{
 
     private String description;
 
+    private String openId;
+
     public String getDescription() {
         return description;
     }
@@ -80,5 +82,13 @@ public class EndOrderRequest extends BaseLockRequest{
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

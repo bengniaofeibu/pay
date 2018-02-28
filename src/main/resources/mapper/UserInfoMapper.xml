@@ -60,6 +60,14 @@
     from t_user_info
     where id = #{id,jdbcType=VARCHAR} and del_flag = 0
   </select>
+
+  <select id="selectByUserPhone" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_user_info
+    where phone = #{phone,jdbcType=VARCHAR} and del_flag = 0
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_user_info
     where id = #{id,jdbcType=VARCHAR}
@@ -90,9 +98,7 @@
       <if test="cityNo != null">
         city_no,
       </if>
-      <if test="creditScore != null">
         credit_score,
-      </if>
       <if test="deposit != null">
         deposit,
       </if>
@@ -228,9 +234,7 @@
       <if test="cityNo != null">
         #{cityNo,jdbcType=VARCHAR},
       </if>
-      <if test="creditScore != null">
-        #{creditScore,jdbcType=INTEGER},
-      </if>
+        100,
       <if test="deposit != null">
         #{deposit,jdbcType=DECIMAL},
       </if>

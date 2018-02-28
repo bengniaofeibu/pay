@@ -59,7 +59,7 @@
       trans_money, upload_date, user_id, 
       create_by, create_date, update_by, 
       update_date, remarks, end_position, 
-      kilometers, start_position, bicycle_type, 
+      kilometers, start_position, bicycle_type,
       sim_no, use_blue_tooth, calorie, 
       duration, user_type, last_used_time, 
       del_flag, city_no)
@@ -70,10 +70,10 @@
       #{transMoney,jdbcType=DECIMAL}, #{uploadDate,jdbcType=TIMESTAMP}, #{userId,jdbcType=VARCHAR}, 
       #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
       #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, #{endPosition,jdbcType=VARCHAR}, 
-      #{kilometers,jdbcType=DECIMAL}, #{startPosition,jdbcType=VARCHAR}, #{bicycleType,jdbcType=INTEGER}, 
-      #{simNo,jdbcType=VARCHAR}, #{useBlueTooth,jdbcType=INTEGER}, #{calorie,jdbcType=DECIMAL}, 
+      0, #{startPosition,jdbcType=VARCHAR}, #{bicycleType,jdbcType=INTEGER},
+      #{simNo,jdbcType=VARCHAR}, #{useBlueTooth,jdbcType=INTEGER}, 0,
       #{duration,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{lastUsedTime,jdbcType=TIMESTAMP}, 
-      #{delFlag,jdbcType=INTEGER}, #{cityNo,jdbcType=INTEGER})
+      0, #{cityNo,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.applet.model.TransRecordTemp">
     insert into t_trans_record_temp

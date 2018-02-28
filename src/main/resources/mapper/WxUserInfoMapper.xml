@@ -15,17 +15,17 @@
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <select id="selectUserIdByOpenId" parameterType="java.lang.String" resultType="java.lang.String">
+  <select id="selectUserIdByMobile" parameterType="java.lang.String" resultType="java.lang.String">
     select 
     user_id
     from t_wx_user_info
-    where open_id = #{openId,jdbcType=BIGINT}
+    where user_mobile = #{userMobile,jdbcType=VARCHAR}
   </select>
-  <select id="selectNumByOpenId" parameterType="java.lang.String" resultType="java.lang.Integer">
+  <select id="selectNumByMobile" parameterType="java.lang.String" resultType="java.lang.Integer">
     select
     COUNT(1)
     from t_wx_user_info
-    where open_id = #{openId,jdbcType=BIGINT}
+    where user_mobile = #{userMobile,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_wx_user_info

@@ -17,4 +17,6 @@ public interface UserInfoMapper {
     int updateByStatusById(UserInfo record);
 
     int updateBorrowFlagById(UserInfo record);
+
+    UserInfo selectByUserPhone(String phone);
 }
