@@ -151,7 +151,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
         if(res == 1){
             //生成订单
             long orderNum = System.currentTimeMillis() * 100 + CommonUtils.getRandom(100);
-            String uuid = UUID.randomUUID().toString();
+            String uuid = UuidUtil.getUuid();
             TransRecordTemp transRecordTemp = new TransRecordTemp();
             transRecordTemp.setBorrowBicycleNum(Integer.parseInt(jsonBikeInfo.get("bicycleNo").toString()));
             transRecordTemp.setId(uuid);
