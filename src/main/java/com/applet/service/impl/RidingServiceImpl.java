@@ -11,6 +11,7 @@ import com.applet.mapper.UserInfoMapper;
 import com.applet.model.FeedbackInfo;
 import com.applet.model.TransRecordTemp;
 import com.applet.model.UserInfo;
+import com.applet.model.WxUserInfo;
 import com.applet.service.RidingService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
