@@ -15,6 +15,7 @@ import com.applet.utils.AppletResult;
 import com.applet.utils.HttpClient.HttpLockApiUtils;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.CommonUtils;
+import com.applet.utils.common.UuidUtil;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +109,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
         if(res == 1){
             //生成订单
             long orderNum = System.currentTimeMillis() * 100 + CommonUtils.getRandom(100);
-            String uuid = UUID.randomUUID().toString();
+            String uuid = UuidUtil.getUuid();
             TransRecordTemp transRecordTemp = new TransRecordTemp();
             transRecordTemp.setBorrowBicycleNum(Integer.parseInt(jsonBikeInfo.get("bicycleNo").toString()));
             transRecordTemp.setId(uuid);
