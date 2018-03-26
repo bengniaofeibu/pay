@@ -2,13 +2,13 @@ package com.applet;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
-@EnableScheduling
-public class WxappletApplication {
+@EnableEurekaClient
+public class JjbiclycleuserApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WxappletApplication.class, args);
+		SpringApplication.run(JjbiclycleuserApplication.class, args);
 	}
 }

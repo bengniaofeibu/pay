@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://139.196.194.172:3306/electric_bicycle_pro_dev?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=true
+    url: jdbc:mysql://10.25.22.59:3306/electric_bicycle_pro_test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=true
     userName: jjtest
     password: 99b39189a35c
     driver-class-name: com.mysql.jdbc.Driver
@@ -9,12 +9,7 @@ spring:
       initial-size: 5
       min-idle: 5
       max-idle: 10
-#  data:
-#    elasticsearch:
-##      cluster-name: elasticsearch
-#      cluster-nodes: 172.16.20.14:9300
-#      repositories:
-#        enabled: true
+
   redis:
     database: 4
     host: 139.196.194.172
@@ -25,19 +20,17 @@ spring:
       max-wait: 1000
     timeout: 1000
 
+eureka:
+  client:
+    service-url:
+       defaultZone: http://139.196.194.172:8091/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
 # LOGGING
 logging:
     level:
        com.example: DEBUG
     config: classpath:logback/logback-dev.xml
-mybatis:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  config-location: classpath:mybatis/mybatis.xml
 
-
-sms.prefix: applet
-sms.url: http://106.15.47.133:8080/sms/captcha
-sms.checkUrl: http://106.15.47.133:8080/sms/ckCaptcha
-
-wxAppletRootUrl: http://app2.99bicycle.com:8083/pay/wx_xcx_callback
+wxAppletRootUrl: http://99company.99bicycle.com:2222/pay/wx_xcx_callback

@@ -4,8 +4,12 @@ package com.applet.utils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.applet.utils.common.JSONUtil;
 
+import java.io.Serializable;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AppletResult {
+public class AppletResult implements Serializable{
+
+    private static final long serialVersionUID = 8360101072462967795L;
 
      /** 返回码 **/
      Integer code;
