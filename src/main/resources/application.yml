@@ -4,10 +4,10 @@ server:
 
 spring:
   application:
-    name: wxappletpay
+    name: jjbicycleuser
   profiles:
-#    active: dev
-    active: prod
+    active: dev
+#    active: prod
   http:
     encoding:
       charset: utf-8

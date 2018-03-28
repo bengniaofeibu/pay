@@ -2,7 +2,7 @@ package com.applet.enums;
 
 public enum ResultEnums {
 
-    SERVER_ERROR(500,"系统内部错误"),
+    SERVER_ERROR(-1,"系统内部错误"),
 
     NOT_FOUND_SESSION(404, "错误SESSION"),
 

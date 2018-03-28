@@ -3,6 +3,7 @@ package com.applet.utils.common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -100,7 +101,6 @@ public class RedisUtil {
 	}
 
 	public void setObjAndExpire(String key, Object value, Integer seconds) {
-
 		valOps.set(key, value, seconds, TimeUnit.SECONDS);
 	}
 
@@ -354,4 +354,7 @@ public class RedisUtil {
 	public boolean ifExist(String key) {
 		return stringRedisTemplate.hasKey(key);
 	}
+
+
+
 }

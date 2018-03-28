@@ -22,6 +22,7 @@ public class ResultUtil {
     }
 
 
+
     public static AppletResult error(ResultEnums resultEnums,String...msg){
         AppletResult result = new AppletResult();
         result.setCode(resultEnums.getCode());
