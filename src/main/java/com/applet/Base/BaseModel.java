@@ -1,7 +1,6 @@
 package com.applet.Base;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class BaseModel {
+public abstract class BaseModel extends  AbstractBaseObject{
+    private static final long serialVersionUID = 5895699582957353403L;
 }

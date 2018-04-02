@@ -1,12 +1,20 @@
 package com.applet.entity;
 
-public class Point {
+public class StorePoint {
 
     /** 经度 **/
     private String lng;
 
     /** 纬度 **/
     private String lat;
+
+    public StorePoint() {
+    }
+
+    public StorePoint(String lng, String lat) {
+        this.lng = lng;
+        this.lat = lat;
+    }
 
     public String getLng() {
         return lng;
