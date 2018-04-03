@@ -5,6 +5,8 @@ import com.applet.Base.BaseEntity;
 public class CustomerInfo extends BaseEntity {
     private static final long serialVersionUID = 4885441308232145678L;
 
+    /** 地址id **/
+    private String addressId;
 
     /** 客户唯一标识 **/
     private String userId;
@@ -36,6 +38,18 @@ public class CustomerInfo extends BaseEntity {
         this.customerCity = customerCity;
         this.customerArea = customerArea;
         this.customerDetailedAddress = customerDetailedAddress;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
     }
 
     public String getUserId() {
@@ -98,7 +112,8 @@ public class CustomerInfo extends BaseEntity {
     @Override
     public String toString() {
         return "CustomerInfo{" +
-                "userId='" + userId + '\'' +
+                "addressId='" + addressId + '\'' +
+                ", userId='" + userId + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", customerPhone='" + customerPhone + '\'' +
                 ", customerProvince='" + customerProvince + '\'' +
