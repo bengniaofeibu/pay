@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.UserInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="account_status" jdbcType="INTEGER" property="accountStatus" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="app_version" jdbcType="VARCHAR" property="appVersion" />
+    <result column="certificate_negative" jdbcType="VARCHAR" property="certificateNegative" />
+    <result column="certificate_positive" jdbcType="VARCHAR" property="certificatePositive" />
+    <result column="change_battery_status" jdbcType="INTEGER" property="changeBatteryStatus" />
+    <result column="city_no" jdbcType="VARCHAR" property="cityNo" />
+    <result column="credit_score" jdbcType="INTEGER" property="creditScore" />
+    <result column="deposit" jdbcType="DECIMAL" property="deposit" />
+    <result column="guester_state" jdbcType="INTEGER" property="guesterState" />
+    <result column="id_cardnum" jdbcType="VARCHAR" property="idCardnum" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="login_state" jdbcType="INTEGER" property="loginState" />
+    <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
+    <result column="m_borrow_bicycle" jdbcType="INTEGER" property="mBorrowBicycle" />
+    <result column="m_borrow_bicycle_date" jdbcType="TIMESTAMP" property="mBorrowBicycleDate" />
+    <result column="m_phone_system_version" jdbcType="VARCHAR" property="mPhoneSystemVersion" />
+    <result column="nationality" jdbcType="VARCHAR" property="nationality" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="open_date" jdbcType="TIMESTAMP" property="openDate" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="picurl" jdbcType="VARCHAR" property="picurl" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="status_change_time" jdbcType="TIMESTAMP" property="statusChangeTime" />
+    <result column="user_level" jdbcType="INTEGER" property="userLevel" />
+    <result column="validate_date" jdbcType="TIMESTAMP" property="validateDate" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="balance" jdbcType="DECIMAL" property="balance" />
+    <result column="balance_free" jdbcType="DECIMAL" property="balanceFree" />
+    <result column="month_card_time" jdbcType="TIMESTAMP" property="monthCardTime" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="lucky_money" jdbcType="DECIMAL" property="luckyMoney" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="alipay_account" jdbcType="VARCHAR" property="alipayAccount" />
+    <result column="phone_province" jdbcType="VARCHAR" property="phoneProvince" />
+    <result column="phone_city" jdbcType="VARCHAR" property="phoneCity" />
+    <result column="channel" jdbcType="VARCHAR" property="channel" />
+    <result column="register_city" jdbcType="VARCHAR" property="registerCity" />
+    <result column="imei" jdbcType="VARCHAR" property="imei" />
+    <result column="idfa" jdbcType="VARCHAR" property="idfa" />
+    <result column="user_source" jdbcType="INTEGER" property="userSource" />
+    <result column="mac" jdbcType="VARCHAR" property="mac" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, account_status, add_time, app_version, certificate_negative, certificate_positive, 
+    change_battery_status, city_no, credit_score, deposit, guester_state, id_cardnum, 
+    integral, login_state, login_time, m_borrow_bicycle, m_borrow_bicycle_date, m_phone_system_version, 
+    nationality, nickname, open_date, phone, picurl, real_name, status_change_time, user_level, 
+    validate_date, create_by, create_date, update_by, update_date, remarks, del_flag, 
+    balance, balance_free, month_card_time, gender, lucky_money, age, alipay_account, 
+    phone_province, phone_city, channel, register_city, imei, idfa, user_source, mac
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select id
+    from t_user_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+</mapper>

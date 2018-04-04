@@ -14,7 +14,7 @@ spring:
     database: 4
     host: 139.196.194.172
     password: test123
-    port: 6379
+    port: 6380
     pool:
       max-active: 8
       max-wait: 1000
@@ -32,5 +32,3 @@ logging:
     level:
        com.example: DEBUG
     config: classpath:logback/logback-dev.xml
-
-wxAppletRootUrl: http://99company.99bicycle.com:2222/pay/wx_xcx_callback

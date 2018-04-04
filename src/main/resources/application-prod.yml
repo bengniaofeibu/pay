@@ -33,5 +33,3 @@ logging:
     level:
        com.example: DEBUG
     config: classpath:logback/logback-prod.xml
-
-wxAppletRootUrl: http://139.196.250.4:2222/pay/wx_xcx_callback
