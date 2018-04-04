@@ -1,18 +1,29 @@
 package com.applet.service.impl;
 
 import com.applet.annotation.SystemServerLog;
-import com.applet.entity.CustomerInfo;
+import com.applet.enums.ResultEnums;
+import com.applet.mapper.CustomerAddressInfoMapper;
+import com.applet.model.CustomerAddressInfo;
 import com.applet.service.CustomerInfoService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
 public class CustomerInfoServerImpl implements CustomerInfoService {
+
+
+     private static final Logger LOGGER= LoggerFactory.getLogger(CustomerInfoServerImpl.class);
+
+     @Autowired
+     private CustomerAddressInfoMapper customerAddressInfoMapper;
+
     /**
      * 获取客户地址
      *
@@ -22,12 +33,8 @@ public class CustomerInfoServerImpl implements CustomerInfoService {
     @SystemServerLog(funcionExplain = "获取客户地址")
     @Override
     public AppletResult getCustomerAddress(String userId) {
-        List<CustomerInfo> list=new LinkedList<>();
 
-        list.add(new CustomerInfo("上海","上海市","闵行区","金汇路金汇四季广场"));
-        list.add(new CustomerInfo("上海","上海市","浦东新区","盛夏路570号"));
-
-        return ResultUtil.success(list);
+        return ResultUtil.success(ResultEnums.RETURN_SUCCESS,customerAddressInfoMapper.selectByUserId(userId));
     }
 
     /**
@@ -36,23 +43,28 @@ public class CustomerInfoServerImpl implements CustomerInfoService {
      * @param customerInfo
      * @return
      */
+    @SystemServerLog(funcionExplain = "添加或者修改客户地址")
     @Override
-    public AppletResult addAndRemoveAddress(CustomerInfo customerInfo) {
-        if(StringUtils.isEmpty(customerInfo.getAddressId())){
-            return ResultUtil.success("添加地址成功");
+    public AppletResult addAndUpdateAddress(CustomerAddressInfo customerInfo) {
+        if(StringUtils.isEmpty(customerInfo.getId())){
+            customerAddressInfoMapper.insertCustomerAddressInfo(customerInfo);
+            return ResultUtil.success();
         }else {
-            return ResultUtil.success("修改地址成功");
+            customerAddressInfoMapper.updateCustomerAddressInfo(customerInfo);
+            return ResultUtil.success();
         }
     }
 
     /**
      * 删除用户地址
      *
-     * @param addressId
+     * @param id
      * @return
      */
+    @SystemServerLog(funcionExplain = "删除客户地址")
     @Override
-    public AppletResult deleteAddress(String addressId) {
-        return ResultUtil.success("删除地址成功");
+    public AppletResult deleteAddress(Long id) {
+        customerAddressInfoMapper.updateDelFlag(id);
+        return ResultUtil.success();
     }
 }

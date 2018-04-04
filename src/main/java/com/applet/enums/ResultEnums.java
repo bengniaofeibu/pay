@@ -4,6 +4,8 @@ public enum ResultEnums {
 
     SERVER_ERROR(-1,"系统内部错误"),
 
+    RETURN_SUCCESS(200,"SUCCESS"),
+
     NOT_FOUND_SESSION(404, "错误SESSION"),
 
     PARAM_IS_NULL(1001,"参数为空"),

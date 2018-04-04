@@ -9,8 +9,16 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Point;
+import org.springframework.data.redis.connection.RedisGeoCommands;
+import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -23,6 +31,9 @@ import org.springframework.stereotype.Component;
  */
 @Component("redisUtil")
 public class RedisUtil {
+
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedisUtil.class);
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -264,6 +275,7 @@ public class RedisUtil {
     public void rPushList(String key, Object value) {
         redisTemplate.opsForList().rightPush(key, value);
     }
+
     /**
      * 添加map对象元素
      *
@@ -280,14 +292,14 @@ public class RedisUtil {
      * @param mapKey map中的key
      * @return map中的value
      */
-    public <T> List<T> getObjectList(String key, String mapKey,Class<T> clz) {
-        String  obj=(String)redisTemplate.opsForHash().get(key, mapKey);
+    public <T> List<T> getObjectList(String key, String mapKey, Class<T> clz) {
+        String obj = (String) redisTemplate.opsForHash().get(key, mapKey);
         //String resultStr=JsonUtil.toJson(obj);
         try {
-            return JSONObject.parseArray(obj,clz);
+            return JSONObject.parseArray(obj, clz);
         } catch (Exception e) {
             e.printStackTrace();
-            return  null;
+            return null;
         }
     }
 
@@ -345,8 +357,61 @@ public class RedisUtil {
     }
 
 
+    /**
+     * 添加坐标点
+     *
+     * @param key
+     * @param point
+     * @param name
+     * @return
+     */
+    public long addGeoPoint(String key, Point point, String name, long time) {
+        try {
+            GeoOperations<Object, Object> geoOperationseo = redisTemplate.opsForGeo();
+            Long aLong = geoOperationseo.geoAdd(key, point, name);
+            if (time > 0) {
+                redisTemplate.expire(key, time, TimeUnit.SECONDS);
+            }
+            return aLong;
+        } catch (Exception e) {
+            LOGGER.error("缓存添加失败 key {} x {} y {} name {} time {}", key, point.getX(), point.getY(), name, time);
+        }
+        return 0;
+    }
 
-    public long addGeoPoint(String key, Point point,String name){
-        return redisTemplate.opsForGeo().geoAdd(key,point,name);
+
+    /**
+     * 根据指定范围获取周围坐标信息
+     *
+     * @param key
+     * @param point
+     * @param direction
+     * @param distanceUnit
+     * @param distance
+     * @param limit
+     * @return
+     */
+    public GeoResults<RedisGeoCommands.GeoLocation<Object>> radiusGeo(String key, Point point, Sort.Direction direction,
+                                                                      RedisGeoCommands.DistanceUnit distanceUnit, long distance, int limit) {
+
+        GeoResults<RedisGeoCommands.GeoLocation<Object>> geoResults = null;
+        try {
+            GeoOperations<Object, Object> geoOperationseo = redisTemplate.opsForGeo();
+
+            RedisGeoCommands.GeoRadiusCommandArgs geoRadiusCommandArgs = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs();
+
+            if (limit>0){
+                geoRadiusCommandArgs.limit(limit);
+            }
+            if (Sort.Direction.ASC.equals(direction)) {
+                geoRadiusCommandArgs.sortAscending();
+            } else {
+                geoRadiusCommandArgs.sortDescending();
+            }
+            geoResults = geoOperationseo.geoRadius(key, new Circle(point, new Distance(distance, distanceUnit)));
+        } catch (Exception e) {
+            LOGGER.error("缓存获取失败 key {} x {} y {} distance {} limit {}", key, point.getX(), point.getY(), distance, limit);
+        }
+        return geoResults;
     }
 }

@@ -1,6 +1,6 @@
 package com.applet.service;
 
-import com.applet.entity.CustomerInfo;
+import com.applet.model.CustomerAddressInfo;
 import com.applet.utils.AppletResult;
 
 public interface CustomerInfoService {
@@ -18,12 +18,12 @@ public interface CustomerInfoService {
      * @param customerInfo
      * @return
      */
-    AppletResult addAndRemoveAddress(CustomerInfo customerInfo);
+    AppletResult addAndUpdateAddress(CustomerAddressInfo customerInfo);
 
     /**
      * 删除地址
-     * @param addressId
+     * @param id
      * @return
      */
-    AppletResult deleteAddress(String addressId);
+    AppletResult deleteAddress(Long id);
 }

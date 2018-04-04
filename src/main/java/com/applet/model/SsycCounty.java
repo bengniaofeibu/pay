@@ -1,6 +1,11 @@
 package com.applet.model;
 
-public class SsycCounty {
+import com.applet.Base.BaseModel;
+
+public class SsycCounty extends BaseModel{
+
+    private static final long serialVersionUID = 5895699582957353403L;
+
     private Integer id;
 
     private Long cityId;

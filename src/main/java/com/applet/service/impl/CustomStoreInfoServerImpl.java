@@ -5,6 +5,7 @@ import com.applet.entity.MerchantsInfo;
 import com.applet.entity.StorePoint;
 import com.applet.entity.StoreTypeDetails;
 import com.applet.entity.StoreTypes;
+import com.applet.enums.ResultEnums;
 import com.applet.mapper.NyCustomStoreMapper;
 import com.applet.model.NyCustomStore;
 import com.applet.service.CustomStoreInfoService;
@@ -47,7 +48,7 @@ public class CustomStoreInfoServerImpl implements CustomStoreInfoService {
         merchantsInfoLists.add(new MerchantsInfo("AAAA","早餐",1));
         merchantsInfoLists.add(new MerchantsInfo("BBBB","家政",2));
 
-        return ResultUtil.success(merchantsInfoLists);
+        return ResultUtil.success(ResultEnums.RETURN_SUCCESS,merchantsInfoLists);
     }
 
     /**
@@ -84,9 +85,7 @@ public class CustomStoreInfoServerImpl implements CustomStoreInfoService {
         list.add(nyCustomStore);
         list.add(nyCustomStore2);
 
-        long count = redisUtil.addGeoPoint("custorm:point:", new org.springframework.data.geo.Point(12.0131, 31.0111), "上海");
-        System.out.println(count);
-        return ResultUtil.success(list);
+        return ResultUtil.success(ResultEnums.RETURN_SUCCESS,list);
     }
 
     /**
@@ -104,7 +103,7 @@ public class CustomStoreInfoServerImpl implements CustomStoreInfoService {
            urls.add("url1");
            urls.add("url2");
 
-        return ResultUtil.success(new MerchantsInfo(urls,500L,"h5url","早餐店"));
+        return ResultUtil.success(ResultEnums.RETURN_SUCCESS,new MerchantsInfo(urls,500L,"h5url","早餐店"));
     }
 
     /**
@@ -145,6 +144,6 @@ public class CustomStoreInfoServerImpl implements CustomStoreInfoService {
         detailsList3.add(new StoreTypeDetails("image3","描述信息","地址",500L,4544L));
         list.add(new StoreTypes(detailsList3,4,"推荐"));
 
-        return ResultUtil.success(list);
+        return ResultUtil.success(ResultEnums.RETURN_SUCCESS,list);
     }
 }

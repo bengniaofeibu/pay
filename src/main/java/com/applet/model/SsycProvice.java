@@ -1,6 +1,11 @@
 package com.applet.model;
 
-public class SsycProvice {
+import com.applet.Base.BaseModel;
+
+public class SsycProvice extends BaseModel{
+
+    private static final long serialVersionUID = 5895699582957353403L;
+
     private Integer id;
 
     private Integer proviceId;

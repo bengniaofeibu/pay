@@ -5,19 +5,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResultUtil {
-    public static AppletResult success(Object object){
+    public static AppletResult success(ResultEnums resultEnums,Object...object){
 
         AppletResult result = new AppletResult();
-        result.setCode(200);
-        result.setMsg("success");
+        result.setCode(resultEnums.getCode());
+        result.setMsg(resultEnums.getMsg());
         result.setData(object);
         return result;
     }
 
     public static AppletResult success(){
         AppletResult result = new AppletResult();
-        result.setCode(200);
-        result.setMsg("success");
+        result.setCode(ResultEnums.RETURN_SUCCESS.getCode());
+        result.setMsg(ResultEnums.RETURN_SUCCESS.getMsg());
         return result;
     }
 

@@ -5,6 +5,9 @@ import com.applet.Base.BaseModel;
 import java.util.Date;
 
 public class NyCustomStore extends BaseModel {
+
+    private static final long serialVersionUID = 5895699582957353403L;
+
     private String id;
 
     private String storeName;

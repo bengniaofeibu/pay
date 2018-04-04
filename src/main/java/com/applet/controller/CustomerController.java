@@ -2,8 +2,7 @@ package com.applet.controller;
 
 import com.applet.Base.BaseController;
 import com.applet.annotation.SystemControllerLog;
-import com.applet.entity.CustomerInfo;
-import com.applet.entity.StorePoint;
+import com.applet.model.CustomerAddressInfo;
 import com.applet.service.CustomerInfoService;
 import com.applet.utils.AppletResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,21 +39,21 @@ public class CustomerController extends BaseController {
      * @return
      */
     @SystemControllerLog(funcionExplain = "进入添加修改地址控制层")
-    @PostMapping(value = "/modify/customerAddress")
-    public AppletResult addAndRemoveAddress(@RequestBody CustomerInfo customerInfo){
+    @PostMapping(value = "/update/customerAddress")
+    public AppletResult addAndUpdateAddress(@RequestBody CustomerAddressInfo customerInfo){
 
-        return  customerInfoService.addAndRemoveAddress(customerInfo);
+        return  customerInfoService.addAndUpdateAddress(customerInfo);
     }
 
     /**
      * 删除地址
-     * @param addressId
+     * @param id
      * @return
      */
     @SystemControllerLog(funcionExplain = "进入删除地址控制层")
     @PostMapping(value = "/modify/customerAddress")
-    public AppletResult deleteAddress(String addressId){
+    public AppletResult deleteAddress(Long id){
 
-        return  customerInfoService.deleteAddress(addressId);
+        return  customerInfoService.deleteAddress(id);
     }
 }
