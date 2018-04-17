@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.CustomerOrderInfoMapper">
+    <resultMap id="BaseResultMap" type="com.applet.model.CustomerOrderInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="CHAR" property="userId"/>
+        <result column="order_address_id" jdbcType="BIGINT" property="orderAddressId"/>
+        <result column="user_pay_number" jdbcType="VARCHAR" property="userPayNumber"/>
+        <result column="order_number" jdbcType="CHAR" property="orderNumber"/>
+        <result column="order_subject" jdbcType="char" property="orderSubject"/>
+        <result column="trade_no" jdbcType="VARCHAR" property="tradeNo"/>
+        <result column="pay_amount" jdbcType="DECIMAL" property="payAmount"/>
+        <result column="pay_way" jdbcType="SMALLINT" property="payWay"/>
+        <result column="pay_status" jdbcType="SMALLINT" property="payStatus"/>
+        <result column="del_flag" jdbcType="SMALLINT" property="deXlFlag"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_pay_number, order_number, trade_no, pay_amount,
+    pay_way, pay_status
+  </sql>
+    <select id="selectPayStatusByOrderNumber" parameterType="com.applet.model.CustomerOrderInfo" resultMap="BaseResultMap">
+    select 
+    pay_amount,pay_status
+    from t_customer_order_info
+    where order_number = #{order_number,jdbcType=CHAR}
+  </select>
+
+    <select id="selectNumByOrderNumber" parameterType="com.applet.model.CustomerOrderInfo" resultMap="BaseResultMap">
+        select
+        pay_amount,pay_status
+        from t_customer_order_info
+        where order_number = #{order_number,jdbcType=CHAR}
+    </select>
+
+    <update id="updateOrderStatusByOrderNum" parameterType="com.applet.model.CustomerOrderInfo">
+        update t_customer_order_info
+        <set>
+            <if test="userPayNumber != null">
+                user_pay_number = #{userPayNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="tradeNo != null">
+                trade_no = #{tradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus,jdbcType=SMALLINT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=SMALLINT},
+            </if>
+            update_time = NOW(),
+        </set>
+        where orderNumber = #{orderNumber,jdbcType=CHAR}
+    </update>
+</mapper>

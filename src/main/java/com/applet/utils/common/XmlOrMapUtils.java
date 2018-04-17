@@ -68,7 +68,7 @@ public class XmlOrMapUtils {
 	 * @return XML格式的字符串
 	 * @throws Exception
 	 */
-	public static String mapToXml(Map<String, Object> data) throws Exception {
+	public static String mapToXml(Map<String, String> data) throws Exception {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
 				.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory

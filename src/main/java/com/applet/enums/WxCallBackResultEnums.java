@@ -1,14 +1,19 @@
 package com.applet.enums;
 
-public enum  WxCallBackResultEnums {
+import com.applet.utils.common.JSONUtil;
 
-    CALL_BACK_FEE_NOT_EQUAL_FAIL("FAIL","支付金额与用户订单金额不一致"),
+import java.util.HashMap;
+import java.util.Map;
+
+public enum  WxCallBackResultEnums {
 
     CALL_BACK_NOTIFY_SUCCESS("SUCCESS",""),
 
     CALL_BACK_NOTIFY_SIGIN_FAIL("FAIL","签名失败"),
 
-    CALL_BACK_NOTIFY_FAIL("FAIL","通知失败");
+    CALL_BACK_NOTIFY_FAIL("FAIL","通信失败"),
+
+    CALL_BACK_BUSINESS_FAIL("FAIL","业务失败");
 
     String return_code;
 
@@ -33,5 +38,17 @@ public enum  WxCallBackResultEnums {
 
     public void setReturn_msg(String return_msg) {
         this.return_msg = return_msg;
+    }
+
+    /**
+     * 生成微信回调接口Map
+     * @param wxCallBackResultEnums
+     * @return
+     */
+    public static Map<String,String>  returnCallResult(WxCallBackResultEnums wxCallBackResultEnums){
+        Map<String,String> backMap=new HashMap<>();
+        backMap.put("return_code",wxCallBackResultEnums.getReturn_code());
+        backMap.put("return_msg",wxCallBackResultEnums.getReturn_msg());
+        return backMap;
     }
 }
