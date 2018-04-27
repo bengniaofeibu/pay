@@ -6,6 +6,8 @@ import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import com.applet.Base.BaseServiceImpl;
+import com.applet.Request.UserPayReq;
 import com.applet.annotation.SystemServerLog;
 import com.applet.entity.AliPayInfo;
 import com.applet.entity.PayBackStatusNotice;
@@ -13,8 +15,11 @@ import com.applet.enums.ResultEnums;
 import com.applet.mapper.CustomerOrderInfoMapper;
 import com.applet.model.BaseOrderInfo;
 import com.applet.model.CustomerOrderInfo;
+import com.applet.model.NyCoupon;
 import com.applet.service.AliPayService;
 import com.applet.service.OrderStatusUpdateService;
+import com.applet.service.StoreOrderStatusUpdateServiceImpl;
+import com.applet.service.StoreOrderUpdateService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.JSONUtil;
@@ -32,7 +37,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 @Service
-public class AliPayServiceImpl implements AliPayService {
+public class AliPayServiceImpl extends BaseServiceImpl implements AliPayService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AliPayServiceImpl.class);
 
@@ -40,8 +45,9 @@ public class AliPayServiceImpl implements AliPayService {
     @Autowired
     private AliPayInfo aliPayNewInfo;
 
+
     @Autowired
-    private PayBackStatusNotice payBackStatusNotice;
+    private StoreOrderUpdateService storeOrderUpdateService;
 
 
     /**
@@ -51,24 +57,9 @@ public class AliPayServiceImpl implements AliPayService {
      */
     @SystemServerLog(funcionExplain = "阿里支付服务")
     @Override
-    public AppletResult pay(CustomerOrderInfo orderInfo) {
-
-        //订单标题
-        String orderSubject = orderInfo.getOrderSubject();
-
-        //订单金额
-        BigDecimal amount = orderInfo.getPayAmount();
-
-
-        if (amount == null) {
-            LOGGER.error("amount {}", amount, "null");
-            return ResultUtil.error(ResultEnums.PARAM_IS_NULL);
-        }
+    public AppletResult pay(UserPayReq orderInfo) {
 
         try {
-
-            StringBuilder amountStr = new StringBuilder(amount.toString());
-            long payOrder = OrderUtil.generateOrderNumber();
 
             //实例化客户端
             AlipayClient alipayClient = new DefaultAlipayClient(AliPayInfo.ALI_PAY_URL, aliPayNewInfo.getAppId(),
@@ -77,18 +68,19 @@ public class AliPayServiceImpl implements AliPayService {
 
             AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
             AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-            model.setSubject(orderSubject);
-            model.setOutTradeNo(String.valueOf(payOrder));
+            model.setSubject(orderInfo.getOrderSubject());
+            model.setOutTradeNo(orderInfo.getOrderNumber());
             model.setTimeoutExpress(AliPayInfo.PAY_WAIT_TIME);  //该笔订单允许的最晚付款时间，逾期将关闭交易
-            model.setTotalAmount(amountStr.toString());
+            model.setTotalAmount(String.valueOf(orderInfo.getPayAmount()));
             model.setProductCode(AliPayInfo.QUICK_MSECURITY_PAY);
             request.setBizModel(model);
             request.setNotifyUrl(aliPayNewInfo.getPayBackUrl());
 
             //这里和普通的接口调用不同，使用的是sdkExecute
             AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
+            LOGGER.debug("阿里支付返回结果 --> {}", JSONUtil.toJSONString(response));
 
-            return ResultUtil.success(ResultEnums.RETURN_SUCCESS, AliPayInfo.buildAliPayResult(response.getBody(), payOrder));
+            return ResultUtil.success(AliPayInfo.buildAliPayResult(response.getBody(),orderInfo.getOrderNumber()));
         } catch (Exception e) {
             LOGGER.error("阿里支付ERROR", e.getMessage());
             return ResultUtil.error(ResultEnums.SERVER_ERROR);
@@ -137,21 +129,23 @@ public class AliPayServiceImpl implements AliPayService {
 
                 StringBuilder tradeStatus = new StringBuilder(params.get("trade_status")); //支付状态
 
+                StringBuilder totalAmount = new StringBuilder(params.get("total_amount")); //本次交易支付的订单金额
+
                 if (!AliPayInfo.TRADE_SUCCESS.equalsIgnoreCase(tradeStatus.toString())) {
                     return AliPayInfo.RETURN_SUCCESS;
                 }
 
 
                 // 查看订单状态是否已经更新成支付成功
-                boolean status = payBackStatusNotice.isPayStatusSuccess(Long.parseLong(orderNumber.toString()));
+                boolean status = payBackStatusNotice.isPayStatusSuccess(orderNumber.toString());
 
                 if (status) {
                     return AliPayInfo.RETURN_SUCCESS;
                 }
 
                 //更新支付状态为成功
-                BaseOrderInfo baseOrderInfo=new BaseOrderInfo(orderNumber.toString(),buyerId.toString(),aliTradeNo.toString());
-                payBackStatusNotice.updatePaySuccessStatus(baseOrderInfo);
+                BaseOrderInfo baseOrderInfo = new BaseOrderInfo(new BigDecimal(totalAmount.toString()),(short)0,orderNumber.toString(),buyerId.toString(), aliTradeNo.toString());
+                payBackStatusNotice.updatePaySuccessStatus(storeOrderUpdateService, baseOrderInfo);
 
 
                 return AliPayInfo.RETURN_SUCCESS;

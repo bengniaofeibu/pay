@@ -12,6 +12,8 @@ public enum ResultEnums {
 
     USER_DATA_VALIDATE_FAIL(1002,"用户数据验证失败"),
 
+    NOT_FOUNT_ORDERNUM_FAIL(1003,"无此订单"),
+
     INVALID_USER(20001,"无效用户"),
 
     USER_NON_RECHARGE(20002,"用户未充值"),
@@ -31,6 +33,8 @@ public enum ResultEnums {
     USER_ALREADY_EXIST(1003,"用户已经存在"),
 
     WX_PLAY_FAIL(1004,"微信支付失败"),
+
+    PAY_AMOUNT_EXCEPTION_FAIL(1005,"支付金额异常"),
 
     SCAVENING_UNLOCK_ERRORTRANSRECORD(20008,"订单错误");
 

@@ -10,7 +10,7 @@ public class WxPayInfo extends BaseEntity {
 
     private static final long serialVersionUID = 4885441308232145678L;
 
-    public static final String SPBILL_CREATE_IP="192.0.0.1";
+    public static final String SPBILL_CREATE_IP="172.0.0.1";
 
     public static final String TRADE_TYPE="APP";
 

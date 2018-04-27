@@ -1,5 +1,6 @@
 package com.applet.service;
 
+import com.applet.Request.UserPayReq;
 import com.applet.model.CustomerOrderInfo;
 import com.applet.utils.AppletResult;
 
@@ -11,7 +12,7 @@ public interface PayService {
      * 支付接口
      * @return
      */
-    AppletResult pay(CustomerOrderInfo customerOrderInfo);
+    AppletResult pay(UserPayReq customerOrderInfo);
 
 
     /**

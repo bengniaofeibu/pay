@@ -8,16 +8,12 @@ public class NumUtils {
 
 		Integer num = new Random().nextInt(rangeNum) + 1;
 		String str = num.toString();
-		while (str.length() < 3) {
+		StringBuilder numStr=new StringBuilder(num.toString());
+		while (numStr.length() < 3) {
 
-			str = "0" + str;
+			numStr = numStr.append("0").append(str) ;
 		}
-		return str;
+		return numStr.toString();
 
-	}
-
-	public static void main(String[] args) {
-		String threeDigits = NumUtils.getThreeDigits(10);
-		System.out.println(threeDigits);
 	}
 }

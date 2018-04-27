@@ -23,8 +23,8 @@ public class WXPayConfigImpl implements WXPayConfig {
 
 	private WXPayConfigImpl() throws Exception {
 		System.out.println(cer);
-//		String certPath = "/home/cer/apiclient_cert.p12";
-		String certPath = "D:\\IdeaProjects\\pay\\src\\main\\webapp\\cer\\apiclient_cert.p12";
+		String certPath = "/home/cer/apiclient_cert.p12";
+//		String certPath = "D:\\IdeaProjects\\pay\\src\\main\\webapp\\cer\\apiclient_cert.p12";
 		File file = new File(certPath);
 		InputStream certStream = new FileInputStream(file);
 		this.certData = new byte[(int) file.length()];

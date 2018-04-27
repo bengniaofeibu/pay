@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.NyGoodsSkuMapper">
+    <resultMap id="BaseResultMap" type="com.applet.model.NyGoodsSku">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="price" jdbcType="BIGINT" property="price"/>
+        <result column="stock" jdbcType="BIGINT" property="stock"/>
+        <result column="sales_volume" jdbcType="INTEGER" property="salesVolume"/>
+        <result column="sn" jdbcType="VARCHAR" property="sn"/>
+        <result column="goods_id" jdbcType="VARCHAR" property="goodsId"/>
+        <result column="pro_value_id" jdbcType="VARCHAR" property="proValueId"/>
+        <result column="property_string" jdbcType="VARCHAR" property="propertyString"/>
+        <result column="show_flag" jdbcType="INTEGER" property="showFlag"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="del_flag" jdbcType="INTEGER" property="delFlag"/>
+    </resultMap>
+
+    <!-- 更新销售总量 -->
+    <update id="updateGoodsNumByGoods" parameterType="com.applet.model.NyGoodsSku">
+        update ny_goods_sku
+           SET
+             sales_volume = sales_volume+1,
+            update_date = NOW()
+        where goods_id = #{goodsId,jdbcType=VARCHAR}
+        AND stock > 0 AND del_flag = 0
+    </update>
+</mapper>

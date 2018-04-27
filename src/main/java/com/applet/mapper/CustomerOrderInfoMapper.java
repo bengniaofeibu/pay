@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public interface CustomerOrderInfoMapper {
 
 
-    CustomerOrderInfo selectPayStatusByOrderNumber(Long orderNumber);
+    CustomerOrderInfo selectPayStatusByOrderNumber(String orderNumber);
 
     int updateOrderStatusByOrderNum(CustomerOrderInfo record);
 }

@@ -2,23 +2,31 @@ package com.applet.model;
 
 import com.applet.Base.BaseModel;
 
+import java.math.BigDecimal;
+
 public class BaseOrderInfo extends BaseModel {
 
     private static final long serialVersionUID = 5895699582957353403L;
 
     private String orderNumber;
 
+    private BigDecimal totalAmount;
+
     private String userPayNumber;
 
     private String tradeNo;
 
-    public BaseOrderInfo(String orderNumber, String userPayNumber) {
-        this.orderNumber = orderNumber;
-        this.userPayNumber = userPayNumber;
+    private Short payWay;
+
+    public BaseOrderInfo() {
     }
 
-    public BaseOrderInfo(String orderNumber, String userPayNumber, String tradeNo) {
-        this.orderNumber = orderNumber;
+
+
+    public BaseOrderInfo(BigDecimal totalAmount,Short payWay,String orderNumber,String userPayNumber, String tradeNo) {
+        this.totalAmount=totalAmount;
+        this.payWay=payWay;
+        this.orderNumber=orderNumber;
         this.userPayNumber = userPayNumber;
         this.tradeNo = tradeNo;
     }
@@ -31,6 +39,13 @@ public class BaseOrderInfo extends BaseModel {
         this.orderNumber = orderNumber;
     }
 
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 
     public String getUserPayNumber() {
         return userPayNumber;
@@ -46,5 +61,13 @@ public class BaseOrderInfo extends BaseModel {
 
     public void setTradeNo(String tradeNo) {
         this.tradeNo = tradeNo;
+    }
+
+    public Short getPayWay() {
+        return payWay;
+    }
+
+    public void setPayWay(Short payWay) {
+        this.payWay = payWay;
     }
 }

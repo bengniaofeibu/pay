@@ -19,11 +19,9 @@ apply plugin: 'org.springframework.boot'
 
 
 jar {
-    baseName = 'wxappletpay'
-    version = '0.0.1-SNAPSHOT'
+    baseName = 'jjbiclyclepay'
 }
 
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
@@ -45,8 +43,6 @@ dependencies {
     mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.5'
     mybatisGenerator 'mysql:mysql-connector-java:5.1.40'
     mybatisGenerator 'tk.mybatis:mapper:3.3.9'
-    compile "org.springframework.boot:spring-boot-configuration-processor"
-
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
     compile('com.github.pagehelper:pagehelper-spring-boot-starter:1.1.1')
@@ -80,6 +76,9 @@ dependencies {
 
     //微信sdk
     compile group: 'com.github.wxpay', name: 'wxpay-sdk', version: '0.0.3'
+
+    //支付宝sdk
+    compile group: 'com.alipay.sdk', name: 'alipay-sdk-java', version: '3.0.0'
 
 }
 

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.NyCouponTypeMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.NyCouponType">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="coupon_type" jdbcType="VARCHAR" property="couponType" />
+    <result column="coupon_type_name" jdbcType="VARCHAR" property="couponTypeName" />
+    <result column="coupon_assign_type" jdbcType="VARCHAR" property="couponAssignType" />
+    <result column="store_id" jdbcType="VARCHAR" property="storeId" />
+    <result column="par_value" jdbcType="BIGINT" property="parValue" />
+    <result column="discount" jdbcType="BIGINT" property="discount" />
+    <result column="condition_value" jdbcType="BIGINT" property="conditionValue" />
+    <result column="is_repeatable" jdbcType="BIT" property="isRepeatable" />
+    <result column="is_mixable" jdbcType="BIT" property="isMixable" />
+    <result column="valid_period" jdbcType="BIGINT" property="validPeriod" />
+    <result column="coupon_url" jdbcType="VARCHAR" property="couponUrl" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="del_flag" jdbcType="BIT" property="delFlag" />
+    <result column="is_bind" jdbcType="BIT" property="isBind" />
+    <result column="is_use" jdbcType="BIT" property="isUse" />
+    <result column="count_total" jdbcType="BIGINT" property="countTotal" />
+    <result column="count_left" jdbcType="BIGINT" property="countLeft" />
+    <result column="is_auto" jdbcType="BIT" property="isAuto" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="aging_type" jdbcType="BIT" property="agingType" />
+    <result column="tone_ph" jdbcType="VARCHAR" property="tonePh" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, coupon_type, coupon_type_name, coupon_assign_type, store_id, par_value, discount, 
+    condition_value, is_repeatable, is_mixable, valid_period, coupon_url, image_url, 
+    update_date, update_by, create_date, create_by, del_flag, is_bind, is_use, count_total, 
+    count_left, is_auto, begin_time, end_time, aging_type, tone_ph
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ny_coupon_type
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ny_coupon_type
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.applet.model.NyCouponType">
+    insert into ny_coupon_type (id, coupon_type, coupon_type_name, 
+      coupon_assign_type, store_id, par_value, 
+      discount, condition_value, is_repeatable, 
+      is_mixable, valid_period, coupon_url, 
+      image_url, update_date, update_by, 
+      create_date, create_by, del_flag, 
+      is_bind, is_use, count_total, count_left, 
+      is_auto, begin_time, end_time, 
+      aging_type, tone_ph)
+    values (#{id,jdbcType=VARCHAR}, #{couponType,jdbcType=VARCHAR}, #{couponTypeName,jdbcType=VARCHAR}, 
+      #{couponAssignType,jdbcType=VARCHAR}, #{storeId,jdbcType=VARCHAR}, #{parValue,jdbcType=BIGINT}, 
+      #{discount,jdbcType=BIGINT}, #{conditionValue,jdbcType=BIGINT}, #{isRepeatable,jdbcType=BIT}, 
+      #{isMixable,jdbcType=BIT}, #{validPeriod,jdbcType=BIGINT}, #{couponUrl,jdbcType=VARCHAR}, 
+      #{imageUrl,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{delFlag,jdbcType=BIT}, 
+      #{isBind,jdbcType=BIT}, #{isUse,jdbcType=BIT}, #{countTotal,jdbcType=BIGINT}, #{countLeft,jdbcType=BIGINT}, 
+      #{isAuto,jdbcType=BIT}, #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{agingType,jdbcType=BIT}, #{tonePh,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.applet.model.NyCouponType">
+    insert into ny_coupon_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="couponType != null">
+        coupon_type,
+      </if>
+      <if test="couponTypeName != null">
+        coupon_type_name,
+      </if>
+      <if test="couponAssignType != null">
+        coupon_assign_type,
+      </if>
+      <if test="storeId != null">
+        store_id,
+      </if>
+      <if test="parValue != null">
+        par_value,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="conditionValue != null">
+        condition_value,
+      </if>
+      <if test="isRepeatable != null">
+        is_repeatable,
+      </if>
+      <if test="isMixable != null">
+        is_mixable,
+      </if>
+      <if test="validPeriod != null">
+        valid_period,
+      </if>
+      <if test="couponUrl != null">
+        coupon_url,
+      </if>
+      <if test="imageUrl != null">
+        image_url,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="isBind != null">
+        is_bind,
+      </if>
+      <if test="isUse != null">
+        is_use,
+      </if>
+      <if test="countTotal != null">
+        count_total,
+      </if>
+      <if test="countLeft != null">
+        count_left,
+      </if>
+      <if test="isAuto != null">
+        is_auto,
+      </if>
+      <if test="beginTime != null">
+        begin_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="agingType != null">
+        aging_type,
+      </if>
+      <if test="tonePh != null">
+        tone_ph,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="couponType != null">
+        #{couponType,jdbcType=VARCHAR},
+      </if>
+      <if test="couponTypeName != null">
+        #{couponTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="couponAssignType != null">
+        #{couponAssignType,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null">
+        #{storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="parValue != null">
+        #{parValue,jdbcType=BIGINT},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=BIGINT},
+      </if>
+      <if test="conditionValue != null">
+        #{conditionValue,jdbcType=BIGINT},
+      </if>
+      <if test="isRepeatable != null">
+        #{isRepeatable,jdbcType=BIT},
+      </if>
+      <if test="isMixable != null">
+        #{isMixable,jdbcType=BIT},
+      </if>
+      <if test="validPeriod != null">
+        #{validPeriod,jdbcType=BIGINT},
+      </if>
+      <if test="couponUrl != null">
+        #{couponUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="isBind != null">
+        #{isBind,jdbcType=BIT},
+      </if>
+      <if test="isUse != null">
+        #{isUse,jdbcType=BIT},
+      </if>
+      <if test="countTotal != null">
+        #{countTotal,jdbcType=BIGINT},
+      </if>
+      <if test="countLeft != null">
+        #{countLeft,jdbcType=BIGINT},
+      </if>
+      <if test="isAuto != null">
+        #{isAuto,jdbcType=BIT},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agingType != null">
+        #{agingType,jdbcType=BIT},
+      </if>
+      <if test="tonePh != null">
+        #{tonePh,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.NyCouponType">
+    update ny_coupon_type
+    <set>
+      <if test="couponType != null">
+        coupon_type = #{couponType,jdbcType=VARCHAR},
+      </if>
+      <if test="couponTypeName != null">
+        coupon_type_name = #{couponTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="couponAssignType != null">
+        coupon_assign_type = #{couponAssignType,jdbcType=VARCHAR},
+      </if>
+      <if test="storeId != null">
+        store_id = #{storeId,jdbcType=VARCHAR},
+      </if>
+      <if test="parValue != null">
+        par_value = #{parValue,jdbcType=BIGINT},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=BIGINT},
+      </if>
+      <if test="conditionValue != null">
+        condition_value = #{conditionValue,jdbcType=BIGINT},
+      </if>
+      <if test="isRepeatable != null">
+        is_repeatable = #{isRepeatable,jdbcType=BIT},
+      </if>
+      <if test="isMixable != null">
+        is_mixable = #{isMixable,jdbcType=BIT},
+      </if>
+      <if test="validPeriod != null">
+        valid_period = #{validPeriod,jdbcType=BIGINT},
+      </if>
+      <if test="couponUrl != null">
+        coupon_url = #{couponUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="isBind != null">
+        is_bind = #{isBind,jdbcType=BIT},
+      </if>
+      <if test="isUse != null">
+        is_use = #{isUse,jdbcType=BIT},
+      </if>
+      <if test="countTotal != null">
+        count_total = #{countTotal,jdbcType=BIGINT},
+      </if>
+      <if test="countLeft != null">
+        count_left = #{countLeft,jdbcType=BIGINT},
+      </if>
+      <if test="isAuto != null">
+        is_auto = #{isAuto,jdbcType=BIT},
+      </if>
+      <if test="beginTime != null">
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="agingType != null">
+        aging_type = #{agingType,jdbcType=BIT},
+      </if>
+      <if test="tonePh != null">
+        tone_ph = #{tonePh,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.applet.model.NyCouponType">
+    update ny_coupon_type
+    set coupon_type = #{couponType,jdbcType=VARCHAR},
+      coupon_type_name = #{couponTypeName,jdbcType=VARCHAR},
+      coupon_assign_type = #{couponAssignType,jdbcType=VARCHAR},
+      store_id = #{storeId,jdbcType=VARCHAR},
+      par_value = #{parValue,jdbcType=BIGINT},
+      discount = #{discount,jdbcType=BIGINT},
+      condition_value = #{conditionValue,jdbcType=BIGINT},
+      is_repeatable = #{isRepeatable,jdbcType=BIT},
+      is_mixable = #{isMixable,jdbcType=BIT},
+      valid_period = #{validPeriod,jdbcType=BIGINT},
+      coupon_url = #{couponUrl,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=BIT},
+      is_bind = #{isBind,jdbcType=BIT},
+      is_use = #{isUse,jdbcType=BIT},
+      count_total = #{countTotal,jdbcType=BIGINT},
+      count_left = #{countLeft,jdbcType=BIGINT},
+      is_auto = #{isAuto,jdbcType=BIT},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      aging_type = #{agingType,jdbcType=BIT},
+      tone_ph = #{tonePh,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

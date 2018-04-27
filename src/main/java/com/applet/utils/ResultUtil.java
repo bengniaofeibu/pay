@@ -10,14 +10,15 @@ public class ResultUtil {
         AppletResult result = new AppletResult();
         result.setCode(resultEnums.getCode());
         result.setMsg(resultEnums.getMsg());
-        result.setData(object);
+        result.setData(new ResultBuild(object));
         return result;
     }
 
-    public static AppletResult success(){
+    public static AppletResult success(Object object){
         AppletResult result = new AppletResult();
         result.setCode(ResultEnums.RETURN_SUCCESS.getCode());
         result.setMsg(ResultEnums.RETURN_SUCCESS.getMsg());
+        result.setData(new ResultBuild(object));
         return result;
     }
 
@@ -32,6 +33,27 @@ public class ResultUtil {
         }else {
             result.setMsg(resultEnums.getMsg());
         }
+        result.setData(new ResultBuild());
         return result;
+    }
+
+    static class ResultBuild{
+
+        private Object returnData;
+
+        public ResultBuild() {
+        }
+
+        public ResultBuild(Object returnData) {
+            this.returnData = returnData;
+        }
+
+        public Object getReturnData() {
+            return returnData;
+        }
+
+        public void setReturnData(Object returnData) {
+            this.returnData = returnData;
+        }
     }
 }

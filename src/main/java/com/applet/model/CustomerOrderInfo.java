@@ -11,22 +11,61 @@ public class CustomerOrderInfo extends BaseOrderInfo{
 
     private Long id;
 
+    /** 用户id **/
     private String userId;
 
-    private Long orderAddressId;
+    /** 订单商品id **/
+    private String orderGoodsId;
 
+    /** 订单商品数量 **/
+    private Integer goodsNum;
+
+    /** 服务上门时间 （某些订单会有）**/
+    private Date serverTime;
+
+    /** 服务时长 （某些订单会有） **/
+    private Double serverTheLength;
+
+    /** 用户支付账号 **/
+    private String userPayNumber;
+
+    /** 订单唯一号 **/
+    private String orderNumber;
+
+    /** 订单用途 **/
     private String orderSubject;
 
+    /**  支付订单号 （第三方回调得到） **/
+    private String tradeNo;
+
+    /**  待支付支付金额 **/
     private BigDecimal payAmount;
 
+    /** 实际支付金额 **/
+    private BigDecimal totalAmount;
+
+    /** 优惠金额 **/
+    private BigDecimal discountAmount;
+
+    /** 商品金额 **/
+    private BigDecimal goodsAmount;
+
+    /**  支付方式 **/
     private Short payWay;
 
+    /** 订单状态（1: 待支付 2:已支付(未完成) 3:已完成 4:已取消 ） **/
     private Short payStatus;
 
+    /** 商品类型 **/
+    private Short goodsType;
+
+    /** 删除标识 **/
     private Short delFlag;
 
+    /** 数据添加时间 **/
     private Date addTime;
 
+    /**  数据更新时间 **/
     private Date updateTime;
 
 
@@ -50,15 +89,59 @@ public class CustomerOrderInfo extends BaseOrderInfo{
     }
 
     public void setUserId(String userId) {
-        this.userId = userId == null ? null : userId.trim();
+        this.userId = userId;
     }
 
-    public Long getOrderAddressId() {
-        return orderAddressId;
+    public String getOrderGoodsId() {
+        return orderGoodsId;
     }
 
-    public void setOrderAddressId(Long orderAddressId) {
-        this.orderAddressId = orderAddressId;
+    public void setOrderGoodsId(String orderGoodsId) {
+        this.orderGoodsId = orderGoodsId;
+    }
+
+    public Integer getGoodsNum() {
+        return goodsNum;
+    }
+
+    public void setGoodsNum(Integer goodsNum) {
+        this.goodsNum = goodsNum;
+    }
+
+    public Date getServerTime() {
+        return serverTime;
+    }
+
+    public void setServerTime(Date serverTime) {
+        this.serverTime = serverTime;
+    }
+
+    public Double getServerTheLength() {
+        return serverTheLength;
+    }
+
+    public void setServerTheLength(Double serverTheLength) {
+        this.serverTheLength = serverTheLength;
+    }
+
+    @Override
+    public String getUserPayNumber() {
+        return userPayNumber;
+    }
+
+    @Override
+    public void setUserPayNumber(String userPayNumber) {
+        this.userPayNumber = userPayNumber;
+    }
+
+    @Override
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    @Override
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public String getOrderSubject() {
@@ -69,12 +152,46 @@ public class CustomerOrderInfo extends BaseOrderInfo{
         this.orderSubject = orderSubject;
     }
 
+    @Override
+    public String getTradeNo() {
+        return tradeNo;
+    }
+
+    @Override
+    public void setTradeNo(String tradeNo) {
+        this.tradeNo = tradeNo;
+    }
+
     public BigDecimal getPayAmount() {
         return payAmount;
     }
 
     public void setPayAmount(BigDecimal payAmount) {
         this.payAmount = payAmount;
+    }
+
+    public BigDecimal getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public BigDecimal getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(BigDecimal discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public BigDecimal getGoodsAmount() {
+        return goodsAmount;
+    }
+
+    public void setGoodsAmount(BigDecimal goodsAmount) {
+        this.goodsAmount = goodsAmount;
     }
 
     public Short getPayWay() {
@@ -91,6 +208,14 @@ public class CustomerOrderInfo extends BaseOrderInfo{
 
     public void setPayStatus(Short payStatus) {
         this.payStatus = payStatus;
+    }
+
+    public Short getGoodsType() {
+        return goodsType;
+    }
+
+    public void setGoodsType(Short goodsType) {
+        this.goodsType = goodsType;
     }
 
     public Short getDelFlag() {

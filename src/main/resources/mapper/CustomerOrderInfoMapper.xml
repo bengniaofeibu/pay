@@ -2,41 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.applet.mapper.CustomerOrderInfoMapper">
     <resultMap id="BaseResultMap" type="com.applet.model.CustomerOrderInfo">
-        <id column="id" jdbcType="BIGINT" property="id"/>
+        <id column="id" jdbcType="BIGINT" property="orderId"/>
         <result column="user_id" jdbcType="CHAR" property="userId"/>
-        <result column="order_address_id" jdbcType="BIGINT" property="orderAddressId"/>
+        <result column="order_goods_id" jdbcType="VARCHAR" property="orderGoodsId"/>
         <result column="user_pay_number" jdbcType="VARCHAR" property="userPayNumber"/>
+        <result column="goods_num" jdbcType="INTEGER" property="goodsNum"/>
+        <result column="server_time" jdbcType="TIMESTAMP" property="serverTime"/>
+        <result column="server_the_length" jdbcType="DOUBLE" property="serverTheLength"/>
         <result column="order_number" jdbcType="CHAR" property="orderNumber"/>
-        <result column="order_subject" jdbcType="char" property="orderSubject"/>
+        <result column="order_subject" jdbcType="CHAR" property="orderSubject"/>
         <result column="trade_no" jdbcType="VARCHAR" property="tradeNo"/>
         <result column="pay_amount" jdbcType="DECIMAL" property="payAmount"/>
+        <result column="total_amount" jdbcType="DECIMAL" property="totalAmount"/>
+        <result column="discount_amount" jdbcType="DECIMAL" property="discountAmount"/>
+        <result column="goods_amount" jdbcType="DECIMAL" property="goodsAmount"/>
         <result column="pay_way" jdbcType="SMALLINT" property="payWay"/>
         <result column="pay_status" jdbcType="SMALLINT" property="payStatus"/>
-        <result column="del_flag" jdbcType="SMALLINT" property="deXlFlag"/>
+        <result column="goods_type" jdbcType="SMALLINT" property="goodsType"/>
+        <result column="del_flag" jdbcType="SMALLINT" property="delFlag"/>
         <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, user_pay_number, order_number, trade_no, pay_amount,
-    pay_way, pay_status
+   user_id, pay_amount,pay_status,goods_type,order_goods_id
   </sql>
     <select id="selectPayStatusByOrderNumber" parameterType="com.applet.model.CustomerOrderInfo" resultMap="BaseResultMap">
     select 
-    pay_amount,pay_status
+    <include refid="Base_Column_List"/>
     from t_customer_order_info
     where order_number = #{order_number,jdbcType=CHAR}
   </select>
 
-    <select id="selectNumByOrderNumber" parameterType="com.applet.model.CustomerOrderInfo" resultMap="BaseResultMap">
-        select
-        pay_amount,pay_status
-        from t_customer_order_info
-        where order_number = #{order_number,jdbcType=CHAR}
-    </select>
-
     <update id="updateOrderStatusByOrderNum" parameterType="com.applet.model.CustomerOrderInfo">
         update t_customer_order_info
         <set>
+            <if test="totalAmount != null">
+                total_amount = #{totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="discountAmount != null">
+                discount_amount = #{discountAmount,jdbcType=DECIMAL},
+            </if>
             <if test="userPayNumber != null">
                 user_pay_number = #{userPayNumber,jdbcType=VARCHAR},
             </if>
@@ -46,11 +51,14 @@
             <if test="payStatus != null">
                 pay_status = #{payStatus,jdbcType=SMALLINT},
             </if>
+            <if test="payWay != null">
+                pay_way = #{payWay,jdbcType=SMALLINT},
+            </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=SMALLINT},
             </if>
             update_time = NOW(),
         </set>
-        where orderNumber = #{orderNumber,jdbcType=CHAR}
+        where order_number = #{orderNumber,jdbcType=CHAR}
     </update>
 </mapper>

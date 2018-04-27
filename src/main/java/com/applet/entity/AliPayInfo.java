@@ -113,7 +113,7 @@ public class AliPayInfo extends BaseEntity {
         this.smsForRed = smsForRed;
     }
 
-    public static AliPayResult buildAliPayResult(String body, long payOrder) {
+    public static AliPayResult buildAliPayResult(String body, String payOrder) {
 
         return new AliPayResult(body,payOrder);
     }
@@ -122,10 +122,10 @@ public class AliPayInfo extends BaseEntity {
 
         private String aliPaySign;
 
-        private long payOrderId;
+        private String payOrderId;
 
 
-        public AliPayResult(String aliPaySign, long payOrderId) {
+        public AliPayResult(String aliPaySign, String payOrderId) {
             this.aliPaySign = aliPaySign;
             this.payOrderId = payOrderId;
         }
@@ -139,11 +139,11 @@ public class AliPayInfo extends BaseEntity {
             this.aliPaySign = aliPaySign;
         }
 
-        public long getPayOrderId() {
+        public String getPayOrderId() {
             return payOrderId;
         }
 
-        public void setPayOrderId(long payOrderId) {
+        public void setPayOrderId(String payOrderId) {
             this.payOrderId = payOrderId;
         }
     }

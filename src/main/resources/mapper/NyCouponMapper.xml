@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.NyCouponMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.NyCoupon">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="coupon_type_id" jdbcType="VARCHAR" property="couponTypeId" />
+    <result column="coupon_code" jdbcType="VARCHAR" property="couponCode" />
+    <result column="coupon_desc" jdbcType="VARCHAR" property="couponDesc" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="coupon_status" jdbcType="INTEGER" property="couponStatus" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="is_expired" jdbcType="INTEGER" property="isExpired" />
+    <result column="coupon_source_id" jdbcType="VARCHAR" property="couponSourceId" />
+    <result column="event_id" jdbcType="VARCHAR" property="eventId" />
+    <result column="is_lock" jdbcType="BIT" property="isLock" />
+    <result column="valid_period" jdbcType="BIGINT" property="validPeriod" />
+    <result column="aging_type" jdbcType="BIT" property="agingType" />
+
+    <collection property="nyCouponType" ofType="com.applet.model.NyCouponType">
+      <id column="id" jdbcType="VARCHAR" property="id" />
+      <result column="par_value" jdbcType="BIGINT" property="parValue" />
+    </collection>
+
+  </resultMap>
+  <select id="selectPayAmountByCouponId" parameterType="java.lang.String" resultType="java.lang.Long">
+   SELECT coupontype.par_value
+   FROM ny_coupon coupon
+   INNER JOIN ny_coupon_type coupontype
+   on coupon.coupon_type_id =coupontype.id
+   WHERE coupon.id=#{id,jdbcType=VARCHAR}
+  </select>
+</mapper>
