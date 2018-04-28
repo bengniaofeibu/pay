@@ -27,8 +27,10 @@
     </collection>
 
   </resultMap>
-  <select id="selectPayAmountByCouponId" parameterType="java.lang.String" resultType="java.lang.Long">
-   SELECT coupontype.par_value
+
+  <!-- 查询优惠劵信息 -->
+  <select id="selectPayAmountByCouponId" parameterType="java.lang.String" resultMap="BaseResultMap">
+   SELECT coupon.id,coupontype.par_value
    FROM ny_coupon coupon
    INNER JOIN ny_coupon_type coupontype
    on coupon.coupon_type_id =coupontype.id

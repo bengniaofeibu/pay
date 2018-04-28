@@ -2,9 +2,13 @@ package com.applet.service;
 
 import com.applet.annotation.SystemServerLog;
 import com.applet.mapper.CustomerOrderInfoMapper;
+import com.applet.mapper.NyCouponVipMappingMapper;
 import com.applet.mapper.NyGoodsSkuMapper;
 import com.applet.model.BaseOrderInfo;
 import com.applet.model.CustomerOrderInfo;
+import com.applet.model.NyCoupon;
+import com.applet.model.NyCouponVipMapping;
+import com.applet.utils.common.JSONUtil;
 import com.applet.utils.common.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +37,9 @@ public class StoreOrderStatusUpdateServiceImpl implements StoreOrderUpdateServic
     @Autowired
     private NyGoodsSkuMapper nyGoodsSkuMapper;
 
+    @Autowired
+    private NyCouponVipMappingMapper nyCouponVipMappingMapper;
+
 
     @Autowired
     private RedisUtil redisUtil;
@@ -55,19 +62,23 @@ public class StoreOrderStatusUpdateServiceImpl implements StoreOrderUpdateServic
 
                  String couponAmountKey=new StringBuilder(COUPON_AMOUNT_KEY).append(customerOrderInfo.getUserId()).toString();
 
-                 long couponAmount =0L;
+
                  Object obj = redisUtil.getValueObj(couponAmountKey);
                  if (obj != null){
-                     couponAmount=(long)obj;
+                     NyCoupon nyCoupon= JSONUtil.parseObject(JSONUtil.toJSONString(obj),NyCoupon.class);
+                     LOGGER.debug("缓存中的优惠劵信息 --> {}",nyCoupon);
+                     customerOrderInfo.setDiscountAmount(new BigDecimal(nyCoupon.getNyCouponType().getParValue()/100));
 
-                     //删除缓存用户优惠劵金额
+                     NyCouponVipMapping nyCouponVipMapping=new NyCouponVipMapping(customerOrderInfo.getUserId(),nyCoupon.getId());
+                     int updateCount = nyCouponVipMappingMapper.updateCouponNumByUserIdAndCouponId(nyCouponVipMapping);
+                     LOGGER.debug("更新用户优惠劵已使用 --> {}",updateCount);
+
+                     //删除用户优惠劵金额缓存
                      redisUtil.deteleKey(couponAmountKey);
                  }
-                 LOGGER.debug("缓存中的优惠劵金额 --> {}",couponAmount);
 
                  customerOrderInfo.setOrderNumber(baseOrderInfo.getOrderNumber());
                  customerOrderInfo.setTotalAmount(baseOrderInfo.getTotalAmount());
-                 customerOrderInfo.setDiscountAmount(new BigDecimal(couponAmount));
                  customerOrderInfo.setTradeNo(baseOrderInfo.getTradeNo());
                  customerOrderInfo.setUserPayNumber(baseOrderInfo.getUserPayNumber());
                  customerOrderInfo.setPayStatus((short) 2);

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.NyCouponVipMappingMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.NyCouponVipMapping">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="coupon_id" jdbcType="VARCHAR" property="couponId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="del_flag" jdbcType="BIT" property="delFlag" />
+    <result column="prize_id" jdbcType="VARCHAR" property="prizeId" />
+    <result column="event_id" jdbcType="VARCHAR" property="eventId" />
+  </resultMap>
+  <update id="updateCouponNumByUserIdAndCouponId" parameterType="com.applet.model.NyCouponVipMapping">
+    update ny_coupon_vip_mapping
+    <set>
+        update_date = NOW(),
+        del_flag = 1,
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR} AND coupon_id = #{couponId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -5,6 +5,7 @@ import com.applet.Request.UserPayReq;
 import com.applet.annotation.SystemControllerLog;
 import com.applet.enums.ResultEnums;
 import com.applet.model.CustomerOrderInfo;
+import com.applet.model.NyCoupon;
 import com.applet.service.AliPayService;
 import com.applet.service.WxPayService;
 import com.applet.utils.AppletResult;
@@ -39,21 +40,30 @@ public class PayController extends BaseController {
 
         if (customerOrderInfo !=null ){
 
-            long  couponAmount=0L;
-
+            NyCoupon nyCoupon;
+            BigDecimal amount;
             if (userPayReq.getCouponId()!= null){
 
-                 couponAmount = nyCouponMapper.selectPayAmountByCouponId(userPayReq.getCouponId());
+                 nyCoupon = nyCouponMapper.selectPayAmountByCouponId(userPayReq.getCouponId());
 
-                //添加用户优惠劵金额缓存
-                addUserCouponAmoutCache(userPayReq.getUserId(),couponAmount);
+                 if (nyCoupon != null ){
+
+                     //添加用户优惠劵金额缓存
+                     addUserCouponAmoutCache(userPayReq.getUserId(),nyCoupon);
+
+                     amount = calculatePayAmount(customerOrderInfo.getPayAmount(),new BigDecimal(nyCoupon.getNyCouponType().getParValue() / 100));
+                     LOGGER.debug("优惠劵金额 --> {}  实际支付金额 --> {}",nyCoupon.getNyCouponType().getParValue(),amount);
+
+                 }else {
+                     amount=customerOrderInfo.getPayAmount();
+                 }
+            }else {
+                amount=customerOrderInfo.getPayAmount();
             }
 
-            BigDecimal amount = calculatePayAmount(customerOrderInfo.getPayAmount(),new BigDecimal(couponAmount / 100));
-            LOGGER.debug("优惠劵金额 --> {}  实际支付金额 --> {}",couponAmount,amount);
-
+            //判断金额是否小于等于0
             if ( amount.doubleValue() <= 0.00 ){
-                ResultUtil.error(ResultEnums.PAY_AMOUNT_EXCEPTION_FAIL);
+              return  ResultUtil.error(ResultEnums.PAY_AMOUNT_EXCEPTION_FAIL);
             }
 
             userPayReq.setPayAmount(amount);

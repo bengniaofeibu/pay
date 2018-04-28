@@ -3,6 +3,7 @@ package com.applet.Base;
 import com.applet.entity.PayBackStatusNotice;
 import com.applet.mapper.NyCouponMapper;
 import com.applet.model.CustomerOrderInfo;
+import com.applet.model.NyCoupon;
 import com.applet.service.AliPayService;
 import com.applet.service.WxPayService;
 import com.applet.utils.common.BigDecimalUtil;
@@ -63,10 +64,10 @@ public abstract class BaseController {
     /**
      * 添加用户优惠劵金额缓存
      * @param userId
-     * @param couponAmout
+     * @param nyCoupon
      */
-    protected void addUserCouponAmoutCache(String userId,long couponAmout){
+    protected void addUserCouponAmoutCache(String userId,NyCoupon nyCoupon){
        String couponAmountKey =new StringBuilder(COUPON_AMOUNT_KEY).append(userId).toString();
-        redisUtil.setObj(couponAmountKey,couponAmout);
+        redisUtil.setObjAndExpire(couponAmountKey,nyCoupon,3600);
     }
 }

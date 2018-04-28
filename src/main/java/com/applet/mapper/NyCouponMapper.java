@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component;
 @Mapper
 public interface NyCouponMapper {
 
-    Long selectPayAmountByCouponId(String id);
+    NyCoupon selectPayAmountByCouponId(String id);
 }
