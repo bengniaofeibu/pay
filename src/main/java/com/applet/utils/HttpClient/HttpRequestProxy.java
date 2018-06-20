@@ -1,12 +1,27 @@
 package com.applet.utils.HttpClient;
 
+import com.applet.utils.common.JSONUtil;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.Consts;
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -15,6 +30,9 @@ public class HttpRequestProxy {
 	 * ���ӳ�ʱ
 	 */
 	private static int connectTimeOut = 5000;
+
+
+	private static int sockettIMEOUT = 120000;
 
 	/**
 	 * ��ȡ��ݳ�ʱ
@@ -353,4 +371,41 @@ public class HttpRequestProxy {
         }
         return outBuffer.toString();
     }
+
+
+	public static String sendToOtherServer(String url, Map<String,Object> dataMap){
+
+		CloseableHttpClient client =  HttpClients.custom().build();
+		RequestConfig config = RequestConfig.custom()
+				.setSocketTimeout(sockettIMEOUT)
+				.setConnectTimeout(connectTimeOut)
+				.setAuthenticationEnabled(false)
+				.build();
+
+
+		HttpPost post = new HttpPost(url);
+		post.setProtocolVersion(org.apache.http.HttpVersion.HTTP_1_1);
+		post.setConfig(config);
+
+		HttpEntity entity = null;
+		List<NameValuePair> formpair = new ArrayList<NameValuePair>();
+		{
+			for (String str : dataMap.keySet().toArray(new String[dataMap.size()])) {
+				formpair.add(new BasicNameValuePair(str,dataMap.get(str).toString()));
+			}
+		}
+
+		entity = new UrlEncodedFormEntity(formpair, Consts.UTF_8);
+		if (entity != null) {
+			post.setEntity(entity);
+		}
+		try {
+			return JSONUtil.parseResponseToStr(client.execute(post));
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

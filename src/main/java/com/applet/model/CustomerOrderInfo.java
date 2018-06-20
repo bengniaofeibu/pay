@@ -32,6 +32,30 @@ public class CustomerOrderInfo extends BaseOrderInfo{
     /** 订单唯一号 **/
     private String orderNumber;
 
+    /** 银联订单号 **/
+    private String MerOrderNo;
+
+    /**
+     *  银联支付金额
+     */
+    private String OrderAmt;
+
+    /**
+     *  银行卡号
+     */
+    private String CardNo;
+
+    /**
+     *  银联短信验证码
+     */
+    private String MobileAuthCode;
+
+
+    /**
+     *  银联分账信息
+     */
+    private String MerSplitMsg;
+
     /** 订单用途 **/
     private String orderSubject;
 
@@ -59,14 +83,45 @@ public class CustomerOrderInfo extends BaseOrderInfo{
     /** 商品类型 **/
     private Short goodsType;
 
+
+    private Date refundTime;
+
+    private String refundReason;
+
     /** 删除标识 **/
     private Short delFlag;
+
+    private Date createDate;
+
+    private String createBy;
 
     /** 数据添加时间 **/
     private Date addTime;
 
     /**  数据更新时间 **/
     private Date updateTime;
+
+    private Date updateDate;
+
+    private String updateBy;
+
+    private String takefoodCode;
+
+    private String jiumiAmount;
+
+    private String couponNo;
+
+    private String couponAmount;
+
+    private String hbAmount;
+
+    private String lbAmount;
+
+    private String feeAmount;
+
+    private String commissionAmount;
+
+    private String settlementAmount;
 
 
     public CustomerOrderInfo() {
@@ -146,6 +201,46 @@ public class CustomerOrderInfo extends BaseOrderInfo{
 
     public String getOrderSubject() {
         return orderSubject;
+    }
+
+    public String getMerOrderNo() {
+        return MerOrderNo;
+    }
+
+    public void setMerOrderNo(String merOrderNo) {
+        MerOrderNo = merOrderNo;
+    }
+
+    public String getOrderAmt() {
+        return OrderAmt;
+    }
+
+    public void setOrderAmt(String orderAmt) {
+        OrderAmt = orderAmt;
+    }
+
+    public String getCardNo() {
+        return CardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        CardNo = cardNo;
+    }
+
+    public String getMobileAuthCode() {
+        return MobileAuthCode;
+    }
+
+    public void setMobileAuthCode(String mobileAuthCode) {
+        MobileAuthCode = mobileAuthCode;
+    }
+
+    public String getMerSplitMsg() {
+        return MerSplitMsg;
+    }
+
+    public void setMerSplitMsg(String merSplitMsg) {
+        MerSplitMsg = merSplitMsg;
     }
 
     public void setOrderSubject(String orderSubject) {
@@ -240,5 +335,125 @@ public class CustomerOrderInfo extends BaseOrderInfo{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Date getRefundTime() {
+        return refundTime;
+    }
+
+    public void setRefundTime(Date refundTime) {
+        this.refundTime = refundTime;
+    }
+
+    public String getRefundReason() {
+        return refundReason;
+    }
+
+    public void setRefundReason(String refundReason) {
+        this.refundReason = refundReason;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public String getTakefoodCode() {
+        return takefoodCode;
+    }
+
+    public void setTakefoodCode(String takefoodCode) {
+        this.takefoodCode = takefoodCode;
+    }
+
+    public String getJiumiAmount() {
+        return jiumiAmount;
+    }
+
+    public void setJiumiAmount(String jiumiAmount) {
+        this.jiumiAmount = jiumiAmount;
+    }
+
+    public String getCouponNo() {
+        return couponNo;
+    }
+
+    public void setCouponNo(String couponNo) {
+        this.couponNo = couponNo;
+    }
+
+    public String getCouponAmount() {
+        return couponAmount;
+    }
+
+    public void setCouponAmount(String couponAmount) {
+        this.couponAmount = couponAmount;
+    }
+
+    public String getHbAmount() {
+        return hbAmount;
+    }
+
+    public void setHbAmount(String hbAmount) {
+        this.hbAmount = hbAmount;
+    }
+
+    public String getLbAmount() {
+        return lbAmount;
+    }
+
+    public void setLbAmount(String lbAmount) {
+        this.lbAmount = lbAmount;
+    }
+
+    public String getFeeAmount() {
+        return feeAmount;
+    }
+
+    public void setFeeAmount(String feeAmount) {
+        this.feeAmount = feeAmount;
+    }
+
+    public String getCommissionAmount() {
+        return commissionAmount;
+    }
+
+    public void setCommissionAmount(String commissionAmount) {
+        this.commissionAmount = commissionAmount;
+    }
+
+    public String getSettlementAmount() {
+        return settlementAmount;
+    }
+
+    public void setSettlementAmount(String settlementAmount) {
+        this.settlementAmount = settlementAmount;
     }
 }

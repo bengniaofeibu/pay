@@ -127,7 +127,7 @@ public class HttpsUtil {
 
     /** * * HTTP协议POST请求方法 */
     public static String httpMethodPost(String url,
-                                        TreeMap<String, String> paramsMap) {
+                                        Map<String, String> paramsMap) {
         String params = null;
         if (null != paramsMap) {
             params = getParamStr(paramsMap);
@@ -179,7 +179,7 @@ public class HttpsUtil {
     }
 
     /** * * HTTP协议POST请求添加参数的封装方法 */
-    private static String getParamStr(TreeMap<String, String> paramsMap) {
+    private static String getParamStr(Map<String, String> paramsMap) {
         StringBuilder param = new StringBuilder();
         for (Iterator<Map.Entry<String, String>> it = paramsMap.entrySet()
                 .iterator(); it.hasNext();) {

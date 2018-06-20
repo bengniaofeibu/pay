@@ -60,7 +60,7 @@ public class StoreOrderStatusUpdateServiceImpl implements StoreOrderUpdateServic
              if (customerOrderInfo!=null) {
                  // 更新用户订单充值成功
 
-                 String couponAmountKey=new StringBuilder(COUPON_AMOUNT_KEY).append(customerOrderInfo.getUserId()).toString();
+                 String couponAmountKey=new StringBuilder(COUPON_AMOUNT_KEY).append(customerOrderInfo.getOrderNumber()).toString();
 
 
                  Object obj = redisUtil.getValueObj(couponAmountKey);
@@ -87,13 +87,13 @@ public class StoreOrderStatusUpdateServiceImpl implements StoreOrderUpdateServic
                  LOGGER.debug("更新用户状态数量 --> {}", updateCount);
 
 
-                 int updateGoodsCount = nyGoodsSkuMapper.updateGoodsNumByGoods(customerOrderInfo.getOrderGoodsId());
-                 LOGGER.debug("更新商品库存数量 --> {}", updateGoodsCount);
+//                 int updateGoodsCount = nyGoodsSkuMapper.updateGoodsNumByGoods(customerOrderInfo.getOrderGoodsId());
+//                 LOGGER.debug("更新商品库存数量 --> {}", updateGoodsCount);
 
                  //删除缓存剩余支付时间
                  redisUtil.deleteObject(NOT_PAY_TIME_KEY, baseOrderInfo.getOrderNumber());
 
-                 return updateCount+updateGoodsCount;
+                 return updateCount;
              }
          }catch (Exception e){
                LOGGER.error(" system error --> {}",e);

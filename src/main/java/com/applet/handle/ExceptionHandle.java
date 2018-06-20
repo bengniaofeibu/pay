@@ -16,7 +16,7 @@ public class ExceptionHandle {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public AppletResult handle(Exception e) {
-            logger.error("[Catch a exception] {}", e.getMessage());
+            logger.error("[Catch a exception] {}",e);
             return ResultUtil.error(ResultEnums.SERVER_ERROR);
     }
 }

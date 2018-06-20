@@ -22,14 +22,22 @@ public class ResultUtil {
         return result;
     }
 
+    public static AppletResult success(){
+        AppletResult result = new AppletResult();
+        result.setCode(ResultEnums.RETURN_SUCCESS.getCode());
+        result.setMsg(ResultEnums.RETURN_SUCCESS.getMsg());
+        result.setData(new ResultBuild(null));
+        return result;
+    }
+
 
 
     public static AppletResult error(ResultEnums resultEnums,String...msg){
         AppletResult result = new AppletResult();
         result.setCode(resultEnums.getCode());
         if (msg.length>0){
-            StringBuffer sb=new StringBuffer(msg[0]);
-            result.setMsg(sb.append(resultEnums.getMsg()).toString());
+            StringBuffer sb=new StringBuffer(resultEnums.getMsg());
+            result.setMsg(sb.append(",").append(msg[0]).toString());
         }else {
             result.setMsg(resultEnums.getMsg());
         }

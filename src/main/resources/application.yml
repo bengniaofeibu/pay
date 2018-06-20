@@ -1,12 +1,13 @@
 server:
-  port: 3333
+  port: 6666
 
 
 spring:
   application:
-    name: jjbicycleuser
+    name: jjbicyclepay
   profiles:
-    active: dev
+    active: local
+#    active: dev
 #    active: prod
   http:
     encoding:
@@ -17,7 +18,7 @@ spring:
   aop:
       proxy-target-class: true
   jmx:
-    default-domain: wxapplet
+    default-domain: jjbicyclepay
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -28,5 +29,9 @@ logging:
     level:
     config: classpath:logback/logback-dev.xml
 
+
+#分账账号和分账金额
+#格式 商户号,金额或比例;商户号,金额或比例;
+splitMerInfo: 999991805302427,1000;
 
 

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.ChinaPayOrderInfoMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.ChinaPayOrderInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
+    <result column="order_status" jdbcType="CHAR" property="orderStatus" />
+    <result column="split_type" jdbcType="CHAR" property="splitType" />
+    <result column="split_method" jdbcType="SMALLINT" property="splitMethod" />
+    <result column="mer_split_msg" jdbcType="VARCHAR" property="merSplitMsg" />
+    <result column="acq_seq_id" jdbcType="CHAR" property="acqSeqId" />
+    <result column="acq_date" jdbcType="CHAR" property="acqDate" />
+    <result column="channel_seq_id" jdbcType="CHAR" property="channelSeqId" />
+    <result column="channel_date" jdbcType="CHAR" property="channelDate" />
+    <result column="channel_time" jdbcType="CHAR" property="channelTime" />
+    <result column="bank_inst_no" jdbcType="CHAR" property="bankInstNo" />
+    <result column="complete_date" jdbcType="CHAR" property="completeDate" />
+    <result column="complete_time" jdbcType="CHAR" property="completeTime" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_number, order_status, split_type, split_method, mer_split_msg, acq_seq_id, 
+    acq_date, channel_seq_id, channel_date, channel_time, bank_inst_no, complete_date, 
+    complete_time, add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_china_pay_order_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insertChinaPayInfo" parameterType="com.applet.model.ChinaPayOrderInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into t_china_pay_order_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderNumber != null">
+        order_number,
+      </if>
+      <if test="orderStatus != null">
+        order_status,
+      </if>
+      <if test="splitType != null">
+        split_type,
+      </if>
+      <if test="splitMethod != null">
+        split_method,
+      </if>
+      <if test="merSplitMsg != null">
+        mer_split_msg,
+      </if>
+      <if test="acqSeqId != null">
+        acq_seq_id,
+      </if>
+      <if test="acqDate != null">
+        acq_date,
+      </if>
+      <if test="channelSeqId != null">
+        channel_seq_id,
+      </if>
+      <if test="channelDate != null">
+        channel_date,
+      </if>
+      <if test="channelTime != null">
+        channel_time,
+      </if>
+      <if test="bankInstNo != null">
+        bank_inst_no,
+      </if>
+      <if test="completeDate != null">
+        complete_date,
+      </if>
+      <if test="completeTime != null">
+        complete_time,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderNumber != null">
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="splitType != null">
+        #{splitType,jdbcType=CHAR},
+      </if>
+      <if test="splitMethod != null">
+        #{splitMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="merSplitMsg != null">
+        #{merSplitMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="acqSeqId != null">
+        #{acqSeqId,jdbcType=CHAR},
+      </if>
+      <if test="acqDate != null">
+        #{acqDate,jdbcType=CHAR},
+      </if>
+      <if test="channelSeqId != null">
+        #{channelSeqId,jdbcType=CHAR},
+      </if>
+      <if test="channelDate != null">
+        #{channelDate,jdbcType=CHAR},
+      </if>
+      <if test="channelTime != null">
+        #{channelTime,jdbcType=CHAR},
+      </if>
+      <if test="bankInstNo != null">
+        #{bankInstNo,jdbcType=CHAR},
+      </if>
+      <if test="completeDate != null">
+        #{completeDate,jdbcType=CHAR},
+      </if>
+      <if test="completeTime != null">
+        #{completeTime,jdbcType=CHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.ChinaPayOrderInfo">
+    update t_china_pay_order_info
+    <set>
+      <if test="orderNumber != null">
+        order_number = #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        order_status = #{orderStatus,jdbcType=CHAR},
+      </if>
+      <if test="splitType != null">
+        split_type = #{splitType,jdbcType=CHAR},
+      </if>
+      <if test="splitMethod != null">
+        split_method = #{splitMethod,jdbcType=SMALLINT},
+      </if>
+      <if test="merSplitMsg != null">
+        mer_split_msg = #{merSplitMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="acqSeqId != null">
+        acq_seq_id = #{acqSeqId,jdbcType=CHAR},
+      </if>
+      <if test="acqDate != null">
+        acq_date = #{acqDate,jdbcType=CHAR},
+      </if>
+      <if test="channelSeqId != null">
+        channel_seq_id = #{channelSeqId,jdbcType=CHAR},
+      </if>
+      <if test="channelDate != null">
+        channel_date = #{channelDate,jdbcType=CHAR},
+      </if>
+      <if test="channelTime != null">
+        channel_time = #{channelTime,jdbcType=CHAR},
+      </if>
+      <if test="bankInstNo != null">
+        bank_inst_no = #{bankInstNo,jdbcType=CHAR},
+      </if>
+      <if test="completeDate != null">
+        complete_date = #{completeDate,jdbcType=CHAR},
+      </if>
+      <if test="completeTime != null">
+        complete_time = #{completeTime,jdbcType=CHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

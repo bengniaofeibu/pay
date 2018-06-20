@@ -3,6 +3,7 @@ package com.applet.controller;
 import com.applet.Base.BaseController;
 import com.applet.Request.UserPayReq;
 import com.applet.annotation.SystemControllerLog;
+import com.applet.entity.ChinaPayBaseEntity;
 import com.applet.enums.ResultEnums;
 import com.applet.model.CustomerOrderInfo;
 import com.applet.model.NyCoupon;
@@ -29,46 +30,46 @@ public class PayController extends BaseController {
 
     /**
      * 用户支付
+     *
      * @param userPayReq
      * @return
      */
     @SystemControllerLog(funcionExplain = "进入支付控制层")
     @PostMapping("/userpay")
-    public AppletResult userPay(@RequestBody UserPayReq userPayReq){
+    public AppletResult userPay(@RequestBody UserPayReq userPayReq) {
 
         CustomerOrderInfo customerOrderInfo = getCustomerOrderInfo(userPayReq.getOrderNumber());
 
-        if (customerOrderInfo !=null ){
-
-            NyCoupon nyCoupon;
-            BigDecimal amount;
-            if (userPayReq.getCouponId()!= null){
-
-                 nyCoupon = nyCouponMapper.selectPayAmountByCouponId(userPayReq.getCouponId());
-
-                 if (nyCoupon != null ){
-
-                     //添加用户优惠劵金额缓存
-                     addUserCouponAmoutCache(userPayReq.getUserId(),nyCoupon);
-
-                     amount = calculatePayAmount(customerOrderInfo.getPayAmount(),new BigDecimal(nyCoupon.getNyCouponType().getParValue() / 100));
-                     LOGGER.debug("优惠劵金额 --> {}  实际支付金额 --> {}",nyCoupon.getNyCouponType().getParValue(),amount);
-
-                 }else {
-                     amount=customerOrderInfo.getPayAmount();
-                 }
-            }else {
-                amount=customerOrderInfo.getPayAmount();
-            }
-
-            //判断金额是否小于等于0
-            if ( amount.doubleValue() <= 0.00 ){
-              return  ResultUtil.error(ResultEnums.PAY_AMOUNT_EXCEPTION_FAIL);
-            }
-
-            userPayReq.setPayAmount(amount);
-            return userPayReq.getPayWay().intValue()==0?aliPayService.pay(userPayReq):wxPayService.pay(userPayReq);
+        if (customerOrderInfo != null) {
+            return getUserPayResult(userPayReq,customerOrderInfo);
         }
-      return ResultUtil.error(ResultEnums.NOT_FOUNT_ORDERNUM_FAIL);
+        return ResultUtil.error(ResultEnums.NOT_FOUNT_ORDERNUM_FAIL);
     }
+
+
+   @SystemControllerLog(funcionExplain = "进入银联支付控制层")
+   @PostMapping(value = "/chinapay")
+   public AppletResult chinaPay(@RequestBody UserPayReq userPayReq){
+
+
+       String amount = getUserPayAmoutCache(userPayReq.getOrderNumber());
+       LOGGER.debug("银联时间支付金额 {}",amount);
+
+       if (amount != null){
+
+           //判断金额是否小于等于0
+           if (new BigDecimal(amount).doubleValue() <= 0.00) {
+               return ResultUtil.error(ResultEnums.PAY_AMOUNT_EXCEPTION_FAIL);
+           }
+
+           ChinaPayBaseEntity chinaPayBaseEntity=getChinaPayBaseEntity(userPayReq);
+
+           if (chinaPayBaseEntity == null){
+               return ResultUtil.error(ResultEnums.CHINA_PAY_FAIL);
+           }
+
+           return chinaPayService.chinaPay(chinaPayBaseEntity);
+       }
+       return ResultUtil.error(ResultEnums.CHINA_PAY_FAIL);
+   }
 }
