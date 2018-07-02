@@ -80,6 +80,6 @@ public interface ChinaPayService {
      * @param chinaPaySinPay
      * @return
      */
-    String chinaPaySinPay(ChinaPaySinPayReq chinaPaySinPay);
+    AppletResult chinaPaySinPay(ChinaPaySinPayReq chinaPaySinPay);
 
 }

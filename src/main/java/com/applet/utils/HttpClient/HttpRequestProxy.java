@@ -1,19 +1,23 @@
 package com.applet.utils.HttpClient;
 
+import com.alibaba.fastjson.JSONObject;
 import com.applet.utils.common.JSONUtil;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -254,6 +258,33 @@ public class HttpRequestProxy {
 		}
 		return decodeUnicode(responseContent);
 	}
+
+
+	//post请求 格式为application/json
+	public static String doPost(String reqUrl, JSONObject jsonObject){
+		HttpPost httpPost = new HttpPost(reqUrl);
+		CloseableHttpClient client = HttpClients.createDefault();
+		String respContent = null;
+
+		StringEntity entity = new StringEntity(jsonObject.toString(),"utf-8");//解决中文乱码问题
+		entity.setContentEncoding("UTF-8");
+		entity.setContentType("application/json");
+		httpPost.setEntity(entity);
+		System.out.println();
+		try{
+			HttpResponse resp = client.execute(httpPost);
+			if(resp.getStatusLine().getStatusCode() == 200) {
+				HttpEntity he = resp.getEntity();
+				respContent = EntityUtils.toString(he,"UTF-8");
+			}
+		}catch (Exception e){
+			e.getStackTrace();
+		}
+		return respContent;
+	}
+
+
+
 	/**
 	 * @return ���ӳ�ʱ(����)
 	 */

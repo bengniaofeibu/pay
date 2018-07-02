@@ -33,6 +33,12 @@ public  abstract class BaseServiceImpl {
     @Value("${chinaPayBackURL}")
     private String chinaPayBackURL;
 
+    @Value("${chinaPaySinPay}")
+    private String chinaPaySinPay;
+
+    @Value("${splitMerInfo}")
+    private String splitMerInfo;
+
     protected static final String RES_CODE ="0000";
 
     protected static final String CHINA_PAY_RES_CODE ="0014";
@@ -76,6 +82,7 @@ public  abstract class BaseServiceImpl {
                 break;
             case "0606":
              sendMap.put("OrderAmt",chinaPayBaseEntity.getOrderAmt());
+//                sendMap.put("OrderAmt","1000");
              break;
         }
 
@@ -85,7 +92,7 @@ public  abstract class BaseServiceImpl {
             sendMap.put("OrderAmt",chinaPayBaseEntity.getOrderAmt());
             sendMap.put("SplitType",chinaPayBaseEntity.getSplitType() == null?SPLIT_TYPE:chinaPayBaseEntity.getSplitType());
             sendMap.put("SplitMethod",chinaPayBaseEntity.getSplitMethod() == null?SPLIT_METHOD:chinaPayBaseEntity.getSplitMethod());
-            sendMap.put("MerSplitMsg",getSplitMerInfo(chinaPayBaseEntity.getMerSplitMsg()));
+            sendMap.put("MerSplitMsg",getSplitMerInfo(splitMerInfo,chinaPayBaseEntity.getAmounts()));
             sendMap.put("RemoteAddr",REMOTE_IP);
             break;
         }
@@ -120,7 +127,7 @@ public  abstract class BaseServiceImpl {
 
 
     protected Map<String,String> getSendChinaSinPayRes(Map sendMap){
-        Map<String,String> resMap = HttpApiUtils.sendRequestToChinaPay(chinaPayTestResURL, (Map<String, Object>) sendMap);
+        Map<String,String> resMap = HttpApiUtils.sendRequestToChinaPay(chinaPaySinPay, (Map<String, Object>) sendMap);
 
         if (resMap!=null && resMap.size()>0){
             ChinaPaySinPayRes chinaPaySinPayRes=JSONUtil.parseObject(JSONUtil.toJSONString(resMap), ChinaPaySinPayRes.class);
@@ -132,7 +139,7 @@ public  abstract class BaseServiceImpl {
 
 
     //获取分账信息
-    private String getSplitMerInfo(String splitMerInfo){
+    private  static String getSplitMerInfo(String splitMerInfo,String amounts[]){
         String[] splitInfo = splitMerInfo.split(";");
         LOGGER.debug("splitInfo {}",JSONUtil.toJSONString(splitInfo));
 
@@ -140,14 +147,12 @@ public  abstract class BaseServiceImpl {
         int len=splitInfo.length;
         for (int i=0;i<len;i++){
             String split = splitInfo[i];
-            String splits[] = split.split(",");
-            if (splits.length>1){
+            String amount = amounts[i];
                 if ((i-len)==-1){
-                    splitBuild.append(splits[0]).append("^").append(splits[1]);
+                    splitBuild.append(split).append("^").append(amount);
                 }else {
-                    splitBuild.append(splits[0]).append("^").append(splits[1]).append(";");
+                    splitBuild.append(split).append("^").append(amount).append(";");
                 }
-            }
         }
         return splitBuild.toString();
     }

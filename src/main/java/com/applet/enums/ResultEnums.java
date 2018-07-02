@@ -26,7 +26,17 @@ public enum ResultEnums {
 
     CHINA_PAY_SMS_FAIL(1101,"支付短信发送失败"),
 
-    CHINA_PAY_FAIL(1102,"银联支付失败");
+    CHINA_PAY_FAIL(1102,"银联支付失败"),
+
+    USER_OPEN_ID_NOT_FOUND_FAIL(1103,"请先微信授权"),
+
+    ORDER_STATUS_ALREADY_COMPLETE(1104,"该笔订单已经退款或转账"),
+
+    WX_TRANSFER_SUCCESS(1105,"微信转账成功"),
+
+    ORDER_STATUS_UPDATE_FAIL(1106,"订单状态更新失败"),
+
+    WX_TRANSFER_FAIL(1107,"微信转账失败");
 
     private Integer code;
 

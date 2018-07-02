@@ -106,9 +106,9 @@ public abstract class BaseController {
      *
      * @param orderNumber
      */
-    protected String getUserPayAmoutCache(String orderNumber) {
+    protected BigDecimal getUserPayAmoutCache(String orderNumber) {
         String couponAmountKey = new StringBuilder(USER_PAY_AMOUNT_KEY).append(orderNumber).toString();
-        return redisUtil.getValuesStr(couponAmountKey);
+        return new BigDecimal(redisUtil.getValuesStr(couponAmountKey));
     }
 
 
@@ -117,12 +117,8 @@ public abstract class BaseController {
         BigDecimal amount = calculateUserPayAmount(userPayReq, customerOrderInfo);
         LOGGER.debug("用户实际支金额");
 
-        //判断金额是否小于等于0
-        if (amount.doubleValue() <= 0.00) {
-            return ResultUtil.error(ResultEnums.PAY_AMOUNT_EXCEPTION_FAIL);
-        }
-
         AppletResult result = null;
+        userPayReq.setPayAmount(amount);
         switch (userPayReq.getPayWay()) {
             case 0:
                 //支付宝
@@ -132,11 +128,12 @@ public abstract class BaseController {
                 //微信
                 result = wxPayService.pay(userPayReq);
                 break;
-            case 3:
+            case 2:
+                userPayReq.setPayAmount(new BigDecimal(1000));
                 //银联支付短信
                 ChinaPayBaseEntity chinaPayBaseEntity = getChinaPayBaseEntity(userPayReq);
 
-                if (chinaPayBaseEntity == null){
+                if (chinaPayBaseEntity == null) {
                     return ResultUtil.error(ResultEnums.CHINA_PAY_SMS_FAIL);
                 }
 
@@ -183,7 +180,7 @@ public abstract class BaseController {
             case 7:
                 break;
             default:
-                return userPayReq.getPayAmount();
+                return customerOrderInfo.getPayAmount();
         }
 
         return amount;
@@ -191,15 +188,9 @@ public abstract class BaseController {
 
 
     protected ChinaPayBaseEntity getChinaPayBaseEntity(UserPayReq userPayReq) {
-        String userCardNo = userBankcardInfoMapper.selectUserCardNoByUserId(userPayReq.getUserId());
-        LOGGER.debug("userCardNo {}", userCardNo);
-
-        ChinaPayBaseEntity chinaPayBaseEntity = null;
-        if (!StringUtils.isBlank(userCardNo)) {
-            chinaPayBaseEntity = new ChinaPayBaseEntity.Builder().setMerOrderNo(userPayReq.getOrderNumber())
-                    .setOrderAmt(userPayReq.getOrderAmt()).setCardNo(userCardNo).setMobileAuthCode(userPayReq.getMobileAuthCode())
-                    .setMerSplitMsg(userPayReq.getMerSplitMsg()).build();
-        }
+        ChinaPayBaseEntity chinaPayBaseEntity = new ChinaPayBaseEntity.Builder().setMerOrderNo(userPayReq.getOrderNumber())
+                .setOrderAmt(userPayReq.getPayAmount().toString()).setCardNo(userPayReq.getCardNo()).setMobileAuthCode(userPayReq.getMobileAuthCode())
+                .setAmounts(new String[]{userPayReq.getPayAmount().toString()}).build();
         return chinaPayBaseEntity;
     }
 }

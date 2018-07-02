@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.BicycleWxUserInfoMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.BicycleWxUserInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="union_id" jdbcType="VARCHAR" property="unionId" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+    <result column="userid_hash" jdbcType="VARCHAR" property="useridHash" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, union_id, open_id, user_id, user_name, user_mobile, userid_hash, add_time, update_time
+  </sql>
+  <select id="selectOpenIdByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+    select 
+    open_id
+    from t_bicycle_wx_user_info
+    where user_id = #{userId,jdbcType=BIGINT} limit 1
+  </select>
+</mapper>

@@ -2,6 +2,7 @@ package com.applet.mapper;
 
 import com.applet.model.CustomerOrderInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 public interface CustomerOrderInfoMapper {
 
 
-    CustomerOrderInfo selectPayStatusByOrderNumber(String orderNumber);
+    CustomerOrderInfo selectPayStatusByOrderNumber(@Param("orderNumber") String orderNumber);
 
     int updateOrderStatusByOrderNum(CustomerOrderInfo record);
 }

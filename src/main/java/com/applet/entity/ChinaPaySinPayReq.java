@@ -53,10 +53,10 @@ public class ChinaPaySinPayReq extends BaseEntity {
     private String purpose;
 
     /**对公对私标记。“00”对私，“01”对公。该字段可以不填，如不填则默认为对私**/
-    private String flag;
+    private String flag="00";
 
     /**版本号**/
-    private String version="20160530";
+    private String version;
 
     /**签名标志**/
     private String signFlag="1";
@@ -168,11 +168,7 @@ public class ChinaPaySinPayReq extends BaseEntity {
     }
 
     public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
+        return "20160530";
     }
 
     public String getSignFlag() {
@@ -212,24 +208,25 @@ public class ChinaPaySinPayReq extends BaseEntity {
      * 获取签名
      * @return
      */
-    public void getchkSignValue(){
+    public ChinaPaySinPayReq getChinaPaySinPay(){
 
-       String plainData= Base64Util.decode(new StringBuilder(this.merId).append(this.merDate)
+       String plainData= Base64Util.decode(new StringBuilder(this.merId).append(this.getMerDate())
           .append(this.merSeqId).append(this.cardNo).append(this.userName).append(this.openBank)
           .append(this.prov).append(this.city).append(this.transAmt).append(this.purpose).append(this.flag)
-          .append(this.version).append(this.signFlag).append(this.termType).append(this.payMode).toString());
+          .append(this.getVersion()).append(this.signFlag).append(this.termType).append(this.payMode).toString());
 
         PrivateKey key = new PrivateKey();
         boolean flage = key.buildKey(merId, 0, CHINA_MERKEY_PATH);
-        if(flage == false){
+        if(!flage){
             System.out.println("buildkey error!");
         }else{
             System.out.println("============flage "+flage );
             SecureLink sl = new SecureLink(key);
             System.out.println("====date "+ plainData);
-            this.chkValue = sl.Sign(plainData);
+            this.chkValue = sl.Sign(Base64Util.encode(plainData));
             System.out.println("签名内容:"+ this.chkValue);
         }
+        return this;
     }
 }
 

@@ -44,7 +44,7 @@
     select 
     <include refid="Base_Column_List"/>
     from t_customer_order_info
-    where order_number = #{order_number,jdbcType=CHAR}
+    where order_number = #{orderNumber,jdbcType=CHAR}
   </select>
 
     <update id="updateOrderStatusByOrderNum" parameterType="com.applet.model.CustomerOrderInfo">
@@ -71,7 +71,6 @@
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=SMALLINT},
             </if>
-            update_time = NOW(),
         </set>
         where order_number = #{orderNumber,jdbcType=CHAR}
     </update>

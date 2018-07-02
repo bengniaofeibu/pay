@@ -30,8 +30,8 @@ logging:
     config: classpath:logback/logback-dev.xml
 
 
-#分账账号和分账金额
-#格式 商户号,金额或比例;商户号,金额或比例;
-splitMerInfo: 999991805302427,1000;
+#分账账号
+#格式 商户号;商户号;
+splitMerInfo: 999991805302427;
 
 

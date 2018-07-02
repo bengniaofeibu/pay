@@ -4,6 +4,7 @@ import com.applet.Base.BaseController;
 import com.applet.annotation.SystemControllerLog;
 import com.applet.entity.CardTranDataParam;
 import com.applet.entity.ChinaPayBaseEntity;
+import com.applet.entity.ChinaPaySinPayReq;
 import com.applet.service.ChinaPayService;
 import com.applet.utils.AppletResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +64,9 @@ public class ChinaPayController extends BaseController{
         return chinaPayService.chinaPay(chinaPayBaseEntity);
     }
 
-    @SystemControllerLog(funcionExplain = "进入银联支付回调控制层")
-    @PostMapping(value = "/payback")
-    public String chinaPayBack(ChinaPayBaseEntity chinaPayBaseEntity){
-        return chinaPayService.chinaPayBack(chinaPayBaseEntity);
+    @SystemControllerLog(funcionExplain = "银联单笔代付")
+    @PostMapping(value = "/chinapaysinpay")
+    public AppletResult chinaPay(@RequestBody ChinaPaySinPayReq chinaPaySinPayReq){
+        return chinaPayService.chinaPaySinPay(chinaPaySinPayReq);
     }
 }

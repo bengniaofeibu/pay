@@ -31,7 +31,7 @@ public  class ChinaPayBaseEntity extends CardTranDataParam {
     /**
      * 版本号
      **/
-    private String Version = "20150922";
+    private String Version;
 
     /**
      * 接入类型
@@ -82,6 +82,11 @@ public  class ChinaPayBaseEntity extends CardTranDataParam {
      * 分账信息
      */
     private String MerSplitMsg;
+
+    /**
+     * 分账金额
+     */
+    private String[] Amounts;
 
     /**
      * 收单流水号
@@ -236,6 +241,8 @@ public  class ChinaPayBaseEntity extends CardTranDataParam {
 
         private String MerSplitMsg;
 
+        private String[] Amounts;
+
         public Builder(){
 
         }
@@ -265,6 +272,12 @@ public  class ChinaPayBaseEntity extends CardTranDataParam {
             return this;
         }
 
+        public Builder setAmounts(String amounts[]){
+            this.Amounts=amounts;
+            return this;
+        }
+
+
        public ChinaPayBaseEntity build(){
             return new ChinaPayBaseEntity(this);
        }
@@ -277,11 +290,12 @@ public  class ChinaPayBaseEntity extends CardTranDataParam {
         this.setMerOrderNo(builder.MerOrderNo);
         this.setMerSplitMsg(builder.MerSplitMsg);
         this.setMobileAuthCode(builder.MobileAuthCode);
+        this.setAmounts(builder.Amounts);
     }
 
 
     public String getVersion() {
-        return Version;
+        return "20150922";
     }
 
     public void setVersion(String version) {
@@ -398,6 +412,14 @@ public  class ChinaPayBaseEntity extends CardTranDataParam {
 
     public void setMerSplitMsg(String merSplitMsg) {
         MerSplitMsg = merSplitMsg;
+    }
+
+    public String[] getAmounts() {
+        return Amounts;
+    }
+
+    public void setAmounts(String[] amounts) {
+        this.Amounts = amounts;
     }
 
     public String getAcqSeqId() {

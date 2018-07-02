@@ -1,6 +1,9 @@
 package com.applet.utils.HttpClient;
 
+import com.alibaba.fastjson.JSONObject;
 import com.applet.utils.common.JSONUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
@@ -57,5 +60,19 @@ public class HttpApiUtils {
     public static Map sendRequestToChinaSinPay(String reqUrl,Map<String,Object> params){
         String res= HttpRequestProxy.sendToOtherServer(reqUrl,params);
         return JSONUtil.paserStrtoMap(res);
+    }
+
+
+    /**
+     * 请求公共方法
+     * 方式 post
+     * 格式 json
+     * @param reqUrl
+     * @param jsonObject
+     * @return
+     */
+    public static <T>  T pSendResquestJson(String reqUrl, JSONObject jsonObject,Class<T> aclass){
+        String s = HttpRequestProxy.doPost(reqUrl, jsonObject);
+        return JSONUtil.parseObject(s,aclass);
     }
 }

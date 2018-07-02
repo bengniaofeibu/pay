@@ -7,7 +7,9 @@ import com.applet.entity.ChinaPaySinPayReq;
 import com.applet.enums.ChinaPayTranTypeEnums;
 import com.applet.enums.ResultEnums;
 import com.applet.mapper.ChinaPayOrderInfoMapper;
+import com.applet.mapper.CustomerOrderInfoMapper;
 import com.applet.model.ChinaPayOrderInfo;
+import com.applet.model.CustomerOrderInfo;
 import com.applet.service.ChinaPayService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
@@ -17,9 +19,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sun.rmi.runtime.Log;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.util.Map;
 
@@ -30,6 +34,9 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
 
     @Autowired
     private ChinaPayOrderInfoMapper chinaPayOrderInfoMapper;
+
+    @Autowired
+    private CustomerOrderInfoMapper customerOrderInfoMapper;
 
     private static final String CHINA_PAY_RETURN_CODE="200";
 
@@ -44,7 +51,7 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
     @SystemServerLog(funcionExplain = "签约查询")
     @Override
     public AppletResult signgingAndQuery(ChinaPayBaseEntity chinaPayBaseEntity){
-        return returnResult(chinaPayBaseEntity,ResultEnums.CHINA_SIGNING_QUERY_FAIL,"SignState");
+        return returnResult(chinaPayBaseEntity,ChinaPayTranTypeEnums.SIGINING_AND_QUERY,ResultEnums.CHINA_SIGNING_QUERY_FAIL,"SignState");
     }
 
     /**
@@ -88,7 +95,7 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
     @SystemServerLog(funcionExplain = "签约短信")
     @Override
     public AppletResult signingSms(ChinaPayBaseEntity chinaPayBaseEntity){
-        return returnResult(chinaPayBaseEntity, ResultEnums.CHINA_SIGNING_SMS_FAIL, "");
+        return returnResult(chinaPayBaseEntity,ChinaPayTranTypeEnums.SIGINING_SMS, ResultEnums.CHINA_SIGNING_SMS_FAIL, "");
     }
 
     /**
@@ -100,7 +107,7 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
     @SystemServerLog(funcionExplain = "签约")
     @Override
     public AppletResult signing(ChinaPayBaseEntity chinaPayBaseEntity){
-        return returnResult(chinaPayBaseEntity,ResultEnums.CHINA_SIGNING_FAIL,"SignState");
+        return returnResult(chinaPayBaseEntity,ChinaPayTranTypeEnums.SIGINING,ResultEnums.CHINA_SIGNING_FAIL,"SignState");
     }
 
     /**
@@ -111,7 +118,7 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
      */
     @Override
     public AppletResult unSigning(ChinaPayBaseEntity chinaPayBaseEntity) {
-        return returnResult(chinaPayBaseEntity,ResultEnums.CHINA_UNSIGNING_FAIL,"SignState");
+        return returnResult(chinaPayBaseEntity,ChinaPayTranTypeEnums.UNSIGINING,ResultEnums.CHINA_UNSIGNING_FAIL,"SignState");
     }
 
     /**
@@ -123,7 +130,7 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
     @SystemServerLog(funcionExplain = "支付短信")
     @Override
     public AppletResult paySms(ChinaPayBaseEntity chinaPayBaseEntity) {
-        return returnResult(chinaPayBaseEntity,ResultEnums.CHINA_PAY_SMS_FAIL,"");
+        return returnResult(chinaPayBaseEntity,ChinaPayTranTypeEnums.PAY_SMS,ResultEnums.CHINA_PAY_SMS_FAIL,"");
     }
 
     /**
@@ -135,7 +142,7 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
     @SystemServerLog(funcionExplain = "支付")
     @Override
     public AppletResult chinaPay(ChinaPayBaseEntity chinaPayBaseEntity) {
-       return returnResult(chinaPayBaseEntity,ResultEnums.CHINA_PAY_FAIL,"");
+       return returnResult(chinaPayBaseEntity,ChinaPayTranTypeEnums.CHINA_PAY,ResultEnums.CHINA_PAY_FAIL,"");
     }
 
     /**
@@ -146,6 +153,7 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
      */
     @SystemServerLog(funcionExplain = "银联支付回调")
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String chinaPayBack(ChinaPayBaseEntity chinaPayBaseEntity) {
 
       LOGGER.debug("chinaPayBaseEntity {}",JSONUtil.toJSONString(chinaPayBaseEntity));
@@ -169,9 +177,19 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
         chinaPayOrderInfo.setChannelTime(chinaPayBaseEntity.getChannelTime());
         chinaPayOrderInfo.setCompleteDate(chinaPayBaseEntity.getCompleteDate());
         chinaPayOrderInfo.setCompleteTime(chinaPayBaseEntity.getCompleteTime());
-
        int insertCount= chinaPayOrderInfoMapper.insertChinaPayInfo(chinaPayOrderInfo);
-       LOGGER.debug("银联支付回调 插入数量 {}",insertCount);
+
+
+        CustomerOrderInfo customerOrderInfo=new CustomerOrderInfo();
+        customerOrderInfo.setOrderNumber(chinaPayBaseEntity.getMerOrderNo());
+        customerOrderInfo.setTotalAmount(new BigDecimal(chinaPayBaseEntity.getOrderAmt()));
+        customerOrderInfo.setTradeNo(chinaPayBaseEntity.getAcqSeqId());
+        customerOrderInfo.setPayStatus((short) 2);
+        customerOrderInfo.setPayWay((short) 3);
+        int updateCount = customerOrderInfoMapper.updateOrderStatusByOrderNum(customerOrderInfo);
+        LOGGER.debug(" 银联支付回调 插入数量 {}  更新用户状态数量 --> {}", insertCount,updateCount);
+
+
         return CHINA_PAY_RETURN_CODE;
     }
 
@@ -181,23 +199,23 @@ public class ChinaPayServiceImpl extends BaseServiceImpl implements ChinaPayServ
      * @param chinaPaySinPay
      * @return
      */
+    @SystemServerLog(funcionExplain = "银联单笔代付")
     @Override
-    public String chinaPaySinPay(ChinaPaySinPayReq chinaPaySinPay) {
+    public AppletResult chinaPaySinPay(ChinaPaySinPayReq chinaPaySinPay) {
+//
+//         Map<String,String> sendMap= JSONUtil.objectToMap(chinaPaySinPay.getChinaPaySinPay());
+//         LOGGER.debug("银联代付请求参数 {}",JSONUtil.toJSONString(sendMap));
+//
+//        getSendChinaSinPayRes(sendMap);
 
-         Map<String,String> sendMap= JSONUtil.objectToMap(chinaPaySinPay);
-         LOGGER.debug("银联代付请求参数 {}",JSONUtil.toJSONString(sendMap));
-
-
-        getSendChinaSinPayRes(sendMap);
-
-        return null;
+        return ResultUtil.success();
     }
 
 
     //获取返回值
-    private AppletResult returnResult(ChinaPayBaseEntity chinaPayBaseEntity,ResultEnums resultEnums,String paramName){
+    private AppletResult returnResult(ChinaPayBaseEntity chinaPayBaseEntity,ChinaPayTranTypeEnums chinaPayTranTypeEnums,ResultEnums resultEnums,String paramName){
 
-        Map sendMap = getBaseReqMap(chinaPayBaseEntity, ChinaPayTranTypeEnums.CHINA_PAY);
+        Map sendMap = getBaseReqMap(chinaPayBaseEntity, chinaPayTranTypeEnums);
         LOGGER.debug("银联请求参数 {}",sendMap);
 
         Map<String,String> map= getSendRes(sendMap);

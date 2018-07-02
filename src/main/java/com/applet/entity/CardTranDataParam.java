@@ -100,7 +100,7 @@ public class CardTranDataParam extends BaseEntity {
     }
 
     public String getCertType() {
-        return CertType;
+        return "01";
     }
 
     public void setCertType(String certType) {

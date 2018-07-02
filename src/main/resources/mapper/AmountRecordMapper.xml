@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.AmountRecordMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.AmountRecord">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="recharge_id" jdbcType="DECIMAL" property="rechargeId" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="batch_no" jdbcType="VARCHAR" property="batchNo" />
+    <result column="order_mode" jdbcType="INTEGER" property="orderMode" />
+    <result column="recharge_mode" jdbcType="INTEGER" property="rechargeMode" />
+    <result column="recharge_way" jdbcType="INTEGER" property="rechargeWay" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    <result column="order_num" jdbcType="DECIMAL" property="orderNum" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="refund_count" jdbcType="INTEGER" property="refundCount" />
+    <result column="wrong_code" jdbcType="VARCHAR" property="wrongCode" />
+    <result column="wrong_msg" jdbcType="VARCHAR" property="wrongMsg" />
+    <result column="account_zhi" jdbcType="VARCHAR" property="accountZhi" />
+    <result column="trans_account_no" jdbcType="VARCHAR" property="transAccountNo" />
+    <result column="ali_user_id" jdbcType="VARCHAR" property="aliUserId" />
+    <result column="rescoure_id" jdbcType="INTEGER" property="rescoureId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, recharge_id, add_time, amount, batch_no, order_mode, recharge_mode, recharge_way, 
+    state, trade_no, update_time, user_id, create_by, create_date, update_by, update_date, 
+    remarks, del_flag, order_num, description, refund_count, wrong_code, wrong_msg, account_zhi, 
+    trans_account_no, ali_user_id, rescoure_id
+  </sql>
+  <select id="selectOrderInfoByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    recharge_id,amount,recharge_way
+    from t_amount_record
+    where user_id = #{userId,jdbcType=VARCHAR} and state!=3 ORDER BY add_time desc LIMIT 1
+  </select>
+  <update id="updateOrderStateByRechargeId" parameterType="com.applet.model.AmountRecord">
+    update t_amount_record
+    <set>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="transAccountNo != null">
+        trans_account_no = #{transAccountNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where recharge_id = #{rechargeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -59,8 +59,11 @@ wxPay.cer: /home/cer/apiclient_cert.p12
 chinaPayResURL.signingandquery: https://payment.chinapay.com/CTITS/service/rest/forward/syn/000000000017/0/0/0/0/0
 
 #银联支付回调
-chinaPayBackURL: http://192.168.0.236:8081/chinapay/payback
+chinaPayBackURL: http://47.100.131.56:6666/payback/chinapayback
 
 
 #银联代付
 chinaPaySinPay: http://sfj.chinapay.com/dac/SinPayServletUTF8
+
+#微信企业转账个人
+wxTransferReqUrl: http://139.196.194.172:8080/pay/wxPay/transfer

@@ -1,16 +1,16 @@
 package com.applet.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.applet.Request.UserPayReq;
 import com.applet.annotation.SystemServerLog;
-import com.applet.entity.AliPayInfo;
 import com.applet.entity.PayBackStatusNotice;
 import com.applet.entity.WxPayInfo;
 import com.applet.enums.ResultEnums;
 import com.applet.enums.WxCallBackResultEnums;
-import com.applet.mapper.CustomerOrderInfoMapper;
+import com.applet.mapper.AmountRecordMapper;
+import com.applet.mapper.BicycleWxUserInfoMapper;
+import com.applet.model.AmountRecord;
 import com.applet.model.BaseOrderInfo;
-import com.applet.model.CustomerOrderInfo;
-import com.applet.service.OrderStatusUpdateService;
 import com.applet.service.StoreOrderUpdateService;
 import com.applet.service.WxPayService;
 import com.applet.utils.AppletResult;
@@ -21,15 +21,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +57,16 @@ public class WxPayServiceImpl implements WxPayService {
     @Autowired
     private StoreOrderUpdateService storeOrderUpdateService;
 
+    @Autowired
+    private BicycleWxUserInfoMapper wxUserInfoMapper;
+
+    @Autowired
+    private AmountRecordMapper amountRecordMapper;
+
+    @Value("${wxTransferReqUrl}")
+    private String wxTransferReqUrl;
+
+    private static final String WX_TRANSFER_CODE="10000";
 
     /**
      * 微信支付接口
@@ -203,5 +210,89 @@ public class WxPayServiceImpl implements WxPayService {
             LOGGER.error("微信预支付ERROR {}", e);
         }
         return null;
+    }
+
+    /**
+     * 微信转账 企业到个人账户
+     *
+     * @param userPayReq
+     * @return
+     */
+    @SystemServerLog(funcionExplain = "微信转账")
+    @Override
+    public AppletResult wxTransfer(UserPayReq userPayReq) {
+
+        AmountRecord amountRecord = amountRecordMapper.selectOrderInfoByUserId(userPayReq.getUserId());
+
+        //判断该订单是否是提现异常状态
+        if (amountRecord == null){
+            return ResultUtil.error(ResultEnums.ORDER_STATUS_ALREADY_COMPLETE);
+        }
+
+        String openId;
+        //判断是否是该订单是否是微信支付,不是微信支付查用户是否微信授权过
+       if (amountRecord.getRechargeWay()!= 1){
+            openId=wxUserInfoMapper.selectOpenIdByUserId(userPayReq.getUserId());
+           //没有查询到用户的openId
+           if (StringUtils.isBlank(openId)){
+               return ResultUtil.error(ResultEnums.USER_OPEN_ID_NOT_FOUND_FAIL);
+           }
+       }else {
+           openId=amountRecord.getAliUserId();
+       }
+
+       Map<String,Object> sendMap=new HashMap<>();
+       sendMap.put("rechargeId",amountRecord.getRechargeId());
+       sendMap.put("amount",amountRecord.getAmount());
+       sendMap.put("openId",openId);
+
+        WxTransferRes wxTransferRes = HttpApiUtils.pSendResquestJson(wxTransferReqUrl, new JSONObject(sendMap),WxTransferRes.class);
+        LOGGER.debug("微信企业转账到个人返回结果 {}",JSONUtil.toJSONString(wxTransferRes));
+
+        if (wxTransferRes.getCode().equals(WX_TRANSFER_CODE)){
+          int updateNum = amountRecordMapper.updateOrderStateByRechargeId(new AmountRecord(amountRecord.getRechargeId(),3,wxTransferRes.getMsg()));
+            LOGGER.debug("微信企业转账到个人订单更新状态 {}",updateNum);
+
+          if ( updateNum >0 ){
+              return ResultUtil.success(ResultEnums.USER_OPEN_ID_NOT_FOUND_FAIL);
+          }else {
+              return ResultUtil.error(ResultEnums.ORDER_STATUS_UPDATE_FAIL);
+          }
+        }else {
+            return ResultUtil.error(ResultEnums.WX_TRANSFER_FAIL);
+        }
+    }
+
+    static class WxTransferRes{
+
+        private String code;
+
+        private String msg;
+
+        private Object data;
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+
+        public Object getData() {
+            return data;
+        }
+
+        public void setData(Object data) {
+            this.data = data;
+        }
     }
 }

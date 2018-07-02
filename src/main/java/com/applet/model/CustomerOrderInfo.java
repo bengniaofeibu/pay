@@ -33,28 +33,28 @@ public class CustomerOrderInfo extends BaseOrderInfo{
     private String orderNumber;
 
     /** 银联订单号 **/
-    private String MerOrderNo;
+    private String merOrderNo;
 
     /**
      *  银联支付金额
      */
-    private String OrderAmt;
+    private String orderAmt;
 
     /**
      *  银行卡号
      */
-    private String CardNo;
+    private String cardNo;
 
     /**
      *  银联短信验证码
      */
-    private String MobileAuthCode;
+    private String mobileAuthCode;
 
 
     /**
      *  银联分账信息
      */
-    private String MerSplitMsg;
+    private String merSplitMsg;
 
     /** 订单用途 **/
     private String orderSubject;
@@ -204,43 +204,43 @@ public class CustomerOrderInfo extends BaseOrderInfo{
     }
 
     public String getMerOrderNo() {
-        return MerOrderNo;
+        return merOrderNo;
     }
 
     public void setMerOrderNo(String merOrderNo) {
-        MerOrderNo = merOrderNo;
+        this.merOrderNo = merOrderNo;
     }
 
     public String getOrderAmt() {
-        return OrderAmt;
+        return orderAmt;
     }
 
     public void setOrderAmt(String orderAmt) {
-        OrderAmt = orderAmt;
+        this.orderAmt = orderAmt;
     }
 
     public String getCardNo() {
-        return CardNo;
+        return cardNo;
     }
 
     public void setCardNo(String cardNo) {
-        CardNo = cardNo;
+        this.cardNo = cardNo;
     }
 
     public String getMobileAuthCode() {
-        return MobileAuthCode;
+        return mobileAuthCode;
     }
 
     public void setMobileAuthCode(String mobileAuthCode) {
-        MobileAuthCode = mobileAuthCode;
+        this.mobileAuthCode = mobileAuthCode;
     }
 
     public String getMerSplitMsg() {
-        return MerSplitMsg;
+        return merSplitMsg;
     }
 
     public void setMerSplitMsg(String merSplitMsg) {
-        MerSplitMsg = merSplitMsg;
+        this.merSplitMsg = merSplitMsg;
     }
 
     public void setOrderSubject(String orderSubject) {

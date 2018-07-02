@@ -22,27 +22,4 @@ public class SigningAndQueryResEntity extends ChinaPayResBaseEntity {
     public void setSignState(Integer signState) {
         SignState = signState;
     }
-
-
-    public String getSignStateMsg(int signState){
-
-        String stateMsg=null;
-        switch (signState){
-            case 00:
-             stateMsg="未签约";
-            break;
-            case 01:
-             stateMsg="签约成功";
-            break;
-            case 02:
-             stateMsg="签约名称";
-            break;
-            case 03:
-             stateMsg="已撤销";
-            break;
-           default:
-               stateMsg="未知msg";
-        }
-      return stateMsg;
-    }
 }

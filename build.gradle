@@ -16,7 +16,6 @@ apply plugin: 'org.springframework.boot'
 //apply plugin: 'war'
 
 
-
 jar {
     baseName = 'jjbiclyclepay'
 }

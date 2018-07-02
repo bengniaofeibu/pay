@@ -52,16 +52,17 @@ public class PayController extends BaseController {
    public AppletResult chinaPay(@RequestBody UserPayReq userPayReq){
 
 
-       String amount = getUserPayAmoutCache(userPayReq.getOrderNumber());
+       BigDecimal amount = getUserPayAmoutCache(userPayReq.getOrderNumber());
        LOGGER.debug("银联时间支付金额 {}",amount);
 
        if (amount != null){
 
            //判断金额是否小于等于0
-           if (new BigDecimal(amount).doubleValue() <= 0.00) {
+           if (amount.doubleValue() <= 0.00) {
                return ResultUtil.error(ResultEnums.PAY_AMOUNT_EXCEPTION_FAIL);
            }
 
+           userPayReq.setPayAmount(amount);
            ChinaPayBaseEntity chinaPayBaseEntity=getChinaPayBaseEntity(userPayReq);
 
            if (chinaPayBaseEntity == null){
@@ -71,5 +72,11 @@ public class PayController extends BaseController {
            return chinaPayService.chinaPay(chinaPayBaseEntity);
        }
        return ResultUtil.error(ResultEnums.CHINA_PAY_FAIL);
+   }
+
+   @SystemControllerLog(funcionExplain = "进入微信企业转账到个人控制层")
+   @PostMapping(value = "/wxTransfer")
+   public AppletResult wxTransfer(@RequestBody UserPayReq userPayReq){
+       return wxPayService.wxTransfer(userPayReq);
    }
 }

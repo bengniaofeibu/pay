@@ -2,6 +2,7 @@ package com.applet.controller;
 
 import com.applet.Base.BaseController;
 import com.applet.annotation.SystemControllerLog;
+import com.applet.entity.ChinaPayBaseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,13 @@ public class PayBackController extends BaseController {
     @PostMapping(value = "/wxpayback")
     public String wxPayBack(HttpServletRequest request){
         return wxPayService.payBack(request);
+    }
+
+
+    @SystemControllerLog(funcionExplain = "进入银联支付回调控制层")
+    @PostMapping(value = "/chinapayback")
+    public String chinaPayBack(ChinaPayBaseEntity chinaPayBaseEntity){
+        return chinaPayService.chinaPayBack(chinaPayBaseEntity);
     }
 
 }
