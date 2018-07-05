@@ -100,6 +100,14 @@ public class UserInfo {
 
     private String mac;
 
+    public UserInfo() {
+    }
+
+    public UserInfo(String id, Integer accountStatus) {
+        this.id = id;
+        this.accountStatus = accountStatus;
+    }
+
     public String getId() {
         return id;
     }

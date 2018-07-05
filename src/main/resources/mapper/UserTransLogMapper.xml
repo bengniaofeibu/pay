@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.UserTransLogMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.UserTransLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="user_order_no" jdbcType="VARCHAR" property="userOrderNo" />
+    <result column="trans_account_no" jdbcType="VARCHAR" property="transAccountNo" />
+    <result column="trans_way" jdbcType="SMALLINT" property="transWay" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, user_order_no, trans_account_no, trans_way, add_time, update_time
+  </sql>
+  <select id="selectCountByOrderNo" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select 
+    COUNT(1)
+    from t_user_trans_log
+    where user_order_no = #{userOrderNo,jdbcType=VARCHAR}
+  </select>
+  <insert id="insertUserTransLog" parameterType="com.applet.model.UserTransLog" keyProperty="id" useGeneratedKeys="true">
+    insert into t_user_trans_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userOrderNo != null">
+        user_order_no,
+      </if>
+      <if test="transAccountNo != null">
+        trans_account_no,
+      </if>
+      <if test="transWay != null">
+        trans_way,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userOrderNo != null">
+        #{userOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transAccountNo != null">
+        #{transAccountNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transWay != null">
+        #{transWay,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+</mapper>

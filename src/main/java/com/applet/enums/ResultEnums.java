@@ -30,13 +30,17 @@ public enum ResultEnums {
 
     USER_OPEN_ID_NOT_FOUND_FAIL(1103,"请先微信授权"),
 
-    ORDER_STATUS_ALREADY_COMPLETE(1104,"该笔订单已经退款或转账"),
+    ORDER_STATUS_ALREADY_COMPLETE(1104,"该笔订单已经退款或转账，请查询微信转账记录"),
 
     WX_TRANSFER_SUCCESS(1105,"微信转账成功"),
 
     ORDER_STATUS_UPDATE_FAIL(1106,"订单状态更新失败"),
 
-    WX_TRANSFER_FAIL(1107,"微信转账失败");
+    WX_TRANSFER_FAIL(1107,"微信转账失败"),
+
+    user_account_status_FAIL(1108,"非缴纳押金状态"),
+
+    USER_NOT_FOUND_FAIL(1109,"用户不存在");
 
     private Integer code;
 

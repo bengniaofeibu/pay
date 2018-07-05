@@ -9,8 +9,12 @@ import com.applet.enums.ResultEnums;
 import com.applet.enums.WxCallBackResultEnums;
 import com.applet.mapper.AmountRecordMapper;
 import com.applet.mapper.BicycleWxUserInfoMapper;
+import com.applet.mapper.UserInfoMapper;
+import com.applet.mapper.UserTransLogMapper;
 import com.applet.model.AmountRecord;
 import com.applet.model.BaseOrderInfo;
+import com.applet.model.UserInfo;
+import com.applet.model.UserTransLog;
 import com.applet.service.StoreOrderUpdateService;
 import com.applet.service.WxPayService;
 import com.applet.utils.AppletResult;
@@ -39,13 +43,13 @@ public class WxPayServiceImpl implements WxPayService {
 
 
     //支付回调成功
-    private static Map<String,String> BACK_SUCCESS=WxCallBackResultEnums.returnCallResult(WxCallBackResultEnums.CALL_BACK_NOTIFY_SUCCESS);
+    private static Map<String, String> BACK_SUCCESS = WxCallBackResultEnums.returnCallResult(WxCallBackResultEnums.CALL_BACK_NOTIFY_SUCCESS);
 
     //支付回调业务结果失败
-    private static Map<String,String> BACK_BUSINESS_FAIL=WxCallBackResultEnums.returnCallResult(WxCallBackResultEnums.CALL_BACK_BUSINESS_FAIL);
+    private static Map<String, String> BACK_BUSINESS_FAIL = WxCallBackResultEnums.returnCallResult(WxCallBackResultEnums.CALL_BACK_BUSINESS_FAIL);
 
     //支付回调通信失败
-    private static Map<String,String> BACK_NOTIFY_FAIL=WxCallBackResultEnums.returnCallResult(WxCallBackResultEnums.CALL_BACK_NOTIFY_FAIL);
+    private static Map<String, String> BACK_NOTIFY_FAIL = WxCallBackResultEnums.returnCallResult(WxCallBackResultEnums.CALL_BACK_NOTIFY_FAIL);
 
 
     @Autowired
@@ -63,10 +67,16 @@ public class WxPayServiceImpl implements WxPayService {
     @Autowired
     private AmountRecordMapper amountRecordMapper;
 
+    @Autowired
+    private UserTransLogMapper userTransLogMapper;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+
     @Value("${wxTransferReqUrl}")
     private String wxTransferReqUrl;
 
-    private static final String WX_TRANSFER_CODE="10000";
+    private static final String WX_TRANSFER_CODE = "10000";
 
     /**
      * 微信支付接口
@@ -130,7 +140,7 @@ public class WxPayServiceImpl implements WxPayService {
 
             String xml = StreamUtil.inputStream2String(request.getInputStream(), "UTF-8");
             Map<String, String> xmlToMap = XmlOrMapUtils.xmlToMap(xml);
-            LOGGER.debug("微信支付回调参数 --> {}",JSONUtil.toJSONString(xmlToMap));
+            LOGGER.debug("微信支付回调参数 --> {}", JSONUtil.toJSONString(xmlToMap));
 
 
             // 通信是否成功
@@ -143,11 +153,11 @@ public class WxPayServiceImpl implements WxPayService {
 
                     StringBuilder openId = new StringBuilder(xmlToMap.get("openid"));
 
-                    StringBuilder transactionId=new StringBuilder(xmlToMap.get("transaction_id"));
+                    StringBuilder transactionId = new StringBuilder(xmlToMap.get("transaction_id"));
 
-                    StringBuilder totalFee=new StringBuilder(xmlToMap.get("total_fee"));
+                    StringBuilder totalFee = new StringBuilder(xmlToMap.get("total_fee"));
 
-                    BigDecimal totalAmount = BigDecimalUtil.divide(new BigDecimal(totalFee.toString()), BIGDECIMAL,2);
+                    BigDecimal totalAmount = BigDecimalUtil.divide(new BigDecimal(totalFee.toString()), BIGDECIMAL, 2);
 
                     boolean status = payBackStatusNotice.isPayStatusSuccess(orderNumber.toString());
 
@@ -157,8 +167,8 @@ public class WxPayServiceImpl implements WxPayService {
                     }
 
                     //更新支付状态为成功
-                    BaseOrderInfo baseOrderInfo=new BaseOrderInfo(totalAmount,(short)1,orderNumber.toString(),openId.toString(),transactionId.toString());
-                    payBackStatusNotice.updatePaySuccessStatus(storeOrderUpdateService,baseOrderInfo);
+                    BaseOrderInfo baseOrderInfo = new BaseOrderInfo(totalAmount, (short) 1, orderNumber.toString(), openId.toString(), transactionId.toString());
+                    payBackStatusNotice.updatePaySuccessStatus(storeOrderUpdateService, baseOrderInfo);
 
                     return JSONUtil.toJSONString(BACK_SUCCESS);
                 } else {
@@ -189,15 +199,15 @@ public class WxPayServiceImpl implements WxPayService {
 
 
             int amount = BigDecimalUtil.multiply(orderInfo.getPayAmount(), BIGDECIMAL).intValue();
-             LOGGER.debug("微信实际支付金额 --> {}",amount);
+            LOGGER.debug("微信实际支付金额 --> {}", amount);
 
             Map<String, String> m = new HashMap<>();
-            m.put("body",orderInfo.getOrderSubject());
+            m.put("body", orderInfo.getOrderSubject());
             m.put("appid", wxPayInfo.getAppId());
             m.put("mch_id", wxPayInfo.getMchId());
             m.put("nonce_str", UuidUtil.getUuid());
             m.put("out_trade_no", orderInfo.getOrderNumber());
-            m.put("total_fee",String.valueOf(amount));
+            m.put("total_fee", String.valueOf(amount));
             m.put("spbill_create_ip", WxPayInfo.SPBILL_CREATE_IP);
             m.put("notify_url", wxPayInfo.getPayBackUrl());
             m.put("trade_type", WxPayInfo.TRADE_TYPE);
@@ -218,52 +228,88 @@ public class WxPayServiceImpl implements WxPayService {
      * @param userPayReq
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     @SystemServerLog(funcionExplain = "微信转账")
     @Override
     public AppletResult wxTransfer(UserPayReq userPayReq) {
 
+        UserInfo userInfo = userInfoMapper.selectUserInfoByUserId(userPayReq.getUserId());
+
+        if (userInfo != null) {
+
+            if (userInfo.getAccountStatus() == 0 || userInfo.getAccountStatus() == 2) {
+                return ResultUtil.error(ResultEnums.user_account_status_FAIL);
+            }
+
+        } else {
+            return ResultUtil.error(ResultEnums.USER_NOT_FOUND_FAIL);
+        }
+
+
         AmountRecord amountRecord = amountRecordMapper.selectOrderInfoByUserId(userPayReq.getUserId());
+        LOGGER.debug("微信准备转账订单信息 {}",amountRecord);
+
 
         //判断该订单是否是提现异常状态
-        if (amountRecord == null){
+        if (amountRecord == null) {
             return ResultUtil.error(ResultEnums.ORDER_STATUS_ALREADY_COMPLETE);
         }
 
-        String openId;
-        //判断是否是该订单是否是微信支付,不是微信支付查用户是否微信授权过
-       if (amountRecord.getRechargeWay()!= 1){
-            openId=wxUserInfoMapper.selectOpenIdByUserId(userPayReq.getUserId());
-           //没有查询到用户的openId
-           if (StringUtils.isBlank(openId)){
-               return ResultUtil.error(ResultEnums.USER_OPEN_ID_NOT_FOUND_FAIL);
-           }
-       }else {
-           openId=amountRecord.getAliUserId();
-       }
+        //查询这笔订单是否已经有转账记录
+        int count = userTransLogMapper.selectCountByOrderNo(amountRecord.getRechargeId().toString());
 
-       Map<String,Object> sendMap=new HashMap<>();
-       sendMap.put("rechargeId",amountRecord.getRechargeId());
-       sendMap.put("amount",amountRecord.getAmount());
-       sendMap.put("openId",openId);
+        if (count != 0 ){
+            return ResultUtil.error(ResultEnums.ORDER_STATUS_ALREADY_COMPLETE);
+        }
 
-        WxTransferRes wxTransferRes = HttpApiUtils.pSendResquestJson(wxTransferReqUrl, new JSONObject(sendMap),WxTransferRes.class);
-        LOGGER.debug("微信企业转账到个人返回结果 {}",JSONUtil.toJSONString(wxTransferRes));
+        //判断用户是否微信授权过
+        String openId = wxUserInfoMapper.selectOpenIdByUserId(userPayReq.getUserId());
 
-        if (wxTransferRes.getCode().equals(WX_TRANSFER_CODE)){
-          int updateNum = amountRecordMapper.updateOrderStateByRechargeId(new AmountRecord(amountRecord.getRechargeId(),3,wxTransferRes.getMsg()));
-            LOGGER.debug("微信企业转账到个人订单更新状态 {}",updateNum);
+        //没有查询到用户的openId
+        if (StringUtils.isBlank(openId)) {
+            return ResultUtil.error(ResultEnums.USER_OPEN_ID_NOT_FOUND_FAIL);
+        }
 
-          if ( updateNum >0 ){
-              return ResultUtil.success(ResultEnums.USER_OPEN_ID_NOT_FOUND_FAIL);
-          }else {
-              return ResultUtil.error(ResultEnums.ORDER_STATUS_UPDATE_FAIL);
-          }
-        }else {
+        Map<String, Object> sendMap = new HashMap<>();
+        sendMap.put("rechargeId", amountRecord.getRechargeId());
+        sendMap.put("amount", amountRecord.getAmount());
+        sendMap.put("openId", openId);
+
+        WxTransferRes wxTransferRes = HttpApiUtils.pSendResquestJson(wxTransferReqUrl, new JSONObject(sendMap), WxTransferRes.class);
+        LOGGER.debug("微信企业转账到个人返回结果 {}", JSONUtil.toJSONString(wxTransferRes));
+
+        if (wxTransferRes.getCode().equals(WX_TRANSFER_CODE)) {
+            int updateNum = amountRecordMapper.updateOrderStateByRechargeId(new AmountRecord(amountRecord.getRechargeId(), 3, wxTransferRes.getData().toString()));
+            LOGGER.debug("微信企业转账到个人订单更新状态 {}", updateNum);
+
+            //记录用户转账信息
+            userTransLogMapper.insertUserTransLog(new UserTransLog(userPayReq.getUserId(), amountRecord.getRechargeId().toString(), wxTransferRes.getData().toString(), (short) 1));
+
+            if (updateNum > 0) {
+
+                //转账成功后，修改用户状态为未缴纳押金的状态
+                switch (userInfo.getAccountStatus()){
+                    case 1:
+                    userInfo.setAccountStatus(0);
+                    break;
+                    case 3:
+                    userInfo.setAccountStatus(2);
+                    break;
+                    default:
+                        LOGGER.error("用户状态异常 {}",userInfo.getAccountStatus());
+                }
+
+                userInfoMapper.updateUserAccountStatus(new UserInfo(userPayReq.getUserId(),userInfo.getAccountStatus()));
+                return ResultUtil.success(ResultEnums.WX_TRANSFER_SUCCESS);
+            } else {
+                return ResultUtil.error(ResultEnums.ORDER_STATUS_UPDATE_FAIL);
+            }
+        } else {
             return ResultUtil.error(ResultEnums.WX_TRANSFER_FAIL);
         }
     }
 
-    static class WxTransferRes{
+    static class WxTransferRes {
 
         private String code;
 

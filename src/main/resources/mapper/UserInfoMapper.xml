@@ -60,9 +60,15 @@
     balance, balance_free, month_card_time, gender, lucky_money, age, alipay_account, 
     phone_province, phone_city, channel, register_city, imei, idfa, user_source, mac
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select id
+  <select id="selectUserInfoByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT
+    account_status,nickname,phone
     from t_user_info
-    where id = #{id,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR} AND del_flag=0
   </select>
+
+  <update id="updateUserAccountStatus" parameterType="com.applet.model.UserInfo">
+    UPDATE t_user_info  SET account_status=#{accountStatus,jdbcType=INTEGER} WHERE id = #{id,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

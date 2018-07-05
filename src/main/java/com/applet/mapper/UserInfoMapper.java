@@ -1,17 +1,14 @@
 package com.applet.mapper;
 
 import com.applet.model.UserInfo;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 
+@Component
+@Mapper
 public interface UserInfoMapper {
-    int deleteByPrimaryKey(String id);
 
-    int insert(UserInfo record);
+    UserInfo selectUserInfoByUserId(String id);
 
-    int insertSelective(UserInfo record);
-
-    UserInfo selectByPrimaryKey(String id);
-
-    int updateByPrimaryKeySelective(UserInfo record);
-
-    int updateByPrimaryKey(UserInfo record);
+    int updateUserAccountStatus(UserInfo userInfo);
 }
