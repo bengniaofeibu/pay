@@ -68,6 +68,6 @@ chinaPayBackURL: http://106.15.47.133:6666/payback/chinapayback
 chinaPaySinPay: http://sfj-test.chinapay.com/dac/SinPayServletUTF8
 
 #微信企业转账个人
-wxTransferReqUrl: http://139.196.194.172:8080/pay/wxPay/transfer
+wxTransferReqUrl: http://10.25.22.59:8080/pay/wxPay/transfer
 
 

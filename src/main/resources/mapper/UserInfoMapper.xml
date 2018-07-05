@@ -68,7 +68,7 @@
   </select>
 
   <update id="updateUserAccountStatus" parameterType="com.applet.model.UserInfo">
-    UPDATE t_user_info  SET account_status=#{accountStatus,jdbcType=INTEGER} WHERE id = #{id,jdbcType=VARCHAR}
+    UPDATE t_user_info  SET account_status=#{accountStatus,jdbcType=INTEGER},deposit=0,lucky_money=0 WHERE id = #{id,jdbcType=VARCHAR}
   </update>
 
 </mapper>

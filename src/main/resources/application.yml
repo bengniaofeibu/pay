@@ -6,8 +6,8 @@ spring:
   application:
     name: jjbicyclepay
   profiles:
-    active: local
-#    active: dev
+#    active: local
+    active: dev
 #    active: prod
   http:
     encoding:
