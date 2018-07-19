@@ -1,6 +1,7 @@
 package com.applet.Base;
 
 
+import com.applet.Request.UserPayReq;
 import com.applet.entity.ChinaPayBaseEntity;
 import com.applet.entity.ChinaPaySinPayRes;
 import com.applet.entity.PayBackStatusNotice;
@@ -9,6 +10,7 @@ import com.applet.utils.HttpClient.HttpApiUtils;
 import com.applet.utils.chinapayutils.SignUtil;
 import com.applet.utils.common.Base64Util;
 import com.applet.utils.common.JSONUtil;
+import com.applet.utils.common.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +41,20 @@ public  abstract class BaseServiceImpl {
     @Value("${splitMerInfo}")
     private String splitMerInfo;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     protected static final String RES_CODE ="0000";
 
     protected static final String CHINA_PAY_RES_CODE ="0014";
-
 
     private static final String REMOTE_IP="10.0.180.54";
 
     private static final String SPLIT_TYPE="0001";
 
     private static final String SPLIT_METHOD="0";
+
+    public static final String USER_PAY_SUBJECT = "user:pay:subject:";
 
 
 
@@ -155,5 +161,10 @@ public  abstract class BaseServiceImpl {
                 }
         }
         return splitBuild.toString();
+    }
+
+    //记录用户该订单标题，用来区分支付回调业务场景
+    protected void recordUserPaySubject(UserPayReq userPayReq){
+        redisUtil.setObj(USER_PAY_SUBJECT+userPayReq.getOrderNumber(),userPayReq.getOrderSubject());
     }
 }

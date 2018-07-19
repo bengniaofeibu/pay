@@ -11,4 +11,6 @@ public interface UserInfoMapper {
     UserInfo selectUserInfoByUserId(String id);
 
     int updateUserAccountStatus(UserInfo userInfo);
+
+    int  updateUserCreditScore(String userId);
 }

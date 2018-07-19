@@ -46,10 +46,6 @@ public class AliPayServiceImpl extends BaseServiceImpl implements AliPayService 
     private AliPayInfo aliPayNewInfo;
 
 
-    @Autowired
-    private StoreOrderUpdateService storeOrderUpdateService;
-
-
     /**
      * 阿里支付接口
      *
@@ -79,6 +75,9 @@ public class AliPayServiceImpl extends BaseServiceImpl implements AliPayService 
             //这里和普通的接口调用不同，使用的是sdkExecute
             AlipayTradeAppPayResponse response = alipayClient.sdkExecute(request);
             LOGGER.debug("阿里支付返回结果 --> {}", JSONUtil.toJSONString(response));
+
+            //记录该订单标题
+            recordUserPaySubject(orderInfo);
 
             return ResultUtil.success(AliPayInfo.buildAliPayResult(response.getBody(),orderInfo.getOrderNumber()));
         } catch (Exception e) {
@@ -143,10 +142,12 @@ public class AliPayServiceImpl extends BaseServiceImpl implements AliPayService 
                     return AliPayInfo.RETURN_SUCCESS;
                 }
 
+                //获取对应的回调处理业务
+                OrderStatusUpdateService updateOrderStatusService = payBackStatusNotice.getUpdateOrderStatusService(orderNumber.toString());
+
                 //更新支付状态为成功
                 BaseOrderInfo baseOrderInfo = new BaseOrderInfo(new BigDecimal(totalAmount.toString()),(short)0,orderNumber.toString(),buyerId.toString(), aliTradeNo.toString());
-                payBackStatusNotice.updatePaySuccessStatus(storeOrderUpdateService, baseOrderInfo);
-
+                payBackStatusNotice.updatePaySuccessStatus(updateOrderStatusService, baseOrderInfo);
 
                 return AliPayInfo.RETURN_SUCCESS;
             } else {

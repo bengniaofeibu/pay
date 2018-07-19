@@ -1,6 +1,7 @@
 package com.applet.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.applet.Base.BaseServiceImpl;
 import com.applet.Request.UserPayReq;
 import com.applet.annotation.SystemServerLog;
 import com.applet.entity.PayBackStatusNotice;
@@ -15,6 +16,7 @@ import com.applet.model.AmountRecord;
 import com.applet.model.BaseOrderInfo;
 import com.applet.model.UserInfo;
 import com.applet.model.UserTransLog;
+import com.applet.service.OrderStatusUpdateService;
 import com.applet.service.StoreOrderUpdateService;
 import com.applet.service.WxPayService;
 import com.applet.utils.AppletResult;
@@ -34,8 +36,10 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.applet.enums.ResultEnums.WX_TRANSFER_FAIL;
+
 @Service
-public class WxPayServiceImpl implements WxPayService {
+public class WxPayServiceImpl extends BaseServiceImpl implements WxPayService {
 
     private static BigDecimal BIGDECIMAL = new BigDecimal(100);
 
@@ -57,9 +61,6 @@ public class WxPayServiceImpl implements WxPayService {
 
     @Autowired
     private PayBackStatusNotice payBackStatusNotice;
-
-    @Autowired
-    private StoreOrderUpdateService storeOrderUpdateService;
 
     @Autowired
     private BicycleWxUserInfoMapper wxUserInfoMapper;
@@ -109,6 +110,9 @@ public class WxPayServiceImpl implements WxPayService {
                 StringBuilder signStr = new StringBuilder(paySign);
                 String sign = signStr.append("&key=").append(wxPayInfo.getKey()).toString();
                 hashMap.put("sign", Md5Util.MD5(sign));
+
+                //记录该订单标题
+                recordUserPaySubject(orderInfo);
 
                 return ResultUtil.success(hashMap);
             } else {
@@ -166,9 +170,13 @@ public class WxPayServiceImpl implements WxPayService {
                         return JSONUtil.toJSONString(BACK_SUCCESS);
                     }
 
+
+                    OrderStatusUpdateService updateOrderStatusService = payBackStatusNotice.getUpdateOrderStatusService(orderNumber.toString());
+
                     //更新支付状态为成功
                     BaseOrderInfo baseOrderInfo = new BaseOrderInfo(totalAmount, (short) 1, orderNumber.toString(), openId.toString(), transactionId.toString());
-                    payBackStatusNotice.updatePaySuccessStatus(storeOrderUpdateService, baseOrderInfo);
+                    payBackStatusNotice.updatePaySuccessStatus(updateOrderStatusService, baseOrderInfo);
+
 
                     return JSONUtil.toJSONString(BACK_SUCCESS);
                 } else {
@@ -278,7 +286,7 @@ public class WxPayServiceImpl implements WxPayService {
         WxTransferRes wxTransferRes = HttpApiUtils.pSendResquestJson(wxTransferReqUrl, new JSONObject(sendMap), WxTransferRes.class);
         LOGGER.debug("微信企业转账到个人返回结果 {}", JSONUtil.toJSONString(wxTransferRes));
 
-        if (wxTransferRes.getCode().equals(WX_TRANSFER_CODE)) {
+        if (WX_TRANSFER_CODE.equals(wxTransferRes.getCode())) {
             int updateNum = amountRecordMapper.updateOrderStateByRechargeId(new AmountRecord(amountRecord.getRechargeId(), 3, wxTransferRes.getData().toString()));
             LOGGER.debug("微信企业转账到个人订单更新状态 {}", updateNum);
 
@@ -300,12 +308,13 @@ public class WxPayServiceImpl implements WxPayService {
                 }
 
                 userInfoMapper.updateUserAccountStatus(new UserInfo(userPayReq.getUserId(),userInfo.getAccountStatus()));
-                return ResultUtil.success(ResultEnums.WX_TRANSFER_SUCCESS);
+                return ResultUtil.successToResutlt(ResultEnums.WX_TRANSFER_SUCCESS);
             } else {
                 return ResultUtil.error(ResultEnums.ORDER_STATUS_UPDATE_FAIL);
             }
         } else {
-            return ResultUtil.error(ResultEnums.WX_TRANSFER_FAIL);
+            WX_TRANSFER_FAIL.setMsg(wxTransferRes.getData().toString());
+            return ResultUtil.error(WX_TRANSFER_FAIL);
         }
     }
 

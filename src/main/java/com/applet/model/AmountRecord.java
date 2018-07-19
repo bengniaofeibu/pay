@@ -61,6 +61,15 @@ public class AmountRecord {
     public AmountRecord() {
     }
 
+    public AmountRecord(BigDecimal rechargeId, BigDecimal amount, Integer rechargeWay, Integer state, String tradeNo, String aliUserId) {
+        this.rechargeId = rechargeId;
+        this.amount = amount;
+        this.rechargeWay = rechargeWay;
+        this.state = state;
+        this.tradeNo = tradeNo;
+        this.aliUserId = aliUserId;
+    }
+
     public AmountRecord(BigDecimal rechargeId, Integer state, String transAccountNo) {
         this.rechargeId=rechargeId;
         this.state = state;

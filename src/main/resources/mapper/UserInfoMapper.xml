@@ -71,4 +71,7 @@
     UPDATE t_user_info  SET account_status=#{accountStatus,jdbcType=INTEGER},deposit=0,lucky_money=0 WHERE id = #{id,jdbcType=VARCHAR}
   </update>
 
+  <update id="updateUserCreditScore" parameterType="java.lang.String">
+    UPDATE t_user_info  SET credit_score=70 WHERE id = #{id,jdbcType=VARCHAR} and credit_score &lt; 70
+  </update>
 </mapper>

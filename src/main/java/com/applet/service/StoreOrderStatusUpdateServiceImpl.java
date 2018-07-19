@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 
-@Service
+@Service("storeOrderUpdateService")
 public class StoreOrderStatusUpdateServiceImpl implements StoreOrderUpdateService {
 
     private static final Logger LOGGER= LoggerFactory.getLogger(StoreOrderStatusUpdateServiceImpl.class);

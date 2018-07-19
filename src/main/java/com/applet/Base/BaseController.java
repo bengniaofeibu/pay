@@ -4,9 +4,11 @@ import com.applet.Request.UserPayReq;
 import com.applet.entity.ChinaPayBaseEntity;
 import com.applet.entity.PayBackStatusNotice;
 import com.applet.enums.ResultEnums;
+import com.applet.mapper.NoparkFineDetailMapper;
 import com.applet.mapper.NyCouponMapper;
 import com.applet.mapper.UserBankcardInfoMapper;
 import com.applet.model.CustomerOrderInfo;
+import com.applet.model.NoparkFineDetail;
 import com.applet.model.NyCoupon;
 import com.applet.service.AliPayService;
 import com.applet.service.ChinaPayService;
@@ -55,6 +57,9 @@ public abstract class BaseController {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private NoparkFineDetailMapper noparkFineDetailMapper;
 
     /**
      * 计算最后支付金额
@@ -107,8 +112,40 @@ public abstract class BaseController {
      * @param orderNumber
      */
     protected BigDecimal getUserPayAmoutCache(String orderNumber) {
-        String couponAmountKey = new StringBuilder(USER_PAY_AMOUNT_KEY).append(orderNumber).toString();
-        return new BigDecimal(redisUtil.getValuesStr(couponAmountKey));
+        String cacheAmount = (String)redisUtil.getValueObj(new StringBuilder(USER_PAY_AMOUNT_KEY).append(orderNumber).toString());
+        return new BigDecimal(cacheAmount);
+    }
+
+
+    /**
+     * 用户罚款支付
+     * @param userPayReq
+     * @return
+     */
+    protected AppletResult finePayResult(UserPayReq userPayReq){
+
+      NoparkFineDetail noparkFineDetail = noparkFineDetailMapper.selectRechargeIdByUserIdAndStatus(userPayReq.getUserId());
+       LOGGER.debug("用户罚款订单信息 {}",JSONUtil.toJSONString(noparkFineDetail));
+
+       if (noparkFineDetail == null){
+           return ResultUtil.error(ResultEnums.NOT_FOUNT_ORDERNUM_FAIL);
+       }
+
+        AppletResult result = null;
+//        userPayReq.setPayAmount(new BigDecimal(noparkFineDetail.getFineMoney()).divide(new BigDecimal(100)));
+        userPayReq.setPayAmount(new BigDecimal(0.1).setScale(2, BigDecimal.ROUND_HALF_UP));
+        userPayReq.setOrderNumber(noparkFineDetail.getRechargeId());
+        switch (userPayReq.getPayWay()){
+            case 0:
+                //支付宝
+                result = aliPayService.pay(userPayReq);
+                break;
+            case 1:
+                //微信
+                result = wxPayService.pay(userPayReq);
+                break;
+        }
+        return result;
     }
 
 
@@ -138,8 +175,11 @@ public abstract class BaseController {
                 }
 
                 result = chinaPayService.paySms(chinaPayBaseEntity);
-                //添加用户时间支付金额到缓存，给银联支付时使用
-                addUserPayAmoutCache(userPayReq.getOrderNumber(), amount.toString());
+
+                if (result.getCode() == 200 ){
+                    //添加用户时间支付金额到缓存，给银联支付时使用
+                    addUserPayAmoutCache(userPayReq.getOrderNumber(), userPayReq.getPayAmount().toString());
+                }
                 break;
         }
         return result;
@@ -180,7 +220,7 @@ public abstract class BaseController {
             case 7:
                 break;
             default:
-                return customerOrderInfo.getPayAmount();
+                return customerOrderInfo.getPayAmount().divide(new BigDecimal(100));
         }
 
         return amount;
@@ -193,4 +233,5 @@ public abstract class BaseController {
                 .setAmounts(new String[]{userPayReq.getPayAmount().toString()}).build();
         return chinaPayBaseEntity;
     }
+
 }

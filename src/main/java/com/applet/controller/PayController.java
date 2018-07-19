@@ -6,15 +6,11 @@ import com.applet.annotation.SystemControllerLog;
 import com.applet.entity.ChinaPayBaseEntity;
 import com.applet.enums.ResultEnums;
 import com.applet.model.CustomerOrderInfo;
-import com.applet.model.NyCoupon;
-import com.applet.service.AliPayService;
-import com.applet.service.WxPayService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +39,28 @@ public class PayController extends BaseController {
         if (customerOrderInfo != null) {
             return getUserPayResult(userPayReq,customerOrderInfo);
         }
-        return ResultUtil.error(ResultEnums.NOT_FOUNT_ORDERNUM_FAIL);
+        return customerOrderInfo != null?ResultUtil.error(ResultEnums.NOT_FOUNT_ORDERNUM_FAIL): getUserPayResult(userPayReq,customerOrderInfo);
+    }
+
+
+
+    /**
+     * 用户罚款支付
+     *
+     * @param userPayReq
+     * @return
+     */
+    @SystemControllerLog(funcionExplain = "进入用户罚款支付支付控制层")
+    @PostMapping(value = "/userfinepay")
+    public AppletResult userFinePay(@RequestBody UserPayReq userPayReq){
+        return finePayResult(userPayReq);
     }
 
 
    @SystemControllerLog(funcionExplain = "进入银联支付控制层")
    @PostMapping(value = "/chinapay")
    public AppletResult chinaPay(@RequestBody UserPayReq userPayReq){
+       LOGGER.debug("银联支付参数 {}",JSONUtil.toJSONString(userPayReq));
 
 
        BigDecimal amount = getUserPayAmoutCache(userPayReq.getOrderNumber());

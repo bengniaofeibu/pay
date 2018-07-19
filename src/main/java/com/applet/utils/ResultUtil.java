@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ResultUtil {
-    public static AppletResult success(ResultEnums resultEnums,Object...object){
+    public static AppletResult successToResutlt(ResultEnums resultEnums,Object...object){
 
         AppletResult result = new AppletResult();
-        result.setCode(resultEnums.getCode());
+        result.setCode(ResultEnums.RETURN_SUCCESS.getCode());
         result.setMsg(resultEnums.getMsg());
         result.setData(new ResultBuild(object));
         return result;
