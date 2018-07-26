@@ -34,6 +34,8 @@ public abstract class BaseController {
 
     private static final String USER_PAY_AMOUNT_KEY = "user:pay:amount:";
 
+    private static final BigDecimal BIG_DECIMAL=new BigDecimal(100);
+
     //微信支付服务
     @Autowired
     protected WxPayService wxPayService;
@@ -132,8 +134,7 @@ public abstract class BaseController {
        }
 
         AppletResult result = null;
-//        userPayReq.setPayAmount(new BigDecimal(noparkFineDetail.getFineMoney()).divide(new BigDecimal(100)));
-        userPayReq.setPayAmount(new BigDecimal(0.1).setScale(2, BigDecimal.ROUND_HALF_UP));
+        userPayReq.setPayAmount(new BigDecimal(noparkFineDetail.getFineMoney()).divide(BIG_DECIMAL.setScale(2, BigDecimal.ROUND_HALF_UP)));
         userPayReq.setOrderNumber(noparkFineDetail.getRechargeId());
         switch (userPayReq.getPayWay()){
             case 0:

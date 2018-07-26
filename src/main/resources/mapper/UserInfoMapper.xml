@@ -62,7 +62,7 @@
   </sql>
   <select id="selectUserInfoByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT
-    account_status,nickname,phone
+    account_status,nickname,phone,credit_score
     from t_user_info
     where id = #{id,jdbcType=VARCHAR} AND del_flag=0
   </select>
@@ -73,5 +73,9 @@
 
   <update id="updateUserCreditScore" parameterType="java.lang.String">
     UPDATE t_user_info  SET credit_score=70 WHERE id = #{id,jdbcType=VARCHAR} and credit_score &lt; 70
+  </update>
+
+  <update id="updateUserPenaltyStatus" parameterType="java.lang.String">
+    UPDATE t_user_info SET guester_state=0 WHERE id=#{id,jdbcType=VARCHAR} and guester_state=1
   </update>
 </mapper>

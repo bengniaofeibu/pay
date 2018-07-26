@@ -38,9 +38,11 @@ public enum ResultEnums {
 
     WX_TRANSFER_FAIL(1107,"微信转账失败"),
 
-    user_account_status_FAIL(1108,"非缴纳押金状态"),
+    USER_ACCOUNT_STATUS_FAIL(1108,"非缴纳押金状态"),
 
-    USER_NOT_FOUND_FAIL(1109,"用户不存在");
+    USER_NOT_FOUND_FAIL(1109,"用户不存在"),
+
+    USER_CREDIT_INSUFFICIENT_FAIL(1110,"信用分不足80分");
 
     private Integer code;
 

@@ -26,7 +26,7 @@ public class PayBackController extends BaseController {
     @SystemControllerLog(funcionExplain = "进入微信支付回调控制层")
     @PostMapping(value = "/wxpayback")
     public String wxPayBack(HttpServletRequest request){
-        return wxPayService.payBack(request);
+            return wxPayService.payBack(request);
     }
 
     @SystemControllerLog(funcionExplain = "进入银联支付回调控制层")

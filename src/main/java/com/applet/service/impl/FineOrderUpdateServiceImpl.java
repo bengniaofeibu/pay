@@ -47,10 +47,16 @@ public class FineOrderUpdateServiceImpl implements FineOrderUpdateService {
         LOGGER.debug("updateAmount {} updatenoparkFineDetail {} ",updateAmount,updatenoparkFineDetail);
 
 
-        //更新用户信用分到70分
+
         String userId = noparkFineDetailMapper.selectUserIdByRechargeId(baseOrderInfo.getOrderNumber().toString());
 
+        //更新用户信用分到70分
         userInfoMapper.updateUserCreditScore(userId);
+
+        //更新用户为没有订单状态
+        userInfoMapper.updateUserPenaltyStatus(userId);
+
+
 
         return updateAmount+updatenoparkFineDetail;
     }

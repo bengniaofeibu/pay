@@ -60,6 +60,8 @@ public class PayBackStatusNotice {
         Object orderSubject = redisUtil.getValueObj(orderSubjectKey);
         LOGGER.debug("订单号 {} 订单标题 {} ", orderNumber, orderSubject);
 
+        if (orderSubject == null) return true;
+
         switch (orderSubject.toString()) {
             case MALL_PAY:
                 // 查看商城订单状态是否已经更新成支付成功

@@ -29,6 +29,8 @@ public class StoreOrderStatusUpdateServiceImpl implements StoreOrderUpdateServic
 
     private static final String COUPON_AMOUNT_KEY="user:pay:coupon:";
 
+    private static final BigDecimal BIG_DECIMAL = new BigDecimal(100);
+
 
     @Autowired
     private CustomerOrderInfoMapper customerOrderInfoMapper;
@@ -43,6 +45,8 @@ public class StoreOrderStatusUpdateServiceImpl implements StoreOrderUpdateServic
 
     @Autowired
     private RedisUtil redisUtil;
+
+
 
     /**
      * 更新订单状态
@@ -78,7 +82,7 @@ public class StoreOrderStatusUpdateServiceImpl implements StoreOrderUpdateServic
                  }
 
                  customerOrderInfo.setOrderNumber(baseOrderInfo.getOrderNumber());
-                 customerOrderInfo.setTotalAmount(baseOrderInfo.getTotalAmount());
+                 customerOrderInfo.setTotalAmount(baseOrderInfo.getTotalAmount().multiply(BIG_DECIMAL));
                  customerOrderInfo.setTradeNo(baseOrderInfo.getTradeNo());
                  customerOrderInfo.setUserPayNumber(baseOrderInfo.getUserPayNumber());
                  customerOrderInfo.setPayStatus((short) 2);

@@ -243,10 +243,17 @@ public class WxPayServiceImpl extends BaseServiceImpl implements WxPayService {
 
         UserInfo userInfo = userInfoMapper.selectUserInfoByUserId(userPayReq.getUserId());
 
+
+        //判断信用分是否大于80分
+        if (userInfo.getCreditScore() < 80 ){
+            return ResultUtil.error(ResultEnums.USER_CREDIT_INSUFFICIENT_FAIL);
+        }
+
+
         if (userInfo != null) {
 
             if (userInfo.getAccountStatus() == 0 || userInfo.getAccountStatus() == 2) {
-                return ResultUtil.error(ResultEnums.user_account_status_FAIL);
+                return ResultUtil.error(ResultEnums.USER_ACCOUNT_STATUS_FAIL);
             }
 
         } else {

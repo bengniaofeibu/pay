@@ -7,8 +7,9 @@ spring:
     name: jjbicyclepay
   profiles:
 #    active: local
-    active: dev
+#    active: dev
 #    active: prod
+     active: test
   http:
     encoding:
       charset: utf-8
